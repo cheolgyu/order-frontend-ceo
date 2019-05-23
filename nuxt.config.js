@@ -1,9 +1,13 @@
 import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
+import dotenv from 'dotenv'
 import pkg from './package'
+dotenv.config()
 
 export default {
   mode: 'spa',
-
+  env: {
+    // API_URL: process.env.VUE_APP_API_URL
+  },
   /*
    ** Headers of the page
    */
@@ -37,7 +41,17 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify'],
+  plugins: [
+    '@/plugins/vuetify',
+    '@/plugins/i18n.js',
+    '@/plugins/vuelidate.js',
+    '@/plugins/axios.js'
+  ],
+
+  axios: {
+    baseURL: process.env.VUE_APP_API_URL
+    // prefix: '/api'
+  },
 
   /*
    ** Nuxt.js modules
@@ -45,21 +59,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
-    [
-      'nuxt-validate',
-      {
-        lang: 'ko'
-        // regular vee-validate options
-      }
-    ]
+    '@nuxtjs/pwa'
   ],
-  /*
-   ** Axios module configuration
-   */
-  axios: {
-    // See https://github.com/nuxt-community/axios-module#options
-  },
 
   /*
    ** Build configuration

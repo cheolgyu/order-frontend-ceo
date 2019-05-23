@@ -1,0 +1,24 @@
+{
+    "links": {
+      "home": "홈",
+      "about": "About",
+      "version": "한국어 버전"
+    },
+    "user": {
+        "title": "user ",
+        "introduction": " 페이지",
+        "reg": {
+            "title": "user reg",
+            "introduction": "사용자 등록페이지 입니다.^^"
+        }
+    },
+    "home": {
+      "title": "Welcome",
+      "introduction": "This is an introduction in English."
+    },
+    "about": {
+      "title": "About",
+      "introduction": "This page is made to give you more informations."
+    }
+  }
+  

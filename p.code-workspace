@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "/home/cg/project/order-back-rust"
+		}
+	],
+	"settings": {
+		"editor.defaultFormatter": "rust-lang.rust"
+	}
+}
