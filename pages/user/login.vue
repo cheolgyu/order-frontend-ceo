@@ -2,8 +2,8 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-form>
-        <v-text-field label="id" name="id" value="rb7480"></v-text-field>
-        <v-text-field name="password" value="dlacjfrb123!@#"></v-text-field>
+        <v-text-field label="id" name="id"></v-text-field>
+        <v-text-field name="password"></v-text-field>
         <v-btn :disabled="submitStatus === 'PENDING'" @click="submit">{{
           $t('btn.submit')
         }}</v-btn>
@@ -17,8 +17,8 @@ export default {
   data: scope => ({
     submitStatus: null,
     form: {
-      id: 'rb7480',
-      password: 'dlacjfrb123!@#'
+      id: null,
+      password: null
     },
 
     rules: {
