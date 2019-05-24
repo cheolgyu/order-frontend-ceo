@@ -79,6 +79,16 @@ export default {
           icon: 'bubble_chart',
           title: 'Inspire',
           to: '/inspire'
+        },
+        {
+          icon: 'bubble_chart',
+          title: 'user',
+          to: '/user'
+        },
+        {
+          icon: 'bubble_chart',
+          title: 'login',
+          to: '/user/login'
         }
       ],
       miniVariant: false,

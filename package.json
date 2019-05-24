@@ -5,9 +5,9 @@
   "author": "cg",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "nuxt --spa",
+    "build": "nuxt --spa build",
+    "start": "nuxt --spa start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
