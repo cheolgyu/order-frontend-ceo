@@ -63,6 +63,7 @@ import {
   sameAs
 } from 'vuelidate/lib/validators'
 export default {
+  layout: 'pub',
   validations: {
     form: {
       email: { required, email },

@@ -8,6 +8,7 @@
     <NuxtLink to="/">
       Back to the home page
     </NuxtLink>
+    <v-btn @click="conn">conn</v-btn>
   </div>
 </template>
 
@@ -15,11 +16,34 @@
 import { mapState } from 'vuex'
 
 export default {
-  middleware: 'auth',
+  // middleware: 'auth',
+  data: scope => ({
+    ws_conn: null,
+    wsUri: 'ws://127.0.0.1:3000/ws/'
+  }),
   computed: {
     ...mapState({
       auth: state => state.user.auth
     })
+  },
+  methods: {
+    conn() {
+      // The `fetch` method is used to fill the store before rendering the page
+      console.log('Connecting...')
+      this.ws_conn = new WebSocket(this.wsUri)
+      this.ws_conn.onopen = function() {
+        console.log('Connected.')
+      }
+      this.ws_conn.onmessage = function(e) {
+        console.log(e)
+        console.log('Received: ' + e.data)
+      }
+      this.conn.onclose = function() {
+        console.log('Disconnected.')
+        this.ws_conn = null
+        // update_ui()
+      }
+    }
   }
 }
 /**

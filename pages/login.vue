@@ -2,8 +2,14 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-form>
-        <v-text-field label="id" name="id"></v-text-field>
-        <v-text-field name="password"></v-text-field>
+        <v-text-field v-model="form.id" v-bind="prod.id"></v-text-field>
+        <v-text-field
+          v-model="form.password"
+          v-bind="prod.pwd"
+          :type="show_pwd ? 'text' : 'password'"
+          :append-icon="show_pwd ? 'visibility' : 'visibility_off'"
+          @click:append="show_pwd = !show_pwd"
+        ></v-text-field>
         <v-btn :disabled="submitStatus === 'PENDING'" @click="submit">{{
           $t('btn.submit')
         }}</v-btn>
@@ -14,11 +20,23 @@
 
 <script>
 export default {
+  layout: 'pub',
   data: scope => ({
     submitStatus: null,
+    show_pwd: false,
     form: {
       id: null,
       password: null
+    },
+    prod: {
+      id: {
+        name: 'id',
+        label: '아이디'
+      },
+      pwd: {
+        name: 'password',
+        label: '비밀번호'
+      }
     },
 
     rules: {
