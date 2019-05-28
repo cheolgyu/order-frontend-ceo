@@ -9,13 +9,12 @@ export const actions = {
     }).catch(error => { return error.response });
   },
   async login({ commit }, params) {
-    const res = await this.$axios.post(`auth`, params).then(res => {
+    return await this.$axios.post(`auth`, params).then(res => {
       if (res.status === 200) {
         commit('SET_AUTH', res.data)
       }
       return res.status
     })
-    return res
   }
 }
 

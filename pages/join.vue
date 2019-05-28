@@ -199,7 +199,6 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.$store.dispatch("user/join", this.$data.form).then(res => {
-          console.log(res);
           if (res.status == 200) {
             alert("회원가입 됬습니다.\n 로그인을 해주세요.");
             this.$router.push("/");
