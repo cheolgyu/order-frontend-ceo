@@ -44,7 +44,11 @@
           @input="$v.form.name.$touch()"
           @blur="$v.form.name.$touch()"
         />
-        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit" v-text="btn_sumit"/>
+        <v-btn
+          :disabled="submitStatus === 'PENDING'"
+          @click="submit"
+          v-text="btn_sumit"
+        />
       </v-form>
     </v-flex>
   </v-layout>
