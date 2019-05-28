@@ -1,28 +1,3 @@
 {
-    // Set the default
-    //"editor.formatOnSave": false,
-    "editor.formatOnSave": true,
-    "eslint.validate": [
-      {
-        "language": "vue",
-        "autoFix": true
-      },
-      { 
-        "language": "javascript",
-        "autoFix": true
-      }
-    ],
-    "eslint.autoFixOnSave": true,
-    
-    "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "files.exclude": {
-      "**/node_modules": true,
-      "**/.nuxt":true
-    },
-    "search.exclude": {
-      "*.rs": true
-    },
-  
+  "editor.formatOnSave": true
 }

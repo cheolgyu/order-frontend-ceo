@@ -1,8 +1,12 @@
-export default function({ $axios, redirect }) {
+export default function({ $axios, store }) {
   $axios.onRequest(config => {
+    const user = store.state.user
+    if (user.auth != null) {
+      config.headers.common.Authorization = user.auth.token
+    }
     console.log('Making request to ' + config.url)
   })
-
+  /*
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status)
     console.log(error)
@@ -10,4 +14,5 @@ export default function({ $axios, redirect }) {
       // redirect('/400')
     }
   })
+  */
 }

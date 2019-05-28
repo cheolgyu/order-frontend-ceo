@@ -2,17 +2,17 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-form>
-        <v-text-field v-model="form.id" v-bind="prod.id"></v-text-field>
+        <v-text-field v-model="form.id" v-bind="prod.id" />
         <v-text-field
           v-model="form.password"
           v-bind="prod.pwd"
           :type="show_pwd ? 'text' : 'password'"
           :append-icon="show_pwd ? 'visibility' : 'visibility_off'"
           @click:append="show_pwd = !show_pwd"
-        ></v-text-field>
-        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit">{{
-          $t('btn.submit')
-        }}</v-btn>
+        />
+        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit">
+          {{ $t('btn.submit') }}
+        </v-btn>
       </v-form>
     </v-flex>
   </v-layout>
@@ -50,8 +50,14 @@ export default {
   }),
   methods: {
     submit() {
-      console.log(this.$store)
-      this.$store.dispatch('user/login', this.$data.form)
+      this.$store.dispatch('user/login', this.$data.form).then(res => {
+        if (res === 200) {
+          alert('로그인 됬습니다.')
+          this.$router.push('/user')
+        } else {
+          alert('다시 시도하세요.')
+        }
+      })
     }
   }
 }
