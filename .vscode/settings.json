@@ -1,3 +1,7 @@
-{
-  //  "editor.formatOnSave": true
+{// Set the default
+"editor.formatOnSave": true,
+"files.exclude": {
+    ".nuxt": true,
+    "**/node_modules": true
+},
 }

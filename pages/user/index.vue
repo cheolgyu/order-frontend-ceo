@@ -2,8 +2,7 @@
   <div>
     <h1>Super secret page {{ auth }}</h1>
     <p>
-      If you try to access this URL not connected, you will see the error page
-      telling your that you are not connected.
+      If you try to access this URL not connected, you will see the error page telling your that you are not connected.
     </p>
     <NuxtLink to="/">
       Back to the home page

@@ -4,12 +4,9 @@ export const state = () => ({
 
 export const actions = {
   async join({ commit }, params) {
-    const res = await this.$axios.put(`auth`, params).then(res => {
-      if (res.status === 200) {
-        commit('setCar', res.data)
-      }
-    })
-    return res
+    return await this.$axios.put(`auth`, params).then(res => {
+      return res;
+    }).catch(error => { return error.response });
   },
   async login({ commit }, params) {
     const res = await this.$axios.post(`auth`, params).then(res => {

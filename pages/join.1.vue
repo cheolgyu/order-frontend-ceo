@@ -1,12 +1,6 @@
 <template>
   <v-form @submit.prevent="submit">
-    <v-text-field
-      v-model="form.email"
-      :error-messages="emailErrors"
-      v-bind="email.props"
-      @input="$v.form.email.$touch()"
-      @blur="$v.form.email.$touch()"
-    />
+    <v-text-field v-model="form.email" :error-messages="emailErrors" v-bind="email.props" @input="$v.form.email.$touch()" @blur="$v.form.email.$touch()" />
 
     <v-text-field
       v-model.trim="form.password"
@@ -59,13 +53,7 @@
 </template>
 
 <script>
-import {
-  required,
-  maxLength,
-  email,
-  minLength,
-  sameAs
-} from 'vuelidate/lib/validators'
+import { required, maxLength, email, minLength, sameAs } from 'vuelidate/lib/validators'
 export default {
   layout: 'pub',
   validations: {
@@ -139,8 +127,7 @@ export default {
     checkboxErrors() {
       const errors = []
       if (!this.$v.form.checkbox.$dirty) return errors
-      !this.$v.form.checkbox.checked &&
-        errors.push('You must agree to continue!')
+      !this.$v.form.checkbox.checked && errors.push('You must agree to continue!')
       return errors
     },
     selectErrors() {
@@ -152,35 +139,26 @@ export default {
     passwordErrors() {
       const errors = []
       if (!this.$v.form.password.$dirty) return errors
-      !this.$v.form.password.maxLength &&
-        errors.push(this.$t('password.error.maxLength'))
-      !this.$v.form.password.minLength &&
-        errors.push(this.$t('password.error.minLength'))
-      !this.$v.form.password.required &&
-        errors.push(this.$t('password.error.required'))
-      !this.$v.form.password.alpha &&
-        errors.push(this.$t('password.error.alpha'))
-      !this.$v.form.password.number &&
-        errors.push(this.$t('password.error.number'))
-      !this.$v.form.password.specialCharacters &&
-        errors.push(this.$t('password.error.specialCharacters'))
+      !this.$v.form.password.maxLength && errors.push(this.$t('password.error.maxLength'))
+      !this.$v.form.password.minLength && errors.push(this.$t('password.error.minLength'))
+      !this.$v.form.password.required && errors.push(this.$t('password.error.required'))
+      !this.$v.form.password.alpha && errors.push(this.$t('password.error.alpha'))
+      !this.$v.form.password.number && errors.push(this.$t('password.error.number'))
+      !this.$v.form.password.specialCharacters && errors.push(this.$t('password.error.specialCharacters'))
       return errors
     },
     passwordConfirmErrors() {
       const errors = []
       if (!this.$v.form.passwordConfirm.$dirty) return errors
-      !this.$v.form.passwordConfirm.sameAsPassword &&
-        errors.push(this.$t('passwordConfirm.error.valid'))
-      !this.$v.form.passwordConfirm.required &&
-        errors.push(this.$t('passwordConfirm.error.required'))
+      !this.$v.form.passwordConfirm.sameAsPassword && errors.push(this.$t('passwordConfirm.error.valid'))
+      !this.$v.form.passwordConfirm.required && errors.push(this.$t('passwordConfirm.error.required'))
       return errors
     },
     emailErrors() {
       const errors = []
       if (!this.$v.form.email.$dirty) return errors
       !this.$v.form.email.email && errors.push(this.$t('email.error.valid'))
-      !this.$v.form.email.required &&
-        errors.push(this.$t('email.error.required'))
+      !this.$v.form.email.required && errors.push(this.$t('email.error.required'))
       return errors
     }
   },

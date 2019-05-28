@@ -1,10 +1,10 @@
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
-import dotenv from 'dotenv'
-import pkg from './package'
-dotenv.config()
+import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
+import dotenv from "dotenv";
+import pkg from "./package";
+dotenv.config();
 
 export default {
-  mode: 'spa',
+  mode: "spa",
   env: {
     // API_URL: process.env.VUE_APP_API_URL
   },
@@ -14,16 +14,16 @@ export default {
   head: {
     title: pkg.name,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
       }
     ]
   },
@@ -31,21 +31,21 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: "#fff" },
 
   /*
    ** Global CSS
    */
-  css: ['~/assets/style/app.styl'],
+  css: ["~/assets/style/app.styl"],
 
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/vuetify',
-    '@/plugins/i18n.js',
-    '@/plugins/vuelidate.js',
-    '@/plugins/axios.js'
+    "@/plugins/vuetify",
+    "@/plugins/i18n.js",
+    "@/plugins/vuelidate.js",
+    "@/plugins/axios.js"
   ],
 
   axios: {
@@ -58,19 +58,19 @@ export default {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa"
   ],
 
   /*
    ** Build configuration
    */
   build: {
-    transpile: ['vuetify/lib'],
+    transpile: ["vuetify/lib"],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {
       stylus: {
-        import: ['~assets/style/variables.styl']
+        import: ["~assets/style/variables.styl"]
       }
     },
     /*
@@ -78,6 +78,7 @@ export default {
      */
     extend(config, ctx) {
       // Run ESLint on save
+      /*
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
@@ -86,6 +87,7 @@ export default {
           exclude: /(node_modules)/
         })
       }
+*/
     }
   }
-}
+};
