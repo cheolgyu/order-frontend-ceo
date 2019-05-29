@@ -1,102 +1,71 @@
 <template>
-<v-expansion-panel popout>
- <v-expansion-panel-content >
-   <template v-slot:header>
-          <div>사용자 프로필</div>
+  <v-expansion-panel popout>
+    <v-expansion-panel-content>
+      <template v-slot:header>
+        <div>사용자 프로필</div>
       </template>
       <v-card>
-    <v-card-text>
-      <v-text-field
-          v-bind="prod.id"
-        :value="auth.user.account_id"
-        />
-      <v-text-field
-          v-bind="prod.name"
-        :value="auth.user.name"
-        /><v-text-field
-          v-bind="prod.email"
-        :value="auth.user.email"
-        />
-    </v-card-text> 
-  </v-card>
- </v-expansion-panel-content>
-<v-expansion-panel-content >
-  <template v-slot:actions>
-          <v-icon color="teal">done</v-icon>
-        </template>
-   <template v-slot:header>
-          <div>이메일 인증</div>
+        <v-card-text>
+          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
+          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+    <v-expansion-panel-content>
+      <template v-slot:actions>
+        <v-icon color="teal">done</v-icon>
+      </template>
+      <template v-slot:header>
+        <div>이메일 인증</div>
       </template>
       <v-card>
-    <v-card-text>
-      <v-text-field
-          v-bind="prod.id"
-        :value="auth.user.account_id"
-        />
-      <v-text-field
-          v-bind="prod.name"
-        :value="auth.user.name"
-        /><v-text-field
-          v-bind="prod.email"
-        :value="auth.user.email"
-        />
-    </v-card-text> 
-  </v-card>
- </v-expansion-panel-content>
-  <v-expansion-panel-content >
-   <template v-slot:header>
-          <div>핸드폰 인증</div>
+        <v-card-text>
+          <v-form>
+            <v-text-field v-bind="prod.email" v-model="form_email.kind_value"/>
+            <v-btn :disabled="submitStatus === 'PENDING'" @click="valid_email" v-text="btn_auth"/>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+    <v-expansion-panel-content>
+      <template v-slot:header>
+        <div>핸드폰 인증</div>
       </template>
       <v-card>
-    <v-card-text>
-      <v-text-field
-          v-bind="prod.id"
-        :value="auth.user.account_id"
-        />
-      <v-text-field
-          v-bind="prod.name"
-        :value="auth.user.name"
-        /><v-text-field
-          v-bind="prod.email"
-        :value="auth.user.email"
-        />
-    </v-card-text> 
-  </v-card>
- </v-expansion-panel-content>
-<v-expansion-panel-content >
-   <template v-slot:actions>
-          <v-icon color="error">error</v-icon>
-        </template>
-   <template v-slot:header>
-          <div>계좌 인증</div>
+        <v-card-text>
+          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
+          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+    <v-expansion-panel-content>
+      <template v-slot:actions>
+        <v-icon color="error">error</v-icon>
+      </template>
+      <template v-slot:header>
+        <div>계좌 인증</div>
       </template>
       <v-card>
-    <v-card-text>
-      <v-text-field
-          v-bind="prod.id"
-        :value="auth.user.account_id"
-        />
-      <v-text-field
-          v-bind="prod.name"
-        :value="auth.user.name"
-        /><v-text-field
-          v-bind="prod.email"
-        :value="auth.user.email"
-        />
-    </v-card-text> 
-  </v-card>
- </v-expansion-panel-content>
-</v-expansion-panel>
+        <v-card-text>
+          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
+          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
   data: scope => ({
     submitStatus: null,
     show_pwd: false,
-    btn_sumit: scope.$t("btn.submit"),
+    btn_auth: scope.$t("btn.auth"),
     show_password_comfirm: false,
     form: {
       login: { id: null, password: null },
@@ -104,18 +73,25 @@ export default {
       email: null,
       name: null
     },
+    form_email: {
+      kind_value: null,
+      kind: "",
+      code: "",
+      user_id: null
+    },
     prod: {
       id: {
         label: "아이디",
-        disabled:true
+        disabled: true
       },
       name: {
         label: "이름",
-        disabled:true
+        disabled: true
       },
       email: {
         label: "이메일 주소",
-        disabled:true
+        name: "email",
+        disabled: true
       }
     }
   }),
@@ -124,8 +100,27 @@ export default {
       auth: state => state.user.auth
     })
   },
+  mounted: function() {
+    console.log("===mounted===", this.auth);
+    console.log("===mounted===", this.form_email);
+    this.form_email.user_id = this.auth.user.id;
+    this.form_email.kind_value = this.auth.user.email;
+  },
   methods: {
-  
+    valid_email() {
+      this.$data.form_email.kind = "email";
+      this.$store
+        .dispatch("auth/valid_email", this.$data.form_email)
+        .then(res => {
+          if (res.status == 200) {
+            alert("메일이 발송됬습니다.");
+          } else if (res.status === 400) {
+            alert(res.data);
+          } else {
+            alert("다시 시도하세요.");
+          }
+        });
+    }
   }
 };
 </script>
