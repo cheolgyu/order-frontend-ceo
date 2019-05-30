@@ -76,7 +76,6 @@ export default {
     form_email: {
       kind_value: null,
       kind: "",
-      code: "",
       user_id: null
     },
     prod: {
@@ -90,8 +89,8 @@ export default {
       },
       email: {
         label: "이메일 주소",
-        name: "email",
-        disabled: true
+        name: "email"
+        //disabled: true
       }
     }
   }),
@@ -101,8 +100,6 @@ export default {
     })
   },
   mounted: function() {
-    console.log("===mounted===", this.auth);
-    console.log("===mounted===", this.form_email);
     this.form_email.user_id = this.auth.user.id;
     this.form_email.kind_value = this.auth.user.email;
   },
