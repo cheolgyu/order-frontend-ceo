@@ -6,15 +6,20 @@
       </template>
       <v-card>
         <v-card-text>
-          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
-          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+          <v-text-field v-bind="prod.id" :value="user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="user.name"/>
+          <v-text-field v-bind="prod.email" :value="user.email"/>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
     <v-expansion-panel-content>
       <template v-slot:actions>
-        <v-icon color="teal">done</v-icon>
+        <template v-if="user.valid_email">
+          <v-icon color="teal">done</v-icon>
+        </template>
+        <template v-else>
+          <v-icon color="error">error</v-icon>
+        </template>
       </template>
       <template v-slot:header>
         <div>이메일 인증</div>
@@ -34,9 +39,9 @@
       </template>
       <v-card>
         <v-card-text>
-          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
-          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+          <v-text-field v-bind="prod.id" :value="user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="user.name"/>
+          <v-text-field v-bind="prod.email" :value="user.email"/>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
@@ -49,9 +54,9 @@
       </template>
       <v-card>
         <v-card-text>
-          <v-text-field v-bind="prod.id" :value="auth.user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="auth.user.name"/>
-          <v-text-field v-bind="prod.email" :value="auth.user.email"/>
+          <v-text-field v-bind="prod.id" :value="user.account_id"/>
+          <v-text-field v-bind="prod.name" :value="user.name"/>
+          <v-text-field v-bind="prod.email" :value="user.email"/>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
@@ -90,18 +95,19 @@ export default {
       email: {
         label: "이메일 주소",
         name: "email"
-        //disabled: true
+        ,disabled: true
       }
     }
   }),
   computed: {
     ...mapState({
-      auth: state => state.user.auth
+      auth: state => state.user.auth,
+      user: state => state.user.user
     })
   },
   mounted: function() {
-    this.form_email.user_id = this.auth.user.id;
-    this.form_email.kind_value = this.auth.user.email;
+    this.form_email.user_id = this.user.id;
+    this.form_email.kind_value = this.user.email;
   },
   methods: {
     valid_email() {

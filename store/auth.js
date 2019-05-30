@@ -14,7 +14,7 @@ export const actions = {
         return error.response;
       });
   },
-  async chk_valid_email({ commit, rootState }, params) {
+  async chk_valid_email({ commit, rootState, dispatch }, params) {
     let d = {
       code: params.code,
       v: {
@@ -26,7 +26,12 @@ export const actions = {
     return await this.$axios
       .post("/users/" + rootState.user.auth.user.id + "/valid_email", d)
       .then(res => {
-        return res;
+        var msg = "다시 시도하세요.";
+        if (res.data.status === 200) {
+          msg = "인증 됬습니다.";
+          dispatch("user/getme", null, { root: true });
+        }
+        return msg;
       })
       .catch(error => {
         return error.response;
