@@ -45,7 +45,8 @@ export default {
     "@/plugins/vuetify",
     "@/plugins/i18n.js",
     "@/plugins/vuelidate.js",
-    "@/plugins/axios.js"
+    "@/plugins/axios.js",
+    "@/plugins/vuedraggable.js"
   ],
 
   axios: {

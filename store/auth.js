@@ -1,6 +1,4 @@
-export const state = () => ({
-  auth: null
-});
+export const state = () => ({});
 
 export const actions = {
   async valid_email({ commit, rootState }, params) {

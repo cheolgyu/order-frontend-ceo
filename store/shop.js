@@ -1,20 +1,45 @@
 export const state = () => ({
   shop: null
-})
+});
 
 export const actions = {
-  async get({ commit, rootState }, params) {
-    await this.$axios.get('/users/' + rootState.user.auth.user.id + '/shops/109b7b41-f8eb-4702-abdb-6bfb95f57072', params).then(res => {
-      if (res.status === 200) {
-        commit('SET_SHOP', res.data)
+  async chk_shop({ commit, rootState, dispatch }, params) {
+    console.log("shop action.chk_shop strat ");
+    return await dispatch("user/getme", null, { root: true }).then(res => {
+      console.log("shop action.chk_shop.user/get return strat ");
+      if (res === 200) {
+        return dispatch("shop/get");
+      } else {
+        return res;
       }
-    })
+    });
+  },
+  async get({ commit, rootState }, params) {
+    console.log(rootState.shop.shop);
+    if (rootState.shop.shop != null) {
+      return await this.$axios
+        .get(
+          "/users/" +
+            rootState.user.auth.user.id +
+            "/shops/" +
+            rootState.shop.shop.id,
+          params
+        )
+        .then(res => {
+          if (res.status === 200) {
+            commit("SET_SHOP", res.data);
+          }
+        });
+    } else {
+      console.log("shop action.get shop is null ");
+    }
   }
-}
+};
 
 export const mutations = {
   SET_SHOP(state, params) {
-    state.shop = params
-    console.log(state.shop)
+    console.log("shop SET_SHOP strat ");
+    state.shop = params;
+    console.log(state.shop);
   }
-}
+};

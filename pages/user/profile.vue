@@ -2,7 +2,7 @@
   <v-expansion-panel popout>
     <v-expansion-panel-content>
       <template v-slot:header>
-        <div>사용자 프로필</div>
+        <div>사용자</div>
       </template>
       <v-card>
         <v-card-text>
@@ -13,52 +13,73 @@
       </v-card>
     </v-expansion-panel-content>
     <v-expansion-panel-content>
-      <template v-slot:actions>
-        <template v-if="user.valid_email">
-          <v-icon color="teal">done</v-icon>
-        </template>
-        <template v-else>
-          <v-icon color="error">error</v-icon>
-        </template>
-      </template>
       <template v-slot:header>
-        <div>이메일 인증</div>
+        <div>가게</div>
       </template>
       <v-card>
         <v-card-text>
-          <v-form>
-            <v-text-field v-bind="prod.email" v-model="form_email.kind_value"/>
-            <v-btn :disabled="submitStatus === 'PENDING'" @click="valid_email" v-text="btn_auth"/>
-          </v-form>
+          <v-text-field v-bind="prod.shop" :value="shop.name"/>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
     <v-expansion-panel-content>
       <template v-slot:header>
-        <div>핸드폰 인증</div>
+        <div>인증</div>
       </template>
-      <v-card>
-        <v-card-text>
-          <v-text-field v-bind="prod.id" :value="user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="user.name"/>
-          <v-text-field v-bind="prod.email" :value="user.email"/>
-        </v-card-text>
-      </v-card>
-    </v-expansion-panel-content>
-    <v-expansion-panel-content>
-      <template v-slot:actions>
-        <v-icon color="error">error</v-icon>
-      </template>
-      <template v-slot:header>
-        <div>계좌 인증</div>
-      </template>
-      <v-card>
-        <v-card-text>
-          <v-text-field v-bind="prod.id" :value="user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="user.name"/>
-          <v-text-field v-bind="prod.email" :value="user.email"/>
-        </v-card-text>
-      </v-card>
+      <v-expansion-panel popout>
+        <v-expansion-panel-content>
+          <template v-slot:actions>
+            <template v-if="user.valid_email">
+              <v-icon color="teal">done</v-icon>
+            </template>
+            <template v-else>
+              <v-icon color="error">error</v-icon>
+            </template>
+          </template>
+          <template v-slot:header>
+            <div>이메일 인증</div>
+          </template>
+          <v-card>
+            <v-card-text>
+              <v-form>
+                <v-text-field v-bind="prod.email" v-model="form_email.kind_value"/>
+                <v-btn
+                  :disabled="submitStatus === 'PENDING'"
+                  @click="valid_email"
+                  v-text="btn_auth"
+                />
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+        <v-expansion-panel-content>
+          <template v-slot:header>
+            <div>핸드폰 인증</div>
+          </template>
+          <v-card>
+            <v-card-text>
+              <v-text-field v-bind="prod.id" :value="user.account_id"/>
+              <v-text-field v-bind="prod.name" :value="user.name"/>
+              <v-text-field v-bind="prod.email" :value="user.email"/>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+        <v-expansion-panel-content>
+          <template v-slot:actions>
+            <v-icon color="error">error</v-icon>
+          </template>
+          <template v-slot:header>
+            <div>계좌 인증</div>
+          </template>
+          <v-card>
+            <v-card-text>
+              <v-text-field v-bind="prod.id" :value="user.account_id"/>
+              <v-text-field v-bind="prod.name" :value="user.name"/>
+              <v-text-field v-bind="prod.email" :value="user.email"/>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -94,15 +115,20 @@ export default {
       },
       email: {
         label: "이메일 주소",
-        name: "email"
-        ,disabled: true
+        name: "email",
+        disabled: true
+      },
+      shop: {
+        label: "가게명",
+        name: "name"
       }
     }
   }),
   computed: {
     ...mapState({
       auth: state => state.user.auth,
-      user: state => state.user.user
+      user: state => state.user.user,
+      shop: state => state.shop.shop
     })
   },
   mounted: function() {

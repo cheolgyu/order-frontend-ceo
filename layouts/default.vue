@@ -50,12 +50,12 @@ export default {
         {
           icon: "bubble_chart",
           title: "상점",
-          to: "/shop"
+          to: "/user/shop"
         },
         {
           icon: "bubble_chart",
           title: "상품",
-          to: "/user"
+          to: "/user/shop/product"
         },
         {
           icon: "bubble_chart",

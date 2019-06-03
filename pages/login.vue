@@ -50,7 +50,7 @@ export default {
     submit() {
       this.$store.dispatch("user/login", this.$data.form).then(res => {
         if (res === 200) {
-          alert("로그인 됬습니다.");
+          //alert("로그인 됬습니다.");
           if (localStorage.getItem("redirect") == null) {
           } else {
             this.$router.push(localStorage.getItem("redirect"));
