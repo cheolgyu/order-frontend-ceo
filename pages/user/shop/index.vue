@@ -16,7 +16,7 @@ export default {
     wsUri: "ws://127.0.0.1:3000/ws/"
   }),
   fetch({ store, params }) {
-    console.log("shop.vue fetch ")
+    console.log("=====================shop.vue fetch===================== ")
     return store.dispatch("shop/chk_shop").then(res => {
       console.log(res);
     });

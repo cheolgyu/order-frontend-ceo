@@ -4,9 +4,9 @@ export const state = () => ({
 
 export const actions = {
   async chk_shop({ commit, rootState, dispatch }, params) {
-    console.log("shop action.chk_shop strat ");
+    console.log("___________action___chk_shop_strat ___________");
     return await dispatch("user/getme", null, { root: true }).then(res => {
-      console.log("shop action.chk_shop.user/get return strat ");
+      
       if (res === 200) {
         return dispatch("shop/get");
       } else {
@@ -15,7 +15,7 @@ export const actions = {
     });
   },
   async get({ commit, rootState }, params) {
-    console.log(rootState.shop.shop);
+    console.log("___________action___shop___get_strat ___________");
     if (rootState.shop.shop != null) {
       return await this.$axios
         .get(
@@ -28,6 +28,7 @@ export const actions = {
         .then(res => {
           if (res.status === 200) {
             commit("SET_SHOP", res.data);
+            return res.state
           }
         });
     } else {
@@ -38,8 +39,7 @@ export const actions = {
 
 export const mutations = {
   SET_SHOP(state, params) {
-    console.log("shop SET_SHOP strat ");
+    console.log("______shop SET_SHOP strat ",params);
     state.shop = params;
-    console.log(state.shop);
   }
 };

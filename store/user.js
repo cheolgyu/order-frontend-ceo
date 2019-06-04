@@ -18,20 +18,19 @@ export const actions = {
     return await this.$axios.post(`auth`, params).then(res => {
       if (res.status === 200) {
         commit("SET_AUTH", res.data);
-        dispatch("getme");
+        return dispatch("getme");
       }
       return res.status;
     });
   },
-  async getme({ commit, rootState }) {
-    console.log("user getme strat ");
+  async getme({ commit, rootState, dispatch }) {
     return await this.$axios
       .get(`/users/` + rootState.user.auth.user.id)
       .then(res => {
-        console.log("getme res ", res);
         if (res.status === 200) {
           commit("SET_USER", res.data.data.user);
           commit("shop/SET_SHOP", res.data.data.shop, { root: true });
+          return dispatch("product/get", null, { root: true });
         }
         return res.status;
       });
@@ -40,10 +39,11 @@ export const actions = {
 
 export const mutations = {
   SET_AUTH(state, params) {
+    console.log("______user SET_AUTH strat ", params);
     state.auth = params;
   },
   SET_USER(state, params) {
-    console.log("user SET_USER strat ", params);
+    console.log("______user SET_USER strat ", params);
     state.user = params;
   }
 };

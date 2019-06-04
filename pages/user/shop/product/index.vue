@@ -58,7 +58,7 @@
       <template v-slot:activator="{ on }">
         <v-flex xs12 sm5 md5>
           <v-card dark color="primary">
-            <v-btn fab dark small color="indigo" @click="get">
+            <v-btn fab dark small color="indigo">
               <v-icon dark>get</v-icon>
             </v-btn>
             <div class="text-xs-center">
@@ -71,7 +71,7 @@
             </div>
             <v-card-text>
               <v-list>
-                <v-list-tile v-for="item in products" :key="item.name" avatar @click>
+                <v-list-tile v-for="item in products" :key="item.id" avatar >
                   <v-list-tile-content>
                     <v-list-tile-title v-text="item.name"></v-list-tile-title>
                   </v-list-tile-content>
@@ -157,19 +157,17 @@ export default {
       products: state => state.product.list
     })
   },
-  methods: {
-    get() {
-      this.$store.dispatch("product/get", null).then(res => {
-        console.log(res);
-        if (res.status == 200) {
-          alert("메일이 발송됬습니다.");
-        } else if (res.status === 400) {
-          alert(res.data);
-        } else {
-          alert("다시 시도하세요.");
-        }
-      });
-    }
+  fetch({ store, params }) {
+    console.log("product.vue fetch start=====================")
+    store.dispatch("product/get", null).then(res => {
+      console.log("store.dispatch(product/get, null)===>", res);
+      if (res.status == 200) {
+      } else if (res.status === 400) {
+        alert(res.data);
+      } else {
+        alert("다시 시도하세요.");
+      }
+    });
   },
   mounted: function() {}
 };

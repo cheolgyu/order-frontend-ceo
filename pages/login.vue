@@ -49,9 +49,10 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("user/login", this.$data.form).then(res => {
-        if (res === 200) {
-          //alert("로그인 됬습니다.");
+        console.log("store.dispatch=>",res,res == 200)
+        if (res.status == 200) {
           if (localStorage.getItem("redirect") == null) {
+            this.$router.push('/user')
           } else {
             this.$router.push(localStorage.getItem("redirect"));
           }
