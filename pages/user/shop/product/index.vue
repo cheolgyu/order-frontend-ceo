@@ -14,51 +14,66 @@
           </v-btn>
         </div>
         <v-card-text>
-          <v-list>
-            <v-list-tile v-for="item in products" :key="item.id" avatar @click.stop="dialog_on(item.id)">
-              <v-list-tile-content>
-                <v-list-tile-title v-text="item.name"></v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
+          <v-expansion-panel expand>
+            <draggable
+              :list="list1"
+              group="my_option_group"
+              @change="log"
+              v-for="(item,index) in list1"
+              :key="index+'_'+item.id"
+            >
+              <v-expansion-panel-content>
+                <template v-slot:header>
+                  <div v-text="item.name"></div>
+                </template>
+                <draggable
+                  :list="item.option_group"
+                  group="my_option_group"
+                  @change="log"
+                  v-for="(element, index_j) in item.option_group"
+                  :key="index+'_'+index_j+'_'+element.name"
+                >
+                  <v-card-text>
+                    {{ element.name }}
+                    <v-btn flat icon color="green" @click="removeAt(index,index_j)">
+                      <v-icon dark>close</v-icon>
+                    </v-btn>
+                  </v-card-text>
+                </draggable>
+              </v-expansion-panel-content>
+            </draggable>
+          </v-expansion-panel>
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-dialog v-model="dialog.on"  max-width="600px">
+    <v-flex xs12 sm2 md5>
+      <draggable :list="list3" group="my_option_group" @change="log">
+        <v-icon dark large>delete_outline</v-icon>
+      </draggable>
+    </v-flex>
+    <v-flex xs12 sm5 md5>
       <v-card>
-        <v-card-title>
-          <span class="headline">상품</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="상품이름*" required v-model="dialog.name"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="가격" v-model="dialog.price"></v-text-field>
-              </v-flex>
-
-               <v-flex xs12 sm6 md4>
-                <v-text-field label="옵션들" v-model="dialog.option_group"></v-text-field>
-              </v-flex>
-
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog.on = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog.on = false">Save</v-btn>
-        </v-card-actions>
+        <draggable
+          :list="list2"
+          :group="{ name: 'my_option_group', pull: 'clone', put: false }"
+          @change="log"
+        >
+          <v-btn
+            round
+            color="info"
+            dark
+            v-for="(element, index) in list2"
+            :key="'d_'+index+'_'+element.name"
+          >{{ element.name }}</v-btn>
+        </draggable>
       </v-card>
-    </v-dialog>
+    </v-flex>
   </v-layout>
 </template>
 <script>
 import draggable from "vuedraggable";
 import rawDisplayer from "~/components/raw-displayer.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 let id = 1;
 export default {
   name: "simple",
@@ -70,22 +85,72 @@ export default {
   },
   data() {
     return {
-      dialog: {
-        on : false,
-        name: "",
-        price:0,
-        option_group:[]
-      }
+      list1: [
+        {
+          name: "아이스아메리카노",
+          id: 1,
+          option_group: [
+            { name: "샷추가", id: 1 },
+            { name: "차가운/뜨거운", id: 2 },
+            { name: "컵사이즈", id: 3 }
+          ]
+        },
+        {
+          name: "따뜻한아메리카노",
+          id: 2,
+          option_group: [
+            { name: "샷추가", id: 1 },
+            { name: "차가운/뜨거운", id: 2 },
+            { name: "컵사이즈", id: 3 }
+          ]
+        },
+        {
+          name: "카페라떼",
+          id: 3,
+          option_group: [
+            { name: "샷추가", id: 1 },
+            { name: "차가운/뜨거운", id: 2 },
+            { name: "컵사이즈", id: 3 }
+          ]
+        },
+        {
+          name: "바닐라 딜라이트",
+          id: 4,
+          option_group: [
+            { name: "샷추가", id: 1 },
+            { name: "차가운/뜨거운", id: 2 },
+            { name: "컵사이즈", id: 3 }
+          ]
+        },
+        {
+          name: "콜드블루 딜라이트",
+          id: 4,
+          option_group: [
+            { name: "샷추가", id: 1 },
+            { name: "차가운/뜨거운", id: 2 },
+            { name: "컵사이즈", id: 3 }
+          ]
+        }
+      ],
+      list2: [
+        { name: "샷추가", id: 101 },
+        { name: "차가운/뜨거운", id: 102 },
+        { name: "컵사이즈", id: 103 },
+        { name: "크림추가", id: 104 },
+        { name: "바닐라크림추가", id: 105 },
+        { name: "초코크림추가", id: 106 }
+      ],
+      list3: []
     };
   },
   computed: {
     ...mapState({
       auth: state => state.user.auth,
       user: state => state.user.user,
-      shop: state => state.shop.shop,
-      products: state => state.product.list
+      shop: state => state.shop.shop
     })
   },
+
   fetch({ store, params }) {
     console.log("product.vue fetch start=====================");
     store.dispatch("product/get", null).then(res => {
@@ -98,16 +163,40 @@ export default {
       }
     });
   },
-  methods:  {
-    dialog_on(id){
-      console.log(id);
-      var found = this.products.find(function(element) {
-        return element.id == id;
-      });
-      this.dialog.name = found.name;
-      this.dialog.price = found.price;
-      this.dialog.option_group = found.option_group;
-      this.dialog.on = true;
+  methods: {
+    clone_group({ id, name }) {
+      console.log(id, name);
+      return {
+        id: id,
+        name: `${name}`
+      };
+    },
+    removeAt(idx, idx_j) {
+      console.log("methd --removeAt ", this.list1);
+      this.list1[idx].option_group.splice(idx_j, 1);
+    },
+    add: function() {
+      console.log("methd --add ", this.list);
+      //this.$store.dispatch("product/push", { name: "Juan" });
+      this.list.push({ name: "Juan" });
+    },
+    replace: function() {
+      console.log("methd --replace ", this.list);
+      //store.dispatch("product/replace", { name: "Juan" });
+      this.list = [{ name: "Edgard" }];
+    },
+    onMoveCallback: function(evt, originalEvent) {
+      console.log("methd --moved ", evt, originalEvent);
+      //store.dispatch("product/replace", { name: "Juan" });
+      //this.list = [{ name: "Edgard" }];
+    },
+    clone: function(el) {
+      return {
+        name: el.name + " cloned"
+      };
+    },
+    log: function(evt) {
+      window.console.log(evt);
     }
   }
 };

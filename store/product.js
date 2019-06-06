@@ -1,7 +1,18 @@
 export const state = () => ({
-  list: [
+  list: [],
+  option_group: [
+    { "name": "이름1", "price": 100 },
+    { "name": "이름2", "price": 100 },
+    { "name": "이름3", "price": 100 },
+    { "name": "이름4", "price": 100 }
   ]
 });
+export const  getters= {
+  
+  product_list: state => {
+      return state.list
+    }
+  }
 
 export const actions = {
   async push({ commit, rootState, dispatch }, params) {
@@ -28,7 +39,10 @@ export const actions = {
     } else {
       console.log("product action.get shop is null ");
     }
-  }
+  },
+  async repace({ commit, rootState, dispatch }, params) {
+    commit("REPLACE", params);
+  },
 };
 
 export const mutations = {
