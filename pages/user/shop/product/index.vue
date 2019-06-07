@@ -15,14 +15,8 @@
         </div>
         <v-card-text>
           <v-expansion-panel expand>
-            <draggable
-              :list="list1"
-              group="my_option_group"
-              @change="log"
-              v-for="(item,index) in list1"
-              :key="index+'_'+item.id"
-            >
-              <v-expansion-panel-content>
+              <v-expansion-panel-content   v-for="(item,index) in list1"
+              :key="index+'_'+item.id">
                 <template v-slot:header>
                   <div v-text="item.name"></div>
                 </template>
@@ -41,7 +35,6 @@
                   </v-card-text>
                 </draggable>
               </v-expansion-panel-content>
-            </draggable>
           </v-expansion-panel>
         </v-card-text>
       </v-card>
