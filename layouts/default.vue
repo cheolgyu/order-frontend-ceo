@@ -62,11 +62,7 @@ export default {
           title: "상품옵션",
           to: "/user/shop/product/option_group"
         },
-        {
-          icon: "bubble_chart",
-          title: "상품옵션 추가",
-          to: "/user/shop/product/option_group/add"
-        },
+
         {
           icon: "bubble_chart",
           title: "프로필",
