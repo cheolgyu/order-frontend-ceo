@@ -1,18 +1,5 @@
 export const state = () => ({
-  opt: [
-    { name: "샷추가", price: 500 },
-    { name: "차가운", price: 1000 },
-    { name: "뜨거운", price: 1000 },
-    { name: "바닐라 추가", price: 100 },
-    { name: "초코 추가", price: 100 },
-    { name: "크림 추가", price: 100 }
-  ],
-  opt_group: [
-    { name: "온도 선택" },
-    { name: "크림 선택" },
-    { name: "크림 선택" },
-    { name: "크림 선택" }
-  ]
+  list:[]
 });
 export const getters = {};
 
@@ -24,7 +11,7 @@ export const actions = {
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
-        "/option_group",
+        "/option",
         params
       )
       .then(res => {
@@ -43,7 +30,7 @@ export const actions = {
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
-        "/option_group",
+        "/option",
         params
       )
       .then(res => {
@@ -63,7 +50,7 @@ export const actions = {
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
-        "/option_group",
+        "/option",
         params
       )
       .then(res => {
@@ -74,15 +61,12 @@ export const actions = {
           console.log(res);
         }
       });
-  },
-  async repace({ commit, rootState, dispatch }, params) {
-    commit("REPLACE", params);
   }
 };
 
 export const mutations = {
   SET_LIST(state, params) {
     console.log("______option_group SET_OPTION_GROUP strat ", state.list);
-    state.opt_group = params;
+    state.list = params;
   }
 };
