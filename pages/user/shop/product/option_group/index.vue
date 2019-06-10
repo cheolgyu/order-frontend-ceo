@@ -1,7 +1,7 @@
 <template>
-  <v-container grid-list-xl text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs12 sm5 md3>
+  <v-container fluid>
+    <v-layout row>
+      <v-flex xs6 shrink pa-1>
         <v-card dark color="grey">
           <v-card-title>상품옵션그룹</v-card-title>
           <v-card-text>
@@ -22,7 +22,23 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm5 md3>
+      <v-flex xs6 shrink pa-1>
+        <v-card dark color="grey">
+          <v-card-title>상품옵션</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field v-model="form.opt.name" label="옵션 이름"></v-text-field>
+              <v-text-field v-model="form.opt.price" label="옵션 가격"></v-text-field>
+              <v-btn color="primary" @click="reset('opt')">Reset</v-btn>
+              <v-btn v-if="form.opt.id == null" color="success" @click="submit('opt')">추가</v-btn>
+              <v-btn v-if="form.opt.id != null" color="info" @click="submit_update('opt')">수정</v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs6 grow pa-1>
         <v-card dark color="grey">
           <v-card-title>상품옵션그룹</v-card-title>
           <v-card-text>
@@ -43,21 +59,8 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm5 md3>
-        <v-card dark color="grey">
-          <v-card-title>상품옵션</v-card-title>
-          <v-card-text>
-            <v-form>
-              <v-text-field v-model="form.opt.name" label="옵션 이름"></v-text-field>
-              <v-text-field v-model="form.opt.price" label="옵션 가격"></v-text-field>
-              <v-btn color="primary" @click="reset('opt')">Reset</v-btn>
-              <v-btn v-if="form.opt.id == null" color="success" @click="submit('opt')">추가</v-btn>
-              <v-btn v-if="form.opt.id != null" color="info" @click="submit_update('opt')">수정</v-btn>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm5 md3>
+
+      <v-flex xs6 grow pa-1>
         <v-card dark color="grey">
           <v-card-title>상품옵션</v-card-title>
           <v-card-text>
