@@ -46,13 +46,28 @@
               :headers="headers.opt_group"
               :items="opt_group"
               item-key="name"
-              class="elevation-1"
+              class="elevation-1 tb-option_group"
               hide-actions
             >
               <template v-slot:items="props">
                 <tr @click="editItem('opt_group',props.item)">
+                  <td class="px-1" style="width: 0.1%" >
+                     <v-btn style="cursor: move" icon class="handle"><v-icon>drag_handle</v-icon></v-btn>
+                  </td>
                   <td>{{ props.item.id }}</td>
                   <td>{{ props.item.name }}</td>
+                  <td>{{ props.item.options }}
+                        <div
+                          class="group_option_list"
+                        >
+                          <div 
+                          v-for="element in list"
+                          :key="element.name"
+                          >
+                         <div> {{ element.name }}</div>
+                          </div>
+                        </div>
+                  </td>
                 </tr>
               </template>
             </v-data-table>
@@ -68,11 +83,14 @@
               :headers="headers.opt"
               :items="opt"
               item-key="name"
-              class="elevation-1"
+              class="elevation-1 tb-option"
               hide-actions
             >
               <template v-slot:items="props">
                 <tr @click="editItem('opt',props.item)">
+                   <td class="px-1" style="width: 0.1%" >
+                     <v-btn style="cursor: move" icon class="handle"><v-icon>drag_handle</v-icon></v-btn>
+                  </td>
                   <td>{{ props.item.name }}</td>
                   <td class="text-xs-right">{{ props.item.price }}</td>
                 </tr>
@@ -86,14 +104,39 @@
 </template>
 <script>
 import draggable from "vuedraggable";
+import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
+function tbsort (sel,group_nm,clone){
+  let table = document.querySelector(sel);
+          const _self = this;
+          Sortable.create(table, {
+            group: group_nm,
+            multiDrag: true,
+            clone: clone,
+            handle: ".handle", // Use handle so user can select text
+            onEnd({ newIndex, oldIndex }) {
+              console.log(newIndex, oldIndex)
+            // const rowSelected = _self.desserts.splice(oldIndex, 1)[0]; // Get the selected row and remove it
+              //_self.desserts.splice(newIndex, 0, rowSelected); // Move it to the new index
+            }
+          });
+    return _self;
+}
 export default {
   data() {
     return {
+      list:[
+        {name:"11"},
+        {name:"12"},
+        {name:"13"},
+        {name:"14"},
+        {name:"15"},
+      ],
       form: {
         opt_group: {
           id: null,
-          name: null
+          name: null,
+          options: [],
         },
         opt: {
           id: null,
@@ -105,6 +148,9 @@ export default {
       headers: {
         opt_group: [
           {
+            sortable: false
+          },
+          {
             text: "ID",
             align: "left",
             value: "id"
@@ -113,9 +159,17 @@ export default {
             text: "이름",
             align: "left",
             value: "name"
+          },
+          {
+            text: "옵션들",
+            value: "options",
+            sortable: false
           }
         ],
         opt: [
+          {
+            sortable: false
+          },
           {
             text: "이름",
             align: "left",
@@ -137,7 +191,12 @@ export default {
       opt_group: state => state.option_group.opt_group
     })
   },
-
+  mounted() {
+     let t1 = tbsort(".tb-option_group tbody","tb-option_group",false);
+     let t2 = tbsort(".tb-option tbody","group_options",true);
+     let t3 = tbsort(".group_option_list","group_options",false);
+  },
+    
   fetch({ store, params }) {
     store.dispatch("option_group/get_list", params, { root: true });
     store.dispatch("option/get_list", params, { root: true });
@@ -172,6 +231,7 @@ export default {
       if (t == "opt_group") {
         this.$data.form.opt_group.id = item.id;
         this.$data.form.opt_group.name = item.name;
+        this.$data.form.opt_group.options = item.options;
       } else if (t == "opt") {
         this.$data.form.opt.id = item.id;
         this.$data.form.opt.name = item.name;
@@ -182,11 +242,15 @@ export default {
       if (t == "opt_group") {
         this.$data.form.opt_group.id = null;
         this.$data.form.opt_group.name = null;
+        this.$data.form.opt_group.options = [];
       } else if (t == "opt") {
         this.$data.form.opt.id = null;
         this.$data.form.opt.name = null;
         this.$data.form.opt.price = null;
       }
+    },
+    log: function(evt) {
+      window.console.log(evt);
     }
   }
 };
