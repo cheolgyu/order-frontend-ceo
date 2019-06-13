@@ -38,44 +38,58 @@
       </v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs6 grow pa-1>
+      <v-flex xs12 grow pa-1>
+        <v-toolbar>
+          <v-toolbar-title>상품옵션그룹</v-toolbar-title>
+          <v-divider class="mx-2" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <opt-group-dialog ref="r_dialog"></opt-group-dialog>
+        </v-toolbar>
+
         <v-card dark color="grey">
-          <v-card-title>상품옵션그룹</v-card-title>
           <v-card-text>
             <v-data-table
               :headers="headers.opt_group"
               :items="opt_group"
               item-key="name"
+              :expand="expand"
               class="elevation-1 tb-option_group"
               hide-actions
             >
               <template v-slot:items="props">
-                <tr @click="editItem('opt_group',props.item)">
-                  <td class="px-1" style="width: 0.1%" >
-                     <v-btn style="cursor: move" icon class="handle"><v-icon>drag_handle</v-icon></v-btn>
+                <tr>
+                  <td class="px-1" style="width: 0.1%">
+                    <v-btn style="cursor: move" icon class="handle">
+                      <v-icon>drag_handle</v-icon>
+                    </v-btn>
                   </td>
                   <td>{{ props.item.id }}</td>
                   <td>{{ props.item.name }}</td>
-                  <td>{{ props.item.options }}
-                        <div
-                          class="group_option_list"
-                        >
-                          <div 
-                          v-for="element in list"
-                          :key="element.name"
-                          >
-                         <div> {{ element.name }}</div>
-                          </div>
-                        </div>
+                  <td>{{ props.item.options }}</td>
+                  <td>
+                    <v-icon small class="mr-2" @click="d_open(props.item)">edit</v-icon>
+                    <v-icon small @click="d_open(props.item)">delete</v-icon>
                   </td>
                 </tr>
+              </template>
+              <template v-slot:expand="props">
+                <v-card flat>
+                  <v-card-text>
+                    <div class="group_option_list">
+                      <div v-for="element in list" :key="element.name">
+                        <div>{{ element.name }}</div>
+                      </div>
+                    </div>
+                  </v-card-text>
+                </v-card>
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
       </v-flex>
-
-      <v-flex xs6 grow pa-1>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 grow pa-1>
         <v-card dark color="grey">
           <v-card-title>상품옵션</v-card-title>
           <v-card-text>
@@ -88,8 +102,10 @@
             >
               <template v-slot:items="props">
                 <tr @click="editItem('opt',props.item)">
-                   <td class="px-1" style="width: 0.1%" >
-                     <v-btn style="cursor: move" icon class="handle"><v-icon>drag_handle</v-icon></v-btn>
+                  <td class="px-1" style="width: 0.1%">
+                    <v-btn style="cursor: move" icon class="handle">
+                      <v-icon>drag_handle</v-icon>
+                    </v-btn>
                   </td>
                   <td>{{ props.item.name }}</td>
                   <td class="text-xs-right">{{ props.item.price }}</td>
@@ -103,40 +119,46 @@
   </v-container>
 </template>
 <script>
+import OptGroupDialog from "~/components/OptGroupDialog.vue";
 import draggable from "vuedraggable";
 import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
-function tbsort (sel,group_nm,clone){
+
+function tbsort(sel, group_nm, clone) {
   let table = document.querySelector(sel);
-          const _self = this;
-          Sortable.create(table, {
-            group: group_nm,
-            multiDrag: true,
-            clone: clone,
-            handle: ".handle", // Use handle so user can select text
-            onEnd({ newIndex, oldIndex }) {
-              console.log(newIndex, oldIndex)
-            // const rowSelected = _self.desserts.splice(oldIndex, 1)[0]; // Get the selected row and remove it
-              //_self.desserts.splice(newIndex, 0, rowSelected); // Move it to the new index
-            }
-          });
-    return _self;
+  const _self = this;
+  Sortable.create(table, {
+    group: group_nm,
+    multiDrag: true,
+    clone: clone,
+    handle: ".handle", // Use handle so user can select text
+    onEnd({ newIndex, oldIndex }) {
+      console.log(newIndex, oldIndex);
+      // const rowSelected = _self.desserts.splice(oldIndex, 1)[0]; // Get the selected row and remove it
+      //_self.desserts.splice(newIndex, 0, rowSelected); // Move it to the new index
+    }
+  });
+  return _self;
 }
+
 export default {
+  components: {
+    OptGroupDialog
+  },
   data() {
     return {
-      list:[
-        {name:"11"},
-        {name:"12"},
-        {name:"13"},
-        {name:"14"},
-        {name:"15"},
+      list: [
+        { name: "11" },
+        { name: "12" },
+        { name: "13" },
+        { name: "14" },
+        { name: "15" }
       ],
       form: {
         opt_group: {
           id: null,
           name: null,
-          options: [],
+          options: []
         },
         opt: {
           id: null,
@@ -144,7 +166,7 @@ export default {
           price: null
         }
       },
-
+      expand: false,
       headers: {
         opt_group: [
           {
@@ -192,17 +214,24 @@ export default {
     })
   },
   mounted() {
-     let t1 = tbsort(".tb-option_group tbody","tb-option_group",false);
-     let t2 = tbsort(".tb-option tbody","group_options",true);
-     let t3 = tbsort(".group_option_list","group_options",false);
+    // here is the Vue code
+    this.start_sort();
   },
-    
+
   fetch({ store, params }) {
     store.dispatch("option_group/get_list", params, { root: true });
     store.dispatch("option/get_list", params, { root: true });
   },
 
   methods: {
+    d_open(item) {
+      this.$refs.r_dialog.editItem(item);
+    },
+    start_sort() {
+      //let t1 = tbsort(".tb-option_group tbody", "tb-option_group", false);
+      //let t2 = tbsort(".tb-option tbody", "group_options", true);
+      //let t3 = tbsort(".group_option_list", "group_options", false);
+    },
     submit(t) {
       let action = "option_group/add";
       let params = this.$data.form.opt_group;
