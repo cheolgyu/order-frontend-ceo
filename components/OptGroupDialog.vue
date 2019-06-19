@@ -12,13 +12,13 @@
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.id" label="아이디"></v-text-field>
+              <v-text-field v-model="form.opt_group.id" label="아이디"></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.name" label="이름"></v-text-field>
+              <v-text-field v-model="form.opt_group.name" label="이름"></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.options" label="옵션들"></v-text-field>
+              <v-text-field v-model="form.opt_group.options" label="옵션들"></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
@@ -26,8 +26,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+        <v-btn color="blue darken-1" flat @click="close">취소</v-btn>
+        <v-btn color="blue darken-1" flat @click="save">저장</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -39,12 +39,29 @@ export default {
   data() {
     return {
       dialog: false,
+      type: "insert",
+      send: {
+        insert: {
+          action: "option_group/add"
+        },
+        update: {
+          action: "option_group/update"
+        }
+      },
       formTitle: "타이틀",
-      editedItem: {
-        id: null,
-        name: null,
-        options: []
-      }
+      form: {
+        opt_group: {
+          id: null,
+          name: null,
+          options: []
+        },
+        opt: {
+          id: null,
+          name: null,
+          price: null
+        }
+      },
+      editedIndex: null
     };
   },
   computed: {
@@ -62,11 +79,14 @@ export default {
 
   methods: {
     editItem(item) {
+      this.type = "update";
       this.formTitle = "상품옵션그룹: " + item.name + " 수정";
-      this.editedItem = Object.assign({}, item);
+      this.form.opt_group = Object.assign({}, item);
       this.dialog = true;
     },
     addItem() {
+      this.type = "insert";
+      this.form.opt_group.id = null;
       this.formTitle = "상품옵션그룹: 생성";
       this.dialog = true;
     },
@@ -86,11 +106,14 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
+      console.log(this.send[this.type].action);
+      let params = this.form.opt_group;
+      return this.$store
+        .dispatch(this.send[this.type].action, params, { root: true })
+        .then(res => {
+          console.log(res);
+          alert(res);
+        });
       this.close();
     }
   }

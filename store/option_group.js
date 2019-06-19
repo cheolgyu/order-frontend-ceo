@@ -28,9 +28,10 @@ export const actions = {
         params
       )
       .then(res => {
+        console.log(res)
         if (res.status == 200) {
           dispatch("get_list", params);
-          return res;
+          return res.data;
         } else {
           console.log(res);
         }
@@ -47,7 +48,7 @@ export const actions = {
         params
       )
       .then(res => {
-        if (res.status == 200) {
+        if (res.status == 201) {
           dispatch("get_list", params);
           return res;
         } else {
@@ -67,6 +68,9 @@ export const actions = {
         params
       )
       .then(res => {
+        console.log(res)
+        console.log(res.data)
+        console.log(res.data.data)
         if (res.status == 200) {
           commit("SET_LIST", res.data.data.items);
           return res;
@@ -82,7 +86,7 @@ export const actions = {
 
 export const mutations = {
   SET_LIST(state, params) {
-    console.log("______option_group SET_OPTION_GROUP strat ", state.list);
+    console.log("______1option_group SET_OPTION_GROUP strat ", params);
     state.opt_group = params;
   }
 };
