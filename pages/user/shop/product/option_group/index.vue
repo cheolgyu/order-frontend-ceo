@@ -1,55 +1,59 @@
 <template>
   <v-container fluid>
-      <v-flex xs12 grow pa-1>
-        <v-toolbar>
-          <v-toolbar-title>상품옵션그룹</v-toolbar-title>
-          <v-divider class="mx-2" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <opt-group-dialog ref="r_dialog"></opt-group-dialog>
-        </v-toolbar>
+    <v-flex xs12 grow pa-1>
+      <v-toolbar>
+        <v-toolbar-title>상품옵션그룹</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" dark class="mb-2" to="/user/shop/product/option_group/add">New Item</v-btn>
+        <opt-group-dialog ref="r_dialog"></opt-group-dialog>
+      </v-toolbar>
 
-        <v-card dark color="grey">
-          <v-card-text>
-            <v-data-table
-              :headers="headers.opt_group"
-              :items="opt_group"
-              item-key="name"
-              :expand="expand"
-              class="elevation-1 tb-option_group"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <tr>
-                  <td class="px-1" style="width: 0.1%">
-                    <v-btn style="cursor: move" icon class="handle">
-                      <v-icon>drag_handle</v-icon>
-                    </v-btn>
-                  </td>
-                  <td>{{ props.item.id }}</td>
-                  <td>{{ props.item.name }}</td>
-                  <td>{{ props.item.options }}</td>
-                  <td>
-                    <v-icon small class="mr-2" @click="d_open(props.item)">edit</v-icon>
-                    <v-icon small @click="d_open(props.item)">delete</v-icon>
-                  </td>
-                </tr>
-              </template>
-              <template v-slot:expand="props">
-                <v-card flat>
-                  <v-card-text>
-                    <div class="group_option_list">
-                      <div v-for="element in list" :key="element.name">
-                        <div>{{ element.name }}</div>
-                      </div>
+      <v-card dark color="grey">
+        <v-card-text>
+          <v-data-table
+            :headers="headers.opt_group"
+            :items="opt_group"
+            item-key="name"
+            :expand="expand"
+            class="elevation-1 tb-option_group"
+            hide-actions
+          >
+            <template v-slot:items="props">
+              <tr>
+                <td class="px-1" style="width: 0.1%">
+                  <v-btn style="cursor: move" icon class="handle">
+                    <v-icon>drag_handle</v-icon>
+                  </v-btn>
+                </td>
+                <td>{{ props.item.name }}</td>
+                <td>{{ props.item.options }}</td>
+                <td>
+                  <ul>
+                    <li v-for="opt in props.item.option_list" :key="opt.id">{{ opt.name }}</li>
+                  </ul>
+                </td>
+                <td>
+                  <v-icon small class="mr-2" @click="d_open(props.item)">edit</v-icon>
+                  <v-icon small @click="d_open(props.item)">delete</v-icon>
+                </td>
+              </tr>
+            </template>
+            <template v-slot:expand="props">
+              <v-card flat>
+                <v-card-text>
+                  <div class="group_option_list">
+                    <div v-for="element in list" :key="element.name">
+                      <div>{{ element.name }}</div>
                     </div>
-                  </v-card-text>
-                </v-card>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-flex>
     <v-layout row>
       <v-flex xs12 grow pa-1>
         <v-card dark color="grey">
@@ -134,11 +138,7 @@ export default {
           {
             sortable: false
           },
-          {
-            text: "ID",
-            align: "left",
-            value: "id"
-          },
+
           {
             text: "이름",
             align: "left",
@@ -146,6 +146,16 @@ export default {
           },
           {
             text: "옵션들",
+            value: "options",
+            sortable: false
+          },
+          {
+            text: "",
+            value: "options",
+            sortable: false
+          },
+          {
+            text: "",
             value: "options",
             sortable: false
           }
