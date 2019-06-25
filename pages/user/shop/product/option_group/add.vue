@@ -1,18 +1,71 @@
 <template>
-  <v-container fluid></v-container>
+  <v-container grid-list-md text-xs-center>
+    <v-form>
+      <v-text-field v-model="form.opt_group.name" label="옵션그룹명" id="id"></v-text-field>
+      <v-card class="card--flex-toolbar">
+        <v-toolbar card prominent>
+          <v-toolbar-title class="body-2 grey--text">상품옵션</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="addRow">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+
+        <v-card-text dark color="grey" id="tb">
+          <v-layout row wrap v-for=" (item,index) in form.opt_group.option_list" :key="item.id">
+            <v-flex xs3>
+              <v-text-field label="옵션명" required :value="item.name"></v-text-field>
+            </v-flex>
+            <v-flex xs3>
+              <v-text-field label="가격" required :value="item.price"></v-text-field>
+            </v-flex>
+            <v-flex xs3>
+              <v-btn flat icon color="red" @click="removeRow(item)">
+                <v-icon>remove</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+
+      <v-btn color="success" @click="submit">ok</v-btn>
+    </v-form>
+  </v-container>
 </template>
 <script>
-import OptGroupDialog from "~/components/OptGroupDialog.vue";
 import draggable from "vuedraggable";
 import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
-
 export default {
-  components: {
-    OptGroupDialog
-  },
+  components: {},
   data() {
-    return {};
+    return {
+      form: {
+        opt_group: {
+          name: null,
+          option_list: []
+        }
+      },
+      editId: 1,
+      headers: [
+        {
+          text: "옵션명",
+          align: "left",
+          value: "name"
+        },
+        {
+          text: "가격",
+          value: "price"
+        }
+      ],
+      default_opt: {
+        id: 0,
+        name: "",
+        price: 0
+      },
+      editOpts: []
+    };
   },
   computed: {
     ...mapState({
@@ -25,7 +78,6 @@ export default {
   },
   mounted() {
     // here is the Vue code
-    this.start_sort();
   },
 
   fetch({ store, params }) {
@@ -34,14 +86,19 @@ export default {
   },
 
   methods: {
+    addRow() {
+      this.default_opt.id = this.editId;
+      this.editId++;
+      this.form.opt_group.option_list.push(Object.assign({}, this.default_opt));
+    },
+    removeRow(item) {
+      const index = this.form.opt_group.option_list.indexOf(item);
+      this.form.opt_group.option_list.splice(index, 1);
+    },
     d_open(item) {
       this.$refs.r_dialog.editItem(item);
     },
-    start_sort() {
-      //let t1 = tbsort(".tb-option_group tbody", "tb-option_group", false);
-      //let t2 = tbsort(".tb-option tbody", "group_options", true);
-      //let t3 = tbsort(".group_option_list", "group_options", false);
-    },
+
     submit(t) {
       let action = "option_group/add";
       let params = this.$data.form.opt_group;
@@ -50,46 +107,10 @@ export default {
         params = this.$data.form.opt;
       }
       params.id = null;
-      return this.$store.dispatch(action, params, { root: true }).then(res => {
-        alert(res);
-      });
-    },
-    submit_update(t) {
-      let action = "option_group/update";
-      let params = this.$data.form.opt_group;
-      if (t == "opt") {
-        action = "option/update";
-        params = this.$data.form.opt;
-      }
-      return this.$store.dispatch(action, params, { root: true }).then(res => {
-        alert(res);
-      });
-    },
-    editItem(t, item) {
-      let params = this.$data.form.opt_group;
-      if (t == "opt_group") {
-        this.$data.form.opt_group.id = item.id;
-        this.$data.form.opt_group.name = item.name;
-        this.$data.form.opt_group.options = item.options;
-      } else if (t == "opt") {
-        this.$data.form.opt.id = item.id;
-        this.$data.form.opt.name = item.name;
-        this.$data.form.opt.price = item.price;
-      }
-    },
-    reset(t) {
-      if (t == "opt_group") {
-        this.$data.form.opt_group.id = null;
-        this.$data.form.opt_group.name = null;
-        this.$data.form.opt_group.options = [];
-      } else if (t == "opt") {
-        this.$data.form.opt.id = null;
-        this.$data.form.opt.name = null;
-        this.$data.form.opt.price = null;
-      }
-    },
-    log: function(evt) {
-      window.console.log(evt);
+      console.log(params);
+      //return this.$store.dispatch(action, params, { root: true }).then(res => {
+      //   alert(res);
+      //});
     }
   }
 };

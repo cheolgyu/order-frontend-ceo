@@ -6,7 +6,6 @@
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-btn color="primary" dark class="mb-2" to="/user/shop/product/option_group/add">New Item</v-btn>
-        <opt-group-dialog ref="r_dialog"></opt-group-dialog>
       </v-toolbar>
 
       <v-card dark color="grey">
