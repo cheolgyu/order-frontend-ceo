@@ -59,10 +59,14 @@ export default {
         },
         {
           icon: "bubble_chart",
-          title: "상품옵션",
+          title: "상품옵션그룹",
           to: "/user/shop/product/option_group"
         },
-
+        {
+          icon: "bubble_chart",
+          title: "상품옵션",
+          to: "/user/shop/product/option_group/option"
+        },
         {
           icon: "bubble_chart",
           title: "프로필",

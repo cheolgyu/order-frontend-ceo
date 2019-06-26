@@ -1,10 +1,11 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-form>
-      <v-text-field v-model="form.opt_group.name" label="옵션그룹명" id="id"></v-text-field>
       <v-card class="card--flex-toolbar">
         <v-toolbar card prominent>
-          <v-toolbar-title class="body-2 grey--text">상품옵션</v-toolbar-title>
+          <v-toolbar-title class="body-2 grey--text">
+            <v-text-field v-model="form.opt_group.name" label="옵션그룹명" id="id"></v-text-field>
+          </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="addRow">
             <v-icon>add</v-icon>
@@ -13,7 +14,7 @@
         <v-divider></v-divider>
 
         <v-card-text dark color="grey" id="tb">
-          <v-layout row wrap v-for=" (item,index) in form.opt_group.option_list" :key="item.id">
+          <v-layout row wrap v-for=" item in form.opt_group.option_list" :key="item.id">
             <v-flex xs3>
               <v-text-field label="옵션명" required :value="item.name"></v-text-field>
             </v-flex>
