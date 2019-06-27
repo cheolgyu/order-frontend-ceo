@@ -67,7 +67,13 @@ export default {
       let action = "option/update";
       let params = this.$data.form.opt;
       return this.$store.dispatch(action, params, { root: true }).then(res => {
-        alert(res);
+        console.log("11111111111111111111");
+        if (res.data.status == 201) {
+          alert("수정됬습니다.");
+          this.$nuxt.$router.replace({
+            path: "/user/shop/product/option_group/option"
+          });
+        }
       });
     }
   }

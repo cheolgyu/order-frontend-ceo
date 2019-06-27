@@ -7,7 +7,6 @@
         <v-spacer></v-spacer>
         <v-btn color="primary" dark class="mb-2" to="/user/shop/product/option_group/add">New Item</v-btn>
       </v-toolbar>
-
       <v-card dark color="grey">
         <v-card-text>
           <v-data-table
