@@ -32,8 +32,16 @@
                   </ul>
                 </td>
                 <td>
-                  <v-icon small class="mr-2" @click="d_open(props.item)">edit</v-icon>
-                  <v-icon small @click="d_open(props.item)">delete</v-icon>
+                  <v-btn
+                    dark
+                    icon
+                    :to="{ path: '/user/shop/product/option_group/update/'+props.item.id }"
+                  >
+                    <v-icon small class="mr-2">edit</v-icon>
+                  </v-btn>
+                  <v-btn dark icon @click="remove(props.item)">
+                    <v-icon small class="mr-2">delete</v-icon>
+                  </v-btn>
                 </td>
               </tr>
             </template>
@@ -194,8 +202,15 @@ export default {
   },
 
   methods: {
-    d_open(item) {
-      this.$refs.r_dialog.editItem(item);
+    remove(item) {
+      console.log(item);
+      if (confirm("정말 삭제하시겠습니까?")) {
+        let params = {
+          id: item.id
+        };
+        console.log(params);
+        this.$store.dispatch("option_group/delete", params, { root: true });
+      }
     },
     start_sort() {
       //let t1 = tbsort(".tb-option_group tbody", "tb-option_group", false);

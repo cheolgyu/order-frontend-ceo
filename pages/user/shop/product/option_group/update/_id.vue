@@ -34,7 +34,7 @@
             </v-card-text>
           </v-card>
 
-          <v-btn color="success" @click="submit">ok</v-btn>
+          <v-btn color="success" @click="submit">update</v-btn>
         </v-form>
       </v-flex>
       <v-flex xs6>
@@ -63,6 +63,38 @@
                   </v-list-tile-action>
                 </v-list-tile>
               </draggable>
+
+              <v-data-table
+                :headers="headers.opt"
+                :items="opt"
+                item-key="name"
+                id="example3Right"
+                hide-actions
+              >
+                <template v-slot:items="props">
+                  <tr>
+                    <td class="px-1" style="width: 0.1%">
+                      <v-btn style="cursor: move" icon class="handle">
+                        <v-icon>drag_handle</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>{{ props.item.name }}</td>
+                    <td>{{ props.item.price }}</td>
+                    <td>
+                      <v-btn
+                        dark
+                        icon
+                        :to="{ path: '/user/shop/product/option_group/option/update/'+props.item.id }"
+                      >
+                        <v-icon>edit</v-icon>
+                      </v-btn>
+                      <v-btn dark icon @click="d_open(props.item)">
+                        <v-icon>delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </template>
+              </v-data-table>
             </v-card-text>
           </v-card>
         </v-form>
@@ -81,6 +113,7 @@ export default {
     return {
       form: {
         opt_group: {
+          id: null,
           name: null,
           option_list: []
         },
@@ -116,8 +149,12 @@ export default {
     })
   },
   mounted() {
-    // here is the Vue code
-    this.init_sortablejs();
+    let id = this.$route.params.id;
+    let edit = this.opt_group.find(function(el) {
+      if (el.id == id) return el;
+    });
+
+    this.$data.form.opt_group = edit;
   },
 
   fetch({ store, params }) {
@@ -126,23 +163,12 @@ export default {
   },
 
   methods: {
-    init_sortablejs() {
-      new Sortable(document.querySelector("#example3Right tbody"), {
-        group: {
-          name: "shared",
-          pull: "clone"
-        },
-
-        //handle: ".handle",
-        animation: 150
-      });
-    },
     d_open(item) {
       this.$refs.r_dialog.editItem(item);
     },
 
     submit() {
-      let action = "option_group/add";
+      let action = "option_group/update";
       let options = [];
       for (var index in this.$data.form.opt_group.option_list) {
         options.push(this.$data.form.opt_group.option_list[index].id);
@@ -150,7 +176,8 @@ export default {
 
       let params = {
         name: this.$data.form.opt_group.name,
-        options: options
+        options: options,
+        id: this.$data.form.opt_group.id
       };
 
       console.log(params);

@@ -37,7 +37,27 @@ export const actions = {
         }
       });
 
-  },async update({ commit, rootState, dispatch }, params) {
+  }, async delete({ commit, rootState, dispatch }, params) {
+    console.log(params);
+    return await this.$axios
+      .delete(
+        "/users/" +
+        rootState.user.auth.user.id +
+        "/shops/" +
+        rootState.shop.shop.id +
+        "/option_group/" + params.id
+
+      )
+      .then(res => {
+        if (res.status == 200) {
+          dispatch("get_list", params);
+          return res.data;
+        } else {
+          console.log(res);
+        }
+      });
+
+  }, async update({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .post(
         "/users/" +
@@ -48,9 +68,9 @@ export const actions = {
         params
       )
       .then(res => {
-        if (res.status == 201) {
+        if (res.status == 200) {
           dispatch("get_list", params);
-          return res;
+          return res.data;
         } else {
           console.log(res);
         }
@@ -68,9 +88,6 @@ export const actions = {
         params
       )
       .then(res => {
-        console.log(res)
-        console.log(res.data)
-        console.log(res.data.data)
         if (res.status == 200) {
           commit("SET_LIST", res.data.data.items);
           return res;
