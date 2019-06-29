@@ -60,34 +60,6 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-layout row>
-      <v-flex xs12 grow pa-1>
-        <v-card dark color="grey">
-          <v-card-title>상품옵션</v-card-title>
-          <v-card-text>
-            <v-data-table
-              :headers="headers.opt"
-              :items="opt"
-              item-key="name"
-              class="elevation-1 tb-option"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <tr @click="editItem('opt',props.item)">
-                  <td class="px-1" style="width: 0.1%">
-                    <v-btn style="cursor: move" icon class="handle">
-                      <v-icon>drag_handle</v-icon>
-                    </v-btn>
-                  </td>
-                  <td>{{ props.item.name }}</td>
-                  <td class="text-xs-right">{{ props.item.price }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
   </v-container>
 </template>
 <script>
