@@ -6,7 +6,7 @@
           <v-card class="card--flex-toolbar">
             <v-toolbar card prominent>
               <v-toolbar-title class="body-2 grey--text">
-                <v-text-field v-model="form.opt_group.name" label="옵션그룹명" id="id"></v-text-field>
+                <v-text-field v-model="form.product.name" label="상품명" id="id"></v-text-field>
               </v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -15,11 +15,11 @@
             <v-card-text dark color="grey" id="example3Left">
               <draggable
                 style="min-height:200px"
-                v-model="form.opt_group.option_list"
+                v-model="form.product.option_list"
                 :group="{ name: 'shared', pull: 'clone' }"
                 @change="chg"
               >
-                <template v-for="(element, index) in form.opt_group.option_list">
+                <template v-for="(element, index) in form.product.option_list">
                   <v-chip
                     outline
                     color="white"
@@ -41,13 +41,13 @@
         <v-form>
           <v-card class="card--flex-toolbar">
             <v-toolbar card prominent>
-              <v-toolbar-title class="body-2 grey--text">옵션리스트</v-toolbar-title>
+              <v-toolbar-title class="body-2 grey--text">옵션그룹리스트</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
               <draggable v-model="opt" :group="{ name: 'shared', pull: 'clone' }" :clone="clone">
-                <v-list-tile avatar v-for="item in opt" :key="item.id">
+                <v-list-tile avatar v-for="item in opt_group" :key="item.id">
                   <v-list-tile-avatar>
                     <v-icon class="handle">drag_handle</v-icon>
                   </v-list-tile-avatar>
@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       form: {
-        opt_group: {
+        product: {
           name: null,
           option_list: []
         },
@@ -117,7 +117,6 @@ export default {
   },
   mounted() {
     // here is the Vue code
-    this.init_sortablejs();
   },
 
   fetch({ store, params }) {
@@ -126,17 +125,6 @@ export default {
   },
 
   methods: {
-    init_sortablejs() {
-      new Sortable(document.querySelector("#example3Right tbody"), {
-        group: {
-          name: "shared",
-          pull: "clone"
-        },
-
-        //handle: ".handle",
-        animation: 150
-      });
-    },
     d_open(item) {
       this.$refs.r_dialog.editItem(item);
     },
@@ -144,12 +132,12 @@ export default {
     submit() {
       let action = "option_group/add";
       let options = [];
-      for (var index in this.$data.form.opt_group.option_list) {
-        options.push(this.$data.form.opt_group.option_list[index].id);
+      for (var index in this.$data.form.product.option_list) {
+        options.push(this.$data.form.product.option_list[index].id);
       }
 
       let params = {
-        name: this.$data.form.opt_group.name,
+        name: this.$data.form.product.name,
         options: options
       };
 
@@ -161,7 +149,7 @@ export default {
     chg: function({ moved, added, removed }) {},
     clone: function(el) {
       let has = false;
-      this.form.opt_group.option_list.find(function(element) {
+      this.form.product.option_list.find(function(element) {
         if (el.id == element.id) {
           has = true;
         }
@@ -172,8 +160,8 @@ export default {
       }
     },
     remove(item) {
-      const index = this.form.opt_group.option_list.indexOf(item);
-      this.form.opt_group.option_list.splice(index, 1);
+      const index = this.form.product.option_list.indexOf(item);
+      this.form.product.option_list.splice(index, 1);
     }
   }
 };
