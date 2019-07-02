@@ -1,192 +1,236 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12 sm5 md5>
-      <v-card dark color="primary">
-        <v-btn fab dark small color="indigo">
-          <v-icon dark>get</v-icon>
-        </v-btn>
-        <div class="text-xs-center">
-          <v-btn fab dark small color="green">
-            <v-icon dark>remove</v-icon>
-          </v-btn>
-          <v-btn fab dark small color="indigo" @click="dialog.on = true">
-            <v-icon dark>add</v-icon>
-          </v-btn>
-        </div>
+  <v-container fluid>
+    <v-flex xs12 grow pa-1>
+      <v-toolbar>
+        <v-toolbar-title>상품</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" dark class="mb-2" to="/user/shop/product/add">New Item</v-btn>
+      </v-toolbar>
+      <v-card dark color="grey">
         <v-card-text>
-          <v-expansion-panel expand>
-              <v-expansion-panel-content   v-for="(item,index) in list1"
-              :key="index+'_'+item.id">
-                <template v-slot:header>
-                  <div v-text="item.name"></div>
-                </template>
-                <draggable
-                  :list="item.option_group"
-                  group="my_option_group"
-                  @change="log"
-                  v-for="(element, index_j) in item.option_group"
-                  :key="index+'_'+index_j+'_'+element.name"
-                >
-                  <v-card-text>
-                    {{ element.name }}
-                    <v-btn flat icon color="green" @click="removeAt(index,index_j)">
-                      <v-icon dark>close</v-icon>
-                    </v-btn>
-                  </v-card-text>
-                </draggable>
-              </v-expansion-panel-content>
-          </v-expansion-panel>
+          <v-data-table
+            :headers="headers.opt_group"
+            :items="products"
+            item-key="name"
+            :expand="expand"
+            class="elevation-1 tb-option_group"
+            hide-actions
+          >
+            <template v-slot:items="props">
+              <tr>
+                <td class="px-1" style="width: 0.1%">
+                  <v-btn style="cursor: move" icon class="handle">
+                    <v-icon>drag_handle</v-icon>
+                  </v-btn>
+                </td>
+                <td>{{ props.item.name }}</td>
+                <td>{{ props.item.options }}</td>
+                <td>
+                  <ul>
+                    <li v-for="opt in props.item.option_list" :key="opt.id">{{ opt.name }}</li>
+                  </ul>
+                </td>
+                <td>
+                  <v-btn dark icon :to="{ path: '/user/shop/product/update/'+props.item.id }">
+                    <v-icon small class="mr-2">edit</v-icon>
+                  </v-btn>
+                  <v-btn dark icon @click="remove(props.item)">
+                    <v-icon small class="mr-2">delete</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </template>
+            <template v-slot:expand="props">
+              <v-card flat>
+                <v-card-text>
+                  <div class="group_option_list">
+                    <div v-for="element in list" :key="element.name">
+                      <div>{{ element.name }}</div>
+                    </div>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-data-table>
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-flex xs12 sm2 md5>
-      <draggable :list="list3" group="my_option_group" @change="log">
-        <v-icon dark large>delete_outline</v-icon>
-      </draggable>
-    </v-flex>
-    <v-flex xs12 sm5 md5>
-      <v-card>
-        <draggable
-          :list="list2"
-          :group="{ name: 'my_option_group', pull: 'clone', put: false }"
-          @change="log"
-        >
-          <v-btn
-            round
-            color="info"
-            dark
-            v-for="(element, index) in list2"
-            :key="'d_'+index+'_'+element.name"
-          >{{ element.name }}</v-btn>
-        </draggable>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  </v-container>
 </template>
 <script>
+import OptGroupDialog from "~/components/OptGroupDialog.vue";
 import draggable from "vuedraggable";
-import rawDisplayer from "~/components/raw-displayer.vue";
+import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
-let id = 1;
+
+function tbsort(sel, group_nm, clone) {
+  let table = document.querySelector(sel);
+  const _self = this;
+  Sortable.create(table, {
+    group: group_nm,
+    multiDrag: true,
+    clone: clone,
+    handle: ".handle", // Use handle so user can select text
+    onEnd({ newIndex, oldIndex }) {
+      console.log(newIndex, oldIndex);
+      // const rowSelected = _self.desserts.splice(oldIndex, 1)[0]; // Get the selected row and remove it
+      //_self.desserts.splice(newIndex, 0, rowSelected); // Move it to the new index
+    }
+  });
+  return _self;
+}
+
 export default {
-  name: "simple",
-  display: "Simple",
-  order: 0,
   components: {
-    draggable,
-    rawDisplayer
+    OptGroupDialog
   },
   data() {
     return {
-      list1: [
-        {
-          name: "아이스아메리카노",
-          id: 1,
-          option_group: [
-            { name: "샷추가", id: 1 },
-            { name: "차가운/뜨거운", id: 2 },
-            { name: "컵사이즈", id: 3 }
-          ]
+      list: [
+        { name: "11" },
+        { name: "12" },
+        { name: "13" },
+        { name: "14" },
+        { name: "15" }
+      ],
+      form: {
+        opt_group: {
+          id: null,
+          name: null,
+          options: []
         },
-        {
-          name: "따뜻한아메리카노",
-          id: 2,
-          option_group: [
-            { name: "샷추가", id: 1 },
-            { name: "차가운/뜨거운", id: 2 },
-            { name: "컵사이즈", id: 3 }
-          ]
-        },
-        {
-          name: "카페라떼",
-          id: 3,
-          option_group: [
-            { name: "샷추가", id: 1 },
-            { name: "차가운/뜨거운", id: 2 },
-            { name: "컵사이즈", id: 3 }
-          ]
-        },
-        {
-          name: "바닐라 딜라이트",
-          id: 4,
-          option_group: [
-            { name: "샷추가", id: 1 },
-            { name: "차가운/뜨거운", id: 2 },
-            { name: "컵사이즈", id: 3 }
-          ]
-        },
-        {
-          name: "콜드블루 딜라이트",
-          id: 4,
-          option_group: [
-            { name: "샷추가", id: 1 },
-            { name: "차가운/뜨거운", id: 2 },
-            { name: "컵사이즈", id: 3 }
-          ]
+        opt: {
+          id: null,
+          name: null,
+          price: null
         }
-      ],
-      list2: [
-        { name: "샷추가", id: 101 },
-        { name: "차가운/뜨거운", id: 102 },
-        { name: "컵사이즈", id: 103 },
-        { name: "크림추가", id: 104 },
-        { name: "바닐라크림추가", id: 105 },
-        { name: "초코크림추가", id: 106 }
-      ],
-      list3: []
+      },
+      expand: false,
+      headers: {
+        opt_group: [
+          {
+            sortable: false
+          },
+
+          {
+            text: "이름",
+            align: "left",
+            value: "name"
+          },
+          {
+            text: "옵션들",
+            value: "options",
+            sortable: false
+          },
+          {
+            text: "",
+            value: "options",
+            sortable: false
+          },
+          {
+            text: "",
+            value: "options",
+            sortable: false
+          }
+        ],
+        opt: [
+          {
+            sortable: false
+          },
+          {
+            text: "이름",
+            align: "left",
+            value: "name"
+          },
+          { text: "가격", value: "price" }
+        ]
+      },
+
+      dialog: false
     };
   },
   computed: {
     ...mapState({
       auth: state => state.user.auth,
       user: state => state.user.user,
-      shop: state => state.shop.shop
+      shop: state => state.shop.shop,
+      opt: state => state.option.list,
+      opt_group: state => state.option_group.opt_group,
+      products: state => state.product.list
     })
+  },
+  mounted() {
+    // here is the Vue code
+    this.start_sort();
   },
 
   fetch({ store, params }) {
-    console.log("product.vue fetch start=====================");
-    store.dispatch("product/get", null).then(res => {
-      console.log("store.dispatch(product/get, null)===>", res);
-      if (res.status == 200) {
-      } else if (res.status === 400) {
-        alert(res.data);
-      } else {
-        alert("다시 시도하세요.");
-      }
-    });
+    store.dispatch("product/get", params, { root: true });
+    store.dispatch("option_group/get_list", params, { root: true });
   },
+
   methods: {
-    clone_group({ id, name }) {
-      console.log(id, name);
-      return {
-        id: id,
-        name: `${name}`
-      };
+    remove(item) {
+      console.log(item);
+      if (confirm("정말 삭제하시겠습니까?")) {
+        let params = {
+          id: item.id
+        };
+        console.log(params);
+        this.$store.dispatch("option_group/delete", params, { root: true });
+      }
     },
-    removeAt(idx, idx_j) {
-      console.log("methd --removeAt ", this.list1);
-      this.list1[idx].option_group.splice(idx_j, 1);
+    start_sort() {
+      //let t1 = tbsort(".tb-option_group tbody", "tb-option_group", false);
+      //let t2 = tbsort(".tb-option tbody", "group_options", true);
+      //let t3 = tbsort(".group_option_list", "group_options", false);
     },
-    add: function() {
-      console.log("methd --add ", this.list);
-      //this.$store.dispatch("product/push", { name: "Juan" });
-      this.list.push({ name: "Juan" });
+    submit(t) {
+      let action = "option_group/add";
+      let params = this.$data.form.opt_group;
+      if (t == "opt") {
+        action = "option/add";
+        params = this.$data.form.opt;
+      }
+      params.id = null;
+      return this.$store.dispatch(action, params, { root: true }).then(res => {
+        alert(res);
+      });
     },
-    replace: function() {
-      console.log("methd --replace ", this.list);
-      //store.dispatch("product/replace", { name: "Juan" });
-      this.list = [{ name: "Edgard" }];
+    submit_update(t) {
+      let action = "option_group/update";
+      let params = this.$data.form.opt_group;
+      if (t == "opt") {
+        action = "option/update";
+        params = this.$data.form.opt;
+      }
+      return this.$store.dispatch(action, params, { root: true }).then(res => {
+        alert(res);
+      });
     },
-    onMoveCallback: function(evt, originalEvent) {
-      console.log("methd --moved ", evt, originalEvent);
-      //store.dispatch("product/replace", { name: "Juan" });
-      //this.list = [{ name: "Edgard" }];
+    editItem(t, item) {
+      let params = this.$data.form.opt_group;
+      if (t == "opt_group") {
+        this.$data.form.opt_group.id = item.id;
+        this.$data.form.opt_group.name = item.name;
+        this.$data.form.opt_group.options = item.options;
+      } else if (t == "opt") {
+        this.$data.form.opt.id = item.id;
+        this.$data.form.opt.name = item.name;
+        this.$data.form.opt.price = item.price;
+      }
     },
-    clone: function(el) {
-      return {
-        name: el.name + " cloned"
-      };
+    reset(t) {
+      if (t == "opt_group") {
+        this.$data.form.opt_group.id = null;
+        this.$data.form.opt_group.name = null;
+        this.$data.form.opt_group.options = [];
+      } else if (t == "opt") {
+        this.$data.form.opt.id = null;
+        this.$data.form.opt.name = null;
+        this.$data.form.opt.price = null;
+      }
     },
     log: function(evt) {
       window.console.log(evt);

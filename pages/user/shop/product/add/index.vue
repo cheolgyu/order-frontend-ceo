@@ -117,6 +117,7 @@ export default {
   },
   mounted() {
     // here is the Vue code
+    this.init_sortablejs();
   },
 
   fetch({ store, params }) {
@@ -125,6 +126,17 @@ export default {
   },
 
   methods: {
+    init_sortablejs() {
+      new Sortable(document.querySelector("#example3Right tbody"), {
+        group: {
+          name: "shared",
+          pull: "clone"
+        },
+
+        //handle: ".handle",
+        animation: 150
+      });
+    },
     d_open(item) {
       this.$refs.r_dialog.editItem(item);
     },
