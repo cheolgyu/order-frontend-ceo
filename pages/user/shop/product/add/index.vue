@@ -8,6 +8,10 @@
               <v-toolbar-title class="body-2 grey--text">
                 <v-text-field v-model="form.product.name" label="상품명" id="id"></v-text-field>
               </v-toolbar-title>
+              <template v-slot:extension>
+                <v-text-field v-model="form.product.price" label="가격"></v-text-field>
+              </template>
+
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-divider></v-divider>
@@ -15,11 +19,11 @@
             <v-card-text dark color="grey" id="example3Left">
               <draggable
                 style="min-height:200px"
-                v-model="form.product.option_list"
+                v-model="form.product.opt_group_list"
                 :group="{ name: 'shared', pull: 'clone' }"
                 @change="chg"
               >
-                <template v-for="(element, index) in form.product.option_list">
+                <template v-for="(element, index) in form.product.opt_group_list">
                   <v-chip
                     outline
                     color="white"
@@ -53,7 +57,7 @@
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>{{ item.name }}-{{ item.price }}원</v-list-tile-title>
+                    <v-list-tile-title>{{ item.name }}-{{ item.price }}원 {{ item.id }}</v-list-tile-title>
                     <v-list-tile-sub-title>{{ item.created_at }}</v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action>
@@ -82,9 +86,10 @@ export default {
       form: {
         product: {
           name: null,
-          option_list: []
+          price: 0,
+          opt_group_list: []
         },
-        options: []
+        opt_group: []
       },
       editId: 1,
       headers: [
@@ -130,15 +135,16 @@ export default {
     },
 
     submit() {
-      let action = "option_group/add";
+      let action = "product/add";
       let options = [];
-      for (var index in this.$data.form.product.option_list) {
-        options.push(this.$data.form.product.option_list[index].id);
+      for (var index in this.$data.form.product.opt_group_list) {
+        options.push(this.$data.form.product.opt_group_list[index].id);
       }
 
       let params = {
         name: this.$data.form.product.name,
-        options: options
+        price: this.$data.form.product.price,
+        opt_group: options
       };
 
       console.log(params);
@@ -149,7 +155,7 @@ export default {
     chg: function({ moved, added, removed }) {},
     clone: function(el) {
       let has = false;
-      this.form.product.option_list.find(function(element) {
+      this.form.product.opt_group_list.find(function(element) {
         if (el.id == element.id) {
           has = true;
         }

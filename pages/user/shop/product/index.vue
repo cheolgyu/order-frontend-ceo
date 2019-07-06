@@ -25,10 +25,13 @@
                   </v-btn>
                 </td>
                 <td>{{ props.item.name }}</td>
-                <td>{{ props.item.options }}</td>
+                <td>{{ props.item.price }}</td>
                 <td>
                   <ul>
-                    <li v-for="opt in props.item.option_list" :key="opt.id">{{ opt.name }}</li>
+                    <li
+                      v-for="opt_group in props.item.option_group_list"
+                      :key="opt_group.id"
+                    >{{ opt_group.name }}</li>
                   </ul>
                 </td>
                 <td>
@@ -119,8 +122,13 @@ export default {
             value: "name"
           },
           {
-            text: "옵션들",
-            value: "options",
+            text: "가격",
+            value: "price",
+            sortable: false
+          },
+          {
+            text: "옵션그룹",
+            value: "opt_group",
             sortable: false
           },
           {

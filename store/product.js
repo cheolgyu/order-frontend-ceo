@@ -7,16 +7,56 @@ export const state = () => ({
     { "name": "이름4", "price": 100 }
   ]
 });
-export const  getters= {
-  
+export const getters = {
+
   product_list: state => {
-      return state.list
-    }
+    return state.list
   }
+}
 
 export const actions = {
   async push({ commit, rootState, dispatch }, params) {
     commit("PUSH", params);
+  },
+  async add({ commit, rootState, dispatch }, params) {
+    return await this.$axios
+      .put(
+        "/users/" +
+        rootState.user.auth.user.id +
+        "/shops/" +
+        rootState.shop.shop.id +
+        "/products",
+        params
+      )
+      .then(res => {
+        console.log(res)
+        if (res.status == 200) {
+          dispatch("get_list", params);
+          return res.data;
+        } else {
+          console.log(res);
+        }
+      });
+
+  },
+  async get_list({ commit, rootState }, params) {
+    return await this.$axios
+      .get(
+        "/users/" +
+        rootState.user.auth.user.id +
+        "/shops/" +
+        rootState.shop.shop.id +
+        "/products",
+        params
+      )
+      .then(res => {
+        if (res.status == 200) {
+          commit("SET_LIST", res.data.data.items);
+          return res;
+        } else {
+          console.log(res);
+        }
+      });
   },
   async get({ commit, rootState }, params) {
     if (rootState.shop.shop != null) {
@@ -31,7 +71,7 @@ export const actions = {
         )
         .then(res => {
           if (res.status == 200) {
-            commit("SET_PRODUCTS", res.data.data.items);
+            commit("SET_LIST", res.data.data.items);
             return res
           } else { console.log(res) }
 
@@ -46,8 +86,8 @@ export const actions = {
 };
 
 export const mutations = {
-  SET_PRODUCTS(state, params) {
-    console.log("______ product SET_PRODUCTS strat ", params);
+  SET_LIST(state, params) {
+    console.log("______ product SET_LIST strat ", params);
     state.list = params;
   },
   PUSH(state, params) {
