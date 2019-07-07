@@ -19,11 +19,11 @@
             <v-card-text dark color="grey" id="example3Left">
               <draggable
                 style="min-height:200px"
-                v-model="form.product.opt_group_list"
+                v-model="form.product.option_group_list"
                 :group="{ name: 'shared', pull: 'clone' }"
                 @change="chg"
               >
-                <template v-for="(element, index) in form.product.opt_group_list">
+                <template v-for="(element, index) in form.product.option_group_list">
                   <v-chip
                     outline
                     color="white"
@@ -87,7 +87,7 @@ export default {
         product: {
           name: null,
           price: 0,
-          opt_group_list: []
+          option_group_list: []
         },
         opt_group: []
       },
@@ -137,8 +137,8 @@ export default {
     submit() {
       let action = "product/add";
       let options = [];
-      for (var index in this.$data.form.product.opt_group_list) {
-        options.push(this.$data.form.product.opt_group_list[index].id);
+      for (var index in this.$data.form.product.option_group_list) {
+        options.push(this.$data.form.product.option_group_list[index].id);
       }
 
       let params = {
@@ -155,7 +155,7 @@ export default {
     chg: function({ moved, added, removed }) {},
     clone: function(el) {
       let has = false;
-      this.form.product.opt_group_list.find(function(element) {
+      this.form.product.option_group_list.find(function(element) {
         if (el.id == element.id) {
           has = true;
         }

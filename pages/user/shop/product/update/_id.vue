@@ -6,8 +6,12 @@
           <v-card class="card--flex-toolbar">
             <v-toolbar card prominent>
               <v-toolbar-title class="body-2 grey--text">
-                <v-text-field v-model="form.opt_group.name" label="옵션그룹명" id="id"></v-text-field>
+                <v-text-field v-model="form.product.name" label="상품명" id="id"></v-text-field>
               </v-toolbar-title>
+              <template v-slot:extension>
+                <v-text-field v-model="form.product.price" label="가격"></v-text-field>
+              </template>
+
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-divider></v-divider>
@@ -15,11 +19,11 @@
             <v-card-text dark color="grey" id="example3Left">
               <draggable
                 style="min-height:200px"
-                v-model="form.opt_group.option_list"
+                v-model="form.product.option_group_list"
                 :group="{ name: 'shared', pull: 'clone' }"
                 @change="chg"
               >
-                <template v-for="(element, index) in form.opt_group.option_list">
+                <template v-for="(element, index) in form.product.option_group_list">
                   <v-chip
                     outline
                     color="white"
@@ -34,26 +38,26 @@
             </v-card-text>
           </v-card>
 
-          <v-btn color="success" @click="submit">update</v-btn>
+          <v-btn color="success" @click="submit">ok</v-btn>
         </v-form>
       </v-flex>
       <v-flex xs6>
         <v-form>
           <v-card class="card--flex-toolbar">
             <v-toolbar card prominent>
-              <v-toolbar-title class="body-2 grey--text">옵션리스트</v-toolbar-title>
+              <v-toolbar-title class="body-2 grey--text">옵션그룹리스트</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
               <draggable v-model="opt" :group="{ name: 'shared', pull: 'clone' }" :clone="clone">
-                <v-list-tile avatar v-for="item in opt" :key="item.id">
+                <v-list-tile avatar v-for="item in opt_group" :key="item.id">
                   <v-list-tile-avatar>
                     <v-icon class="handle">drag_handle</v-icon>
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>{{ item.name }}-{{ item.price }}원</v-list-tile-title>
+                    <v-list-tile-title>{{ item.name }}-{{ item.price }}원 {{ item.id }}</v-list-tile-title>
                     <v-list-tile-sub-title>{{ item.created_at }}</v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action>
@@ -63,38 +67,6 @@
                   </v-list-tile-action>
                 </v-list-tile>
               </draggable>
-
-              <v-data-table
-                :headers="headers.opt"
-                :items="opt"
-                item-key="name"
-                id="example3Right"
-                hide-actions
-              >
-                <template v-slot:items="props">
-                  <tr>
-                    <td class="px-1" style="width: 0.1%">
-                      <v-btn style="cursor: move" icon class="handle">
-                        <v-icon>drag_handle</v-icon>
-                      </v-btn>
-                    </td>
-                    <td>{{ props.item.name }}</td>
-                    <td>{{ props.item.price }}</td>
-                    <td>
-                      <v-btn
-                        dark
-                        icon
-                        :to="{ path: '/user/shop/product/option_group/option/update/'+props.item.id }"
-                      >
-                        <v-icon>edit</v-icon>
-                      </v-btn>
-                      <v-btn dark icon @click="d_open(props.item)">
-                        <v-icon>delete</v-icon>
-                      </v-btn>
-                    </td>
-                  </tr>
-                </template>
-              </v-data-table>
             </v-card-text>
           </v-card>
         </v-form>
@@ -112,12 +84,13 @@ export default {
   data() {
     return {
       form: {
-        opt_group: {
+        product: {
           id: null,
           name: null,
-          option_list: []
+          price: 0,
+          option_group_list: []
         },
-        options: []
+        opt_group: []
       },
       editId: 1,
       headers: [
@@ -145,21 +118,22 @@ export default {
       user: state => state.user.user,
       shop: state => state.shop.shop,
       opt: state => state.option.list,
-      opt_group: state => state.option_group.opt_group
+      opt_group: state => state.option_group.opt_group,
+      product: state => state.product.list
     })
   },
   mounted() {
     let id = this.$route.params.id;
-    let edit = this.opt_group.find(function(el) {
+    let edit = this.product.find(function(el) {
       if (el.id == id) return el;
     });
 
-    this.$data.form.opt_group = edit;
+    this.$data.form.product = edit;
   },
 
   fetch({ store, params }) {
     store.dispatch("option_group/get_list", params, { root: true });
-    store.dispatch("option/get_list", params, { root: true });
+    store.dispatch("product/get_list", params, { root: true });
   },
 
   methods: {
@@ -168,16 +142,17 @@ export default {
     },
 
     submit() {
-      let action = "option_group/update";
+      let action = "product/update";
       let options = [];
-      for (var index in this.$data.form.opt_group.option_list) {
-        options.push(this.$data.form.opt_group.option_list[index].id);
+      for (var index in this.$data.form.product.option_group_list) {
+        options.push(this.$data.form.product.option_group_list[index].id);
       }
 
       let params = {
-        name: this.$data.form.opt_group.name,
-        options: options,
-        id: this.$data.form.opt_group.id
+        id: this.$data.form.product.id,
+        name: this.$data.form.product.name,
+        price: this.$data.form.product.price,
+        opt_group: options
       };
 
       console.log(params);
@@ -188,7 +163,7 @@ export default {
     chg: function({ moved, added, removed }) {},
     clone: function(el) {
       let has = false;
-      this.form.opt_group.option_list.find(function(element) {
+      this.form.product.option_group_list.find(function(element) {
         if (el.id == element.id) {
           has = true;
         }
@@ -199,8 +174,8 @@ export default {
       }
     },
     remove(item) {
-      const index = this.form.opt_group.option_list.indexOf(item);
-      this.form.opt_group.option_list.splice(index, 1);
+      const index = this.form.product.option_group_list.indexOf(item);
+      this.form.product.option_group_list.splice(index, 1);
     }
   }
 };

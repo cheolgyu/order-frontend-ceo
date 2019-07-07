@@ -1,11 +1,5 @@
 export const state = () => ({
   list: [],
-  option_group: [
-    { "name": "이름1", "price": 100 },
-    { "name": "이름2", "price": 100 },
-    { "name": "이름3", "price": 100 },
-    { "name": "이름4", "price": 100 }
-  ]
 });
 export const getters = {
 
@@ -30,6 +24,27 @@ export const actions = {
       )
       .then(res => {
         console.log(res)
+        if (res.status == 200) {
+          dispatch("get_list", params);
+          return res.data;
+        } else {
+          console.log(res);
+        }
+      });
+
+  },
+  async update({ commit, rootState, dispatch }, params) {
+    return await this.$axios
+      .post(
+        "/users/" +
+        rootState.user.auth.user.id +
+        "/shops/" +
+        rootState.shop.shop.id +
+        "/products/" + params.id
+        ,
+        params
+      )
+      .then(res => {
         if (res.status == 200) {
           dispatch("get_list", params);
           return res.data;

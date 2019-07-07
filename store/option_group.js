@@ -1,18 +1,6 @@
 export const state = () => ({
-  opt: [
-    { name: "샷추가", price: 500 },
-    { name: "차가운", price: 1000 },
-    { name: "뜨거운", price: 1000 },
-    { name: "바닐라 추가", price: 100 },
-    { name: "초코 추가", price: 100 },
-    { name: "크림 추가", price: 100 }
-  ],
-  opt_group: [
-    { name: "온도 선택" },
-    { name: "크림 선택" },
-    { name: "크림 선택" },
-    { name: "크림 선택" }
-  ]
+  opt: [],
+  opt_group: []
 });
 export const getters = {};
 
