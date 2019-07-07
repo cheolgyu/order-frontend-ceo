@@ -72,7 +72,6 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -98,11 +97,6 @@ export default {
           value: "price"
         }
       ],
-      default_opt: {
-        id: 0,
-        name: "",
-        price: 0
-      },
       editOpts: []
     };
   },
