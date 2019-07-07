@@ -1,6 +1,5 @@
 export const state = () => ({
-  opt: [],
-  opt_group: []
+  list: []
 });
 export const getters = {};
 
@@ -92,6 +91,6 @@ export const actions = {
 export const mutations = {
   SET_LIST(state, params) {
     console.log("______1option_group SET_OPTION_GROUP strat ", params);
-    state.opt_group = params;
+    state.list = params;
   }
 };

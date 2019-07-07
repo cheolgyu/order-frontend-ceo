@@ -91,13 +91,7 @@ export default {
   },
   data() {
     return {
-      list: [
-        { name: "11" },
-        { name: "12" },
-        { name: "13" },
-        { name: "14" },
-        { name: "15" }
-      ],
+      list: [],
       form: {
         opt_group: {
           id: null,
@@ -160,7 +154,7 @@ export default {
       user: state => state.user.user,
       shop: state => state.shop.shop,
       opt: state => state.option.list,
-      opt_group: state => state.option_group.opt_group
+      opt_group: state => state.option_group.list
     })
   },
   mounted() {
