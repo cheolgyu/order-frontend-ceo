@@ -130,10 +130,6 @@ export default {
   },
 
   methods: {
-    d_open(item) {
-      this.$refs.r_dialog.editItem(item);
-    },
-
     submit() {
       let action = "product/add";
       let options = [];

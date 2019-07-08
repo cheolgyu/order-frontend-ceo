@@ -88,7 +88,7 @@
                       >
                         <v-icon>edit</v-icon>
                       </v-btn>
-                      <v-btn dark icon @click="d_open(props.item)">
+                      <v-btn dark icon>
                         <v-icon>delete</v-icon>
                       </v-btn>
                     </td>
@@ -163,10 +163,6 @@ export default {
   },
 
   methods: {
-    d_open(item) {
-      this.$refs.r_dialog.editItem(item);
-    },
-
     submit() {
       let action = "option_group/update";
       let options = [];

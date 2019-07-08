@@ -35,7 +35,7 @@
                   >
                     <v-icon>edit</v-icon>
                   </v-btn>
-                  <v-btn dark icon @click="d_open(props.item)">
+                  <v-btn dark icon @click="remove(props.item)">
                     <v-icon>delete</v-icon>
                   </v-btn>
                 </td>
@@ -102,8 +102,13 @@ export default {
   },
 
   methods: {
-    d_open(item) {
-      to = "/user/shop/product/option_group/option/add";
+    remove(item) {
+      if (confirm("정말 삭제하시겠습니까?")) {
+        let params = {
+          id: item.id
+        };
+        this.$store.dispatch("option/delete", params, { root: true });
+      }
     }
   }
 };

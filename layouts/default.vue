@@ -7,23 +7,23 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"/>
+            <v-list-tile-title v-text="item.title" />
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer"/>
+      <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
 
-      <v-toolbar-title v-text="title"/>
-      <v-spacer/>
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
     </v-toolbar>
     <v-content>
       <v-container>
-        <nuxt/>
+        <nuxt />
       </v-container>
     </v-content>
 
@@ -75,7 +75,7 @@ export default {
       ],
       miniVariant: false,
       right: true,
-      title: "ceo 프로젝트"
+      title: "사장님"
     };
   },
   computed: {}

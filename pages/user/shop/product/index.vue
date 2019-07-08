@@ -62,7 +62,6 @@
   </v-container>
 </template>
 <script>
-import OptGroupDialog from "~/components/OptGroupDialog.vue";
 import draggable from "vuedraggable";
 import Sortable from "sortablejs";
 import { mapState, mapGetters } from "vuex";
@@ -85,9 +84,7 @@ function tbsort(sel, group_nm, clone) {
 }
 
 export default {
-  components: {
-    OptGroupDialog
-  },
+  components: {},
   data() {
     return {
       list: [
@@ -180,7 +177,6 @@ export default {
 
   methods: {
     remove(item) {
-      console.log(item);
       if (confirm("정말 삭제하시겠습니까?")) {
         let params = {
           id: item.id

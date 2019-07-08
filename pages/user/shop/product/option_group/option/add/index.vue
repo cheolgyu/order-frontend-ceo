@@ -16,11 +16,6 @@
             <v-flex xs3>
               <v-text-field label="가격" required v-model="form.opt.price"></v-text-field>
             </v-flex>
-            <v-flex xs3>
-              <v-btn flat icon color="red" @click="removeRow(item)">
-                <v-icon>remove</v-icon>
-              </v-btn>
-            </v-flex>
           </v-layout>
         </v-card-text>
       </v-card>
