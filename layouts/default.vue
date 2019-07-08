@@ -45,32 +45,32 @@ export default {
         {
           icon: "bubble_chart",
           title: "대시보드",
-          to: "/user/dashboard"
+          to: "/ceo/dashboard"
         },
         {
           icon: "bubble_chart",
           title: "상점",
-          to: "/user/shop"
+          to: "/ceo/shop"
         },
         {
           icon: "bubble_chart",
           title: "상품",
-          to: "/user/shop/product"
+          to: "/ceo/product"
         },
         {
           icon: "bubble_chart",
           title: "상품옵션그룹",
-          to: "/user/shop/product/option_group"
+          to: "/ceo/option_group"
         },
         {
           icon: "bubble_chart",
           title: "상품옵션",
-          to: "/user/shop/product/option_group/option"
+          to: "/ceo/option"
         },
         {
           icon: "bubble_chart",
           title: "프로필",
-          to: "/user/profile"
+          to: "/ceo/profile"
         }
       ],
       miniVariant: false,
