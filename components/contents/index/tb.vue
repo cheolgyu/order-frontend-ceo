@@ -10,7 +10,7 @@
       <v-card dark color="grey">
         <v-card-text>
           <v-data-table :headers="headers" :items="items" item-key="name" hide-actions>
-            <template v-if="tb_items === CONSTANTS.PRODUCT" v-slot:items="props">
+            <template v-if="type === CONSTANTS.PRODUCT" v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%">
                   <v-btn style="cursor: move" icon class="handle">
@@ -37,7 +37,7 @@
                 </td>
               </tr>
             </template>
-            <template v-else-if="tb_items === CONSTANTS.OPTION_GROUP" v-slot:items="props">
+            <template v-else-if="type === CONSTANTS.OPTION_GROUP" v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%">
                   <v-btn style="cursor: move" icon class="handle">
@@ -61,7 +61,7 @@
                 </td>
               </tr>
             </template>
-            <template v-else-if="tb_items === CONSTANTS.OPTION" v-slot:items="props">
+            <template v-else-if="type === CONSTANTS.OPTION" v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%"></td>
                 <td>{{ props.item.name }}</td>
@@ -96,7 +96,7 @@ const props = {
     required: true,
     type: String
   },
-  tb_items: {
+  type: {
     required: true,
     type: String
   }
@@ -140,7 +140,7 @@ export default {
       }
     },
     tb_switch() {
-      switch (this.tb_items) {
+      switch (this.type) {
         case CONSTANTS.PRODUCT:
           this.items = this.products;
           this.btn.to.new = "/ceo/product/add";

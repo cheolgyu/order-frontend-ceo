@@ -1,6 +1,6 @@
 <template></template>
 <template>
-  <tb :headers="headers" :tb_items="tb_items" :title="title" />
+  <tb :headers="headers" :type="type" :title="title" />
 </template>
 <script>
 import tb from "~/components/contents/index/tb.vue";
@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      tb_items: CONSTANTS.OPTION,
+      type: CONSTANTS.OPTION,
       title: "상품옵션 목록",
       headers: [
         {
