@@ -15,17 +15,14 @@ export const actions = {
         params
       )
       .then(res => {
-        console.log(res)
         if (res.status == 200) {
           dispatch("get_list", params);
           return res.data;
         } else {
-          console.log(res);
         }
       });
 
   }, async delete({ commit, rootState, dispatch }, params) {
-    console.log(params);
     return await this.$axios
       .delete(
         "/users/" +
@@ -40,7 +37,6 @@ export const actions = {
           dispatch("get_list", params);
           return res.data;
         } else {
-          console.log(res);
         }
       });
 
@@ -59,7 +55,6 @@ export const actions = {
           dispatch("get_list", params);
           return res.data;
         } else {
-          console.log(res);
         }
       });
 
@@ -79,18 +74,13 @@ export const actions = {
           commit("SET_LIST", res.data.data.items);
           return res;
         } else {
-          console.log(res);
         }
       });
-  },
-  async repace({ commit, rootState, dispatch }, params) {
-    commit("REPLACE", params);
   }
 };
 
 export const mutations = {
   SET_LIST(state, params) {
-    console.log("______1option_group SET_OPTION_GROUP strat ", params);
     state.list = params;
   }
 };

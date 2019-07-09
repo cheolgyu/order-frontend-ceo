@@ -1,5 +1,5 @@
 <template>
-  <tb :headers="headers" :tb_items="tb_items" :title="title" :form="form" />
+  <tb :headers="headers" :tb_items="tb_items" :title="title" />
 </template>
 <script>
 import tb from "~/components/contents/index/tb.vue";
@@ -14,18 +14,6 @@ export default {
     return {
       tb_items: CONSTANTS.PRODUCT,
       title: "상품목록",
-      form: {
-        opt_group: {
-          id: null,
-          name: null,
-          options: []
-        },
-        opt: {
-          id: null,
-          name: null,
-          price: null
-        }
-      },
       headers: [
         {
           sortable: false

@@ -22,9 +22,9 @@
                 <td>
                   <ul>
                     <li
-                      v-for="opt_group in props.item.option_group_list"
-                      :key="opt_group.id"
-                    >{{ opt_group.name }}</li>
+                      v-for="option_group in props.item.option_group_list"
+                      :key="option_group.id"
+                    >{{ option_group.name }}</li>
                   </ul>
                 </td>
                 <td>
@@ -52,11 +52,7 @@
                   </ul>
                 </td>
                 <td>
-                  <v-btn
-                    dark
-                    icon
-                    :to="{ path: '/user/shop/product/option_group/update/'+props.item.id }"
-                  >
+                  <v-btn dark icon :to="{ path: btn.to.update+props.item.id }">
                     <v-icon small class="mr-2">edit</v-icon>
                   </v-btn>
                   <v-btn dark icon @click="remove(props.item)">
@@ -71,11 +67,7 @@
                 <td>{{ props.item.name }}</td>
                 <td>{{ props.item.price }}</td>
                 <td>
-                  <v-btn
-                    dark
-                    icon
-                    :to="{ path: '/user/shop/product/option_group/option/update/'+props.item.id }"
-                  >
+                  <v-btn dark icon :to="{ path: btn.to.update+props.item.id }">
                     <v-icon>edit</v-icon>
                   </v-btn>
                   <v-btn dark icon @click="remove(props.item)">
@@ -107,13 +99,13 @@ const props = {
   tb_items: {
     required: true,
     type: String
-  },
-  form: { required: true }
+  }
 };
 export default {
   props,
   data() {
     return {
+      CONSTANTS: CONSTANTS,
       items: [],
       btn: {
         to: {
@@ -126,26 +118,17 @@ export default {
   },
   computed: {
     ...mapState({
-      auth: state => state.user.auth,
-      user: state => state.user.user,
-      shop: state => state.shop.shop,
       opt: state => state.option.list,
       opt_group: state => state.option_group.list,
       products: state => state.product.list
     }),
-    test() {
-      console.log("this", this);
-    }
+    test() {}
   },
   mounted() {
     this.tb_switch();
   },
 
-  fetch({ store, params }) {
-    store.dispatch("product/get", params, { root: true });
-    store.dispatch("option_group/get_list", params, { root: true });
-    store.dispatch("option/get_list", params, { root: true });
-  },
+  fetch({ store, params }) {},
 
   methods: {
     remove(item) {
@@ -157,23 +140,21 @@ export default {
       }
     },
     tb_switch() {
-      console.log(this.tb_items, CONSTANTS.PRODUCT);
       switch (this.tb_items) {
         case CONSTANTS.PRODUCT:
-          console.log(this.tb_items, CONSTANTS.PRODUCT);
           this.items = this.products;
           this.btn.to.new = "/ceo/product/add";
           this.btn.to.update = "/ceo/product/";
           break;
         case CONSTANTS.OPTION_GROUP:
-          this.items = this.option_groups;
+          this.items = this.opt_group;
           this.btn.to.new = "/ceo/option_group/add";
           this.btn.to.update = "/ceo/option_group/";
           break;
         case CONSTANTS.OPTION:
-          this.items = this.option_groups;
-          this.btn.to.new = "/ceo/option_group/add";
-          this.btn.to.update = "/ceo/option_group/";
+          this.items = this.opt;
+          this.btn.to.new = "/ceo/option/add";
+          this.btn.to.update = "/ceo/option/";
           break;
         default:
           break;

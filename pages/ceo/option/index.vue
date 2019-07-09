@@ -1,115 +1,40 @@
+<template></template>
 <template>
-  <v-container fluid>
-    <v-flex xs12 grow pa-1>
-      <v-toolbar>
-        <v-toolbar-title>상품옵션</v-toolbar-title>
-        <v-divider class="mx-2" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          dark
-          class="mb-2"
-          to="/user/shop/product/option_group/option/add"
-        >New Item</v-btn>
-      </v-toolbar>
-
-      <v-card dark color="grey">
-        <v-card-text>
-          <v-data-table
-            :headers="headers.opt"
-            :items="opt"
-            item-key="name"
-            class="elevation-1 tb-option_group"
-            hide-actions
-          >
-            <template v-slot:items="props">
-              <tr>
-                <td class="px-1" style="width: 0.1%"></td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.price }}</td>
-                <td>
-                  <v-btn
-                    dark
-                    icon
-                    :to="{ path: '/user/shop/product/option_group/option/update/'+props.item.id }"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                  <v-btn dark icon @click="remove(props.item)">
-                    <v-icon>delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-container>
+  <tb :headers="headers" :tb_items="tb_items" :title="title" />
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import tb from "~/components/contents/index/tb.vue";
+import CONSTANTS from "~/components/constants.vue";
 
 export default {
-  components: {},
+  components: {
+    tb,
+    CONSTANTS
+  },
   data() {
     return {
-      form: {
-        opt: {
-          id: null,
-          name: null,
-          price: null
+      tb_items: CONSTANTS.OPTION,
+      title: "상품옵션 목록",
+      headers: [
+        {
+          sortable: false
+        },
+        {
+          text: "이름",
+          align: "left",
+          value: "name"
+        },
+
+        {
+          text: "가격",
+          value: "price"
+        },
+        {
+          text: "관리",
+          sortable: false
         }
-      },
-      headers: {
-        opt: [
-          {
-            sortable: false
-          },
-          {
-            text: "이름",
-            align: "left",
-            value: "name"
-          },
-
-          {
-            text: "가격",
-            //align: "right",
-            value: "price"
-          },
-          {
-            text: "관리",
-            sortable: false
-          }
-        ]
-      }
+      ]
     };
-  },
-  computed: {
-    ...mapState({
-      auth: state => state.user.auth,
-      user: state => state.user.user,
-      shop: state => state.shop.shop,
-      opt: state => state.option.list,
-      opt_group: state => state.option_group.list
-    })
-  },
-  mounted() {},
-
-  fetch({ store, params }) {
-    store.dispatch("option_group/get_list", params, { root: true });
-    store.dispatch("option/get_list", params, { root: true });
-  },
-
-  methods: {
-    remove(item) {
-      if (confirm("정말 삭제하시겠습니까?")) {
-        let params = {
-          id: item.id
-        };
-        this.$store.dispatch("option/delete", params, { root: true });
-      }
-    }
   }
 };
 </script>

@@ -1,5 +1,5 @@
 export const state = () => ({
-  list:[]
+  list: []
 });
 export const getters = {};
 
@@ -19,11 +19,10 @@ export const actions = {
           dispatch("get_list", params);
           return res;
         } else {
-          console.log(res);
         }
       });
 
-  },async update({ commit, rootState, dispatch }, params) {
+  }, async update({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .post(
         "/users/" +
@@ -38,7 +37,6 @@ export const actions = {
           dispatch("get_list", params);
           return res;
         } else {
-          console.log(res);
         }
       });
 
@@ -66,7 +64,6 @@ export const actions = {
 
 export const mutations = {
   SET_LIST(state, params) {
-    console.log("______option_group SET_OPTION_GROUP strat ", state.list);
     state.list = params;
   }
 };

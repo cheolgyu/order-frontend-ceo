@@ -30,7 +30,10 @@ export const actions = {
         if (res.status === 200) {
           commit("SET_USER", res.data.data.user);
           commit("shop/SET_SHOP", res.data.data.shop, { root: true });
-          return dispatch("product/get", null, { root: true });
+          dispatch("product/get_list", null, { root: true });
+          dispatch("option_group/get_list", null, { root: true });
+
+          return dispatch("option/get_list", null, { root: true });
         }
         return res.status;
       });
@@ -39,11 +42,9 @@ export const actions = {
 
 export const mutations = {
   SET_AUTH(state, params) {
-    console.log("______user SET_AUTH strat ", params);
     state.auth = params;
   },
   SET_USER(state, params) {
-    console.log("______user SET_USER strat ", params);
     state.user = params;
   }
 };

@@ -23,12 +23,10 @@ export const actions = {
         params
       )
       .then(res => {
-        console.log(res)
         if (res.status == 200) {
           dispatch("get_list", params);
           return res.data;
         } else {
-          console.log(res);
         }
       });
 
@@ -88,31 +86,20 @@ export const actions = {
           if (res.status == 200) {
             commit("SET_LIST", res.data.data.items);
             return res
-          } else { console.log(res) }
+          } else { }
 
         });
     } else {
-      console.log("product action.get shop is null ");
     }
-  },
-  async repace({ commit, rootState, dispatch }, params) {
-    commit("REPLACE", params);
   },
 };
 
 export const mutations = {
   SET_LIST(state, params) {
-    console.log("______ product SET_LIST strat ", params);
     state.list = params;
   },
   PUSH(state, params) {
-    console.log("product PUSH strat ", state.list);
     state.list.push(params);
-    console.log(state.list);
   },
-  REPLACE(state, params) {
-    console.log("product REPLACE strat ", state.list);
-    state.list.push(params);
-    console.log(state.list);
-  }
+
 };
