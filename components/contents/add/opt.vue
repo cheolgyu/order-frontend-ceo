@@ -60,10 +60,10 @@ export default {
     })
   },
   mounted() {
-    this.switch_action();
+    this.if_action();
   },
   methods: {
-    switch_action() {
+    if_action() {
       this.dispatch_action =
         this.action === CONSTANTS.ADD ? "option/add" : "option/update";
 

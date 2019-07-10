@@ -9,8 +9,14 @@
       </v-toolbar>
       <v-card dark color="grey">
         <v-card-text>
-          <v-data-table :headers="headers" :items="items" item-key="name" hide-actions>
-            <template v-if="type === CONSTANTS.PRODUCT" v-slot:items="props">
+          <v-data-table
+            v-if="type === CONSTANTS.PRODUCT"
+            :headers="headers"
+            :items="products"
+            item-key="name"
+            hide-actions
+          >
+            <template v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%">
                   <v-btn style="cursor: move" icon class="handle">
@@ -37,7 +43,15 @@
                 </td>
               </tr>
             </template>
-            <template v-else-if="type === CONSTANTS.OPTION_GROUP" v-slot:items="props">
+          </v-data-table>
+          <v-data-table
+            v-else-if="type === CONSTANTS.OPTION_GROUP"
+            :headers="headers"
+            :items="opt_group"
+            item-key="name"
+            hide-actions
+          >
+            <template v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%">
                   <v-btn style="cursor: move" icon class="handle">
@@ -61,7 +75,15 @@
                 </td>
               </tr>
             </template>
-            <template v-else-if="type === CONSTANTS.OPTION" v-slot:items="props">
+          </v-data-table>
+          <v-data-table
+            v-else-if="type === CONSTANTS.OPTION"
+            :headers="headers"
+            :items="opt"
+            item-key="name"
+            hide-actions
+          >
+            <template v-slot:items="props">
               <tr>
                 <td class="px-1" style="width: 0.1%"></td>
                 <td>{{ props.item.name }}</td>
@@ -109,9 +131,9 @@ export default {
       items: [],
       btn: {
         to: {
-          new: null,
-          update: null,
-          delete: null
+          new: "",
+          update: "",
+          delete: ""
         }
       }
     };
@@ -125,10 +147,8 @@ export default {
     test() {}
   },
   mounted() {
-    this.tb_switch();
+    this.init();
   },
-
-  fetch({ store, params }) {},
 
   methods: {
     remove(item) {
@@ -136,25 +156,25 @@ export default {
         let params = {
           id: item.id
         };
-        this.$store.dispatch("option_group/delete", params, { root: true });
+        this.$store.dispatch(this.btn.to.delete, params, { root: true });
       }
     },
-    tb_switch() {
+    init() {
       switch (this.type) {
         case CONSTANTS.PRODUCT:
-          this.items = this.products;
           this.btn.to.new = "/ceo/product/add";
           this.btn.to.update = "/ceo/product/";
+          this.btn.to.delete = "product/delete";
           break;
         case CONSTANTS.OPTION_GROUP:
-          this.items = this.opt_group;
           this.btn.to.new = "/ceo/option_group/add";
           this.btn.to.update = "/ceo/option_group/";
+          this.btn.to.delete = "option_group/delete";
           break;
         case CONSTANTS.OPTION:
-          this.items = this.opt;
           this.btn.to.new = "/ceo/option/add";
           this.btn.to.update = "/ceo/option/";
+          this.btn.to.delete = "option/delete";
           break;
         default:
           break;

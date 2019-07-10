@@ -116,23 +116,55 @@ export default {
     })
   },
   mounted() {
-    this.ifupdate();
-    this.tb_switch();
+    this.init();
+  },
+  fetch({ store, params }) {
+    store.dispatch("option_group/get_list", params, { root: true });
+    store.dispatch("option/get_list", params, { root: true });
+    store.dispatch("product/get_list", params, { root: true });
   },
   methods: {
-    ifupdate() {
-      if (this.action == CONSTANTS.UPDATE) {
-        let id = this.$route.params.id;
-        let items = null;
-        if (this.type == CONSTANTS.PRODUCT) {
-          items = this.products;
-        } else if (this.type == CONSTANTS.OPTION_GROUP) {
-          items = this.opt_group;
-        }
-        let edit = items.find(function(el) {
-          if (el.id == id) return el;
-        });
-        this.edit_form = JSON.parse(JSON.stringify(edit)); //Object.assign({}, edit);
+    init() {
+      switch (this.action) {
+        case CONSTANTS.ADD:
+          this.edit_form = this.form;
+
+          switch (this.type) {
+            case CONSTANTS.PRODUCT:
+              this.origin_list = this.opt_group;
+              this.dispatch_action = "product/add";
+              break;
+            case CONSTANTS.OPTION_GROUP:
+              this.origin_list = this.opt;
+              this.dispatch_action = "option_group/add";
+              break;
+          }
+          break;
+
+        case CONSTANTS.UPDATE:
+          let items = null;
+          let edit = null;
+          switch (this.type) {
+            case CONSTANTS.PRODUCT:
+              this.origin_list = this.opt_group;
+              this.dispatch_action = "product/update";
+              this.tmp_list = this.edit_form.option_group_list;
+              items = this.products;
+              break;
+            case CONSTANTS.OPTION_GROUP:
+              this.origin_list = this.opt;
+              this.dispatch_action = "option_group/update";
+              this.tmp_list = this.edit_form.option_list;
+              items = this.opt_group;
+              break;
+          }
+
+          edit = items.find(function(el) {
+            if (el.id == this.$route.params.id) return el;
+          });
+
+          this.edit_form = JSON.parse(JSON.stringify(edit));
+          break;
       }
     },
     submit() {
@@ -141,7 +173,13 @@ export default {
       return this.$store
         .dispatch(this.dispatch_action, this.edit_form, { root: true })
         .then(res => {
-          alert(res);
+          console.log(res);
+          if (res.status == 201) {
+            // alert("수정됬습니다.");
+            //this.$nuxt.$router.replace({
+            //  path: "/ceo/" + this.type
+            //});
+          }
         });
     },
     clone: function(el) {
@@ -170,30 +208,6 @@ export default {
           break;
         case CONSTANTS.OPTION_GROUP:
           this.edit_form.options = arr;
-          break;
-        case CONSTANTS.OPTION:
-          break;
-        default:
-          break;
-      }
-    },
-    tb_switch() {
-      switch (this.type) {
-        case CONSTANTS.PRODUCT:
-          this.origin_list = this.opt_group;
-          this.tmp_list = this.edit_form.option_group_list;
-          this.dispatch_action =
-            this.action === CONSTANTS.ADD ? "product/add" : "product/update";
-
-          break;
-        case CONSTANTS.OPTION_GROUP:
-          this.origin_list = this.opt;
-          this.tmp_list = this.edit_form.option_list;
-          this.dispatch_action =
-            this.action === CONSTANTS.ADD
-              ? "option_group/add"
-              : "option_group/update";
-
           break;
         case CONSTANTS.OPTION:
           break;
