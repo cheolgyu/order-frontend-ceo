@@ -34,7 +34,7 @@
                   </ul>
                 </td>
                 <td>
-                  <v-btn dark icon :to="{ path: btn.to.update+props.item.id }">
+                  <v-btn dark icon :to="{ path: ''+btn.to.update+''+props.item.id+'' }">
                     <v-icon small class="mr-2">edit</v-icon>
                   </v-btn>
                   <v-btn dark icon @click="remove(props.item)">
@@ -66,7 +66,7 @@
                   </ul>
                 </td>
                 <td>
-                  <v-btn dark icon :to="{ path: btn.to.update+props.item.id }">
+                  <v-btn dark icon :to="{ path: ''+btn.to.update+props.item.id }">
                     <v-icon small class="mr-2">edit</v-icon>
                   </v-btn>
                   <v-btn dark icon @click="remove(props.item)">

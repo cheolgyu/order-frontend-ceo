@@ -71,7 +71,7 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import CONSTANTS from "~/components/constants.vue";
 
 const props = {
@@ -117,11 +117,6 @@ export default {
   },
   mounted() {
     this.init();
-  },
-  fetch({ store, params }) {
-    store.dispatch("option_group/get_list", params, { root: true });
-    store.dispatch("option/get_list", params, { root: true });
-    store.dispatch("product/get_list", params, { root: true });
   },
   methods: {
     init() {
@@ -175,10 +170,6 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status == 201) {
-            // alert("수정됬습니다.");
-            //this.$nuxt.$router.replace({
-            //  path: "/ceo/" + this.type
-            //});
           }
         });
     },
