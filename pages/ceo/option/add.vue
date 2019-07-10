@@ -60,7 +60,6 @@ export default {
     submit(t) {
       let action = "option/add";
       let params = this.$data.form.opt;
-      console.log(params);
       return this.$store.dispatch(action, params, { root: true }).then(res => {
         alert(res);
       });

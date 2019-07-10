@@ -8,12 +8,10 @@
           </v-toolbar>
           <v-card dark>
             <v-card-title>
-              <v-text-field v-model="form.name" label="상품명" id="id"></v-text-field>
-              <v-text-field v-model="form.price" label="가격"></v-text-field>
+              <v-text-field v-model="edit_form.name" label="이름" id="id"></v-text-field>
+              <v-text-field v-if="type === CONSTANTS.PRODUCT" v-model="edit_form.price" label="가격"></v-text-field>
             </v-card-title>
           </v-card>
-          <h1>{{ tmp_idx_list }}</h1>
-          <h1>{{ tmp_list }}</h1>
           <v-card dark>
             <v-card-title>{{title.left_down}}</v-card-title>
             <v-card-text dark>
@@ -99,9 +97,10 @@ export default {
   components: { draggable },
   data() {
     return {
+      CONSTANTS: CONSTANTS,
+      edit_form: props.form,
       origin_list: [],
       tmp_list: [],
-      tmp_idx_list: [],
       dispatch_action: null,
       params: null
     };
@@ -125,20 +124,22 @@ export default {
       if (this.action == CONSTANTS.UPDATE) {
         let id = this.$route.params.id;
         let items = null;
-        if (this.type == CONSTANTS.PRODUCT) items = this.products;
-        else if (this.type == CONSTANTS.OPTION_GROUP) items = this.opt_group;
+        if (this.type == CONSTANTS.PRODUCT) {
+          items = this.products;
+        } else if (this.type == CONSTANTS.OPTION_GROUP) {
+          items = this.opt_group;
+        }
         let edit = items.find(function(el) {
           if (el.id == id) return el;
         });
-
-        this.form = edit;
+        this.edit_form = JSON.parse(JSON.stringify(edit)); //Object.assign({}, edit);
       }
     },
     submit() {
       this.submit_before();
 
       return this.$store
-        .dispatch(this.dispatch_action, this.form, { root: true })
+        .dispatch(this.dispatch_action, this.edit_form, { root: true })
         .then(res => {
           alert(res);
         });
@@ -151,7 +152,6 @@ export default {
         }
       });
       if (has == false) {
-        this.tmp_idx_list.push(el.id);
         return el;
       }
     },
@@ -159,12 +159,17 @@ export default {
       this.tmp_list.splice(this.tmp_list.indexOf(item), 1);
     },
     submit_before() {
+      let arr = [];
+      for (var i = 0; i < this.tmp_list.length; i++) {
+        arr.push(this.tmp_list[i].id);
+      }
+
       switch (this.type) {
         case CONSTANTS.PRODUCT:
-          this.form.opt_group = this.tmp_idx_list;
+          this.edit_form.opt_group = arr;
           break;
         case CONSTANTS.OPTION_GROUP:
-          //this.form.opt_group = this.tmp_idx_list;
+          this.edit_form.options = arr;
           break;
         case CONSTANTS.OPTION:
           break;
@@ -176,18 +181,19 @@ export default {
       switch (this.type) {
         case CONSTANTS.PRODUCT:
           this.origin_list = this.opt_group;
+          this.tmp_list = this.edit_form.option_group_list;
           this.dispatch_action =
             this.action === CONSTANTS.ADD ? "product/add" : "product/update";
-          this.form.opt_group = this.tmp_idx_list;
-          this.tmp_list = this.form.option_group_list;
+
           break;
         case CONSTANTS.OPTION_GROUP:
           this.origin_list = this.opt;
+          this.tmp_list = this.edit_form.option_list;
           this.dispatch_action =
             this.action === CONSTANTS.ADD
               ? "option_group/add"
               : "option_group/update";
-          //this.form.opt_group = this.tmp_idx_list;
+
           break;
         case CONSTANTS.OPTION:
           break;
