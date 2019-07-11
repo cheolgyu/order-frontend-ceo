@@ -155,7 +155,7 @@ export default {
           }
 
           edit = items.find(function(el) {
-            if (el.id == this.$route.params.id) return el;
+            if (el.id == window.$nuxt._route.params.id) return el;
           });
 
           this.edit_form = JSON.parse(JSON.stringify(edit));
