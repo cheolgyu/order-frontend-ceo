@@ -30,6 +30,24 @@ export const actions = {
         }
       });
 
+  },async delete({ commit, rootState, dispatch }, params) {
+    return await this.$axios
+      .delete(
+        "/users/" +
+        rootState.user.auth.user.id +
+        "/shops/" +
+        rootState.shop.shop.id +
+        "/products/" + params.id
+
+      )
+      .then(res => {
+        if (res.status == 200) {
+          dispatch("get_list", params);
+          return res.data;
+        } else {
+        }
+      });
+
   },
   async update({ commit, rootState, dispatch }, params) {
     return await this.$axios
