@@ -8,10 +8,16 @@
           </v-toolbar>
           <v-card dark>
             <v-card-title>
-              <v-text-field v-model="edit_form.name" label="이름" id="id"></v-text-field>
-              <v-text-field v-if="type === CONSTANTS.PRODUCT" v-model="edit_form.price" label="가격"></v-text-field>
+              <v-text-field v-model="edit_form.name" label="이름"></v-text-field>
+              <v-text-field
+                number
+                v-if="type === CONSTANTS.PRODUCT"
+                v-model="edit_form.price"
+                label="가격"
+              ></v-text-field>
             </v-card-title>
           </v-card>
+
           <v-card dark>
             <v-card-title>{{title.left_down}}</v-card-title>
             <v-card-text dark>
@@ -123,7 +129,6 @@ export default {
       switch (this.action) {
         case CONSTANTS.ADD:
           this.edit_form = this.form;
-
           switch (this.type) {
             case CONSTANTS.PRODUCT:
               this.origin_list = this.opt_group;
@@ -137,30 +142,35 @@ export default {
           break;
 
         case CONSTANTS.UPDATE:
-          let items = null;
-          let edit = null;
           switch (this.type) {
             case CONSTANTS.PRODUCT:
               this.origin_list = this.opt_group;
               this.dispatch_action = "product/update";
-              this.tmp_list = this.edit_form.option_group_list;
-              items = this.products;
+              let tmp = this.init_find(this.products);
+              this.edit_form.id = tmp.id;
+              this.edit_form.name = tmp.name;
+              this.edit_form.price = tmp.price;
+              this.tmp_list = tmp.option_group_list;
               break;
             case CONSTANTS.OPTION_GROUP:
               this.origin_list = this.opt;
               this.dispatch_action = "option_group/update";
-              this.tmp_list = this.edit_form.option_list;
-              items = this.opt_group;
+              let tmp2 = this.init_find(this.opt_group);
+              this.edit_form.id = tmp2.id;
+              this.edit_form.name = tmp2.name;
+              this.tmp_list = tmp2.option_list;
               break;
           }
-
-          edit = items.find(function(el) {
-            if (el.id == window.$nuxt._route.params.id) return el;
-          });
-
-          this.edit_form = JSON.parse(JSON.stringify(edit));
           break;
       }
+    },
+    init_find(items) {
+      return items.find(function(el) {
+        if (el.id == window.$nuxt._route.params.id)
+          //  return JSON.parse(JSON.stringify(el));
+          // return Object.assign({}, el);
+          return { ...el };
+      });
     },
     submit() {
       this.submit_before();
