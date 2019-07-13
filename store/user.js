@@ -25,7 +25,7 @@ export const actions = {
   },
   async getme({ commit, rootState, dispatch }) {
     return await this.$axios
-      .get(`/users/` + rootState.user.auth.user.id)
+      .get(`/ceo/` + rootState.user.auth.user.id)
       .then(res => {
         if (res.status === 200) {
           commit("SET_USER", res.data.data.user);

@@ -17,7 +17,7 @@ export const actions = {
     if (rootState.shop.shop != null) {
       return await this.$axios
         .get(
-          "/users/" +
+          "/ceo/" +
           rootState.user.auth.user.id +
           "/shops/" +
           rootState.shop.shop.id,

@@ -15,7 +15,7 @@ export const actions = {
   async add({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .put(
-        "/users/" +
+        "/ceo/" +
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
@@ -33,7 +33,7 @@ export const actions = {
   },async delete({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .delete(
-        "/users/" +
+        "/ceo/" +
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
@@ -52,7 +52,7 @@ export const actions = {
   async update({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .post(
-        "/users/" +
+        "/ceo/" +
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
@@ -73,7 +73,7 @@ export const actions = {
   async get_list({ commit, rootState }, params) {
     return await this.$axios
       .get(
-        "/users/" +
+        "/ceo/" +
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
@@ -93,7 +93,7 @@ export const actions = {
     if (rootState.shop.shop != null) {
       return await this.$axios
         .get(
-          "/users/" +
+          "/ceo/" +
           rootState.user.auth.user.id +
           "/shops/" +
           rootState.shop.shop.id +

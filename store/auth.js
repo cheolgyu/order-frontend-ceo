@@ -3,7 +3,7 @@ export const state = () => ({});
 export const actions = {
   async valid_email({ commit, rootState }, params) {
     return await this.$axios
-      .put("/users/" + rootState.user.auth.user.id + "/valid_email", params)
+      .put("/ceo/" + rootState.user.auth.user.id + "/valid_email", params)
       .then(res => {
         return res;
       })
@@ -21,7 +21,7 @@ export const actions = {
       }
     };
     return await this.$axios
-      .post("/users/" + rootState.user.auth.user.id + "/valid_email", d)
+      .post("/ceo/" + rootState.user.auth.user.id + "/valid_email", d)
       .then(res => {
         var msg = "다시 시도하세요.";
         if (res.data.status === 200) {
