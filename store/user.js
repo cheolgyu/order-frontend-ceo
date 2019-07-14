@@ -6,7 +6,7 @@ export const state = () => ({
 export const actions = {
   async join({ commit }, params) {
     return await this.$axios
-      .put(`auth`, params)
+      .put(`ceo/auth`, params)
       .then(res => {
         return res;
       })
@@ -15,7 +15,7 @@ export const actions = {
       });
   },
   async login({ commit, dispatch }, params) {
-    return await this.$axios.post(`auth`, params).then(res => {
+    return await this.$axios.post(`ceo/auth`, params).then(res => {
       if (res.status === 200) {
         commit("SET_AUTH", res.data);
         return dispatch("getme");
