@@ -62,7 +62,14 @@
                 <td>{{ props.item.options }}</td>
                 <td>
                   <ul>
-                    <li v-for="opt in props.item.option_list" :key="opt.id">{{ opt.name }}</li>
+                    <li v-for="opt in props.item.option_list" :key="opt.id">
+                      <template v-if="props.item.default == opt.id">
+                        <strong color="info">
+                          <ins>{{ opt.name }}</ins>
+                        </strong>
+                      </template>
+                      <template v-else>{{ opt.name }}</template>
+                    </li>
                   </ul>
                 </td>
                 <td>
