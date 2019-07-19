@@ -21,23 +21,27 @@
           <v-card dark>
             <v-card-title>{{title.left_down}}</v-card-title>
             <v-card-text dark>
-              <draggable
-                style="min-height:200px"
-                v-model="tmp_list"
-                :group="{ name: 'shared', pull: 'clone' }"
-              >
-                <template v-for="(element, index) in tmp_list">
-                  <v-chip
-                    outline
-                    color="white"
-                    :key="'d_'+index+'_'+element.name"
-                    close
-                    @input="remove(element)"
-                  >
-                    <strong>{{ element.name }}</strong>
-                  </v-chip>
-                </template>
-              </draggable>
+              <v-radio-group column v-model="edit_form.default">
+                <draggable
+                  style="min-height:200px"
+                  v-model="tmp_list"
+                  :group="{ name: 'shared', pull: 'clone' }"
+                >
+                  <template v-for="(element, index) in tmp_list">
+                    <v-chip
+                      outline
+                      color="white"
+                      :key="'d_'+index+'_'+element.name"
+                      close
+                      @input="remove(element)"
+                    >
+                      <strong>
+                        <v-radio :label="element.name" color="info" :value="element.id"></v-radio>
+                      </strong>
+                    </v-chip>
+                  </template>
+                </draggable>
+              </v-radio-group>
             </v-card-text>
           </v-card>
           <v-btn color="success" @click="submit">ok</v-btn>
@@ -158,6 +162,9 @@ export default {
               let tmp2 = this.init_find(this.opt_group);
               this.edit_form.id = tmp2.id;
               this.edit_form.name = tmp2.name;
+              this.edit_form.default = tmp2.default;
+              console.log(tmp2);
+              console.log(this.edit_form);
               this.tmp_list = tmp2.option_list;
               break;
           }

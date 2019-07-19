@@ -19,6 +19,7 @@ export default {
       form: {
         name: null,
         price: 0,
+        default: null,
         options: []
       }
     };
