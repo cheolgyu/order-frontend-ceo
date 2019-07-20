@@ -13,7 +13,8 @@ export default {
       action: CONSTANTS.ADD,
       form: {
         name: null,
-        price: 0
+        price: 0,
+        html_type: null
       }
     };
   }

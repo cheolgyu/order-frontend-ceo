@@ -14,7 +14,8 @@ export default {
       form: {
         id: null,
         name: null,
-        price: 0
+        price: 0,
+        html_type: null
       }
     };
   }

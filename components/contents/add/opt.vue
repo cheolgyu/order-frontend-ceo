@@ -9,7 +9,14 @@
           <v-card dark>
             <v-card-title>
               <v-text-field v-model="edit_form.name" label="이름"></v-text-field>
-              <v-text-field v-model="edit_form.price" label="가격"></v-text-field>
+              <v-text-field v-model="edit_form.price" label="가격" type="text"></v-text-field>
+              <v-select
+                :items="items"
+                v-model="edit_form.html_type"
+                item-text="text"
+                item-value="value"
+                label="옵션타입"
+              ></v-select>
             </v-card-title>
           </v-card>
           <v-btn color="success" @click="submit">ok</v-btn>
@@ -41,6 +48,7 @@ export default {
   components: {},
   data() {
     return {
+      items: [{ text: "선택", value: "s" }, { text: "증감", value: "i" }],
       CONSTANTS: CONSTANTS,
       edit_form: props.form,
       origin_list: [],
