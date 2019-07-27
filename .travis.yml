@@ -21,14 +21,14 @@ script:
   - echo "Skipping tests"
 
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: ceo.cheolgyu.com
-  region: ap-northeast-2
-  local_dir: dist
-  skip_cleanup: true
-  on:
-    branch: master
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: ceo.cheolgyu.com
+    region: ap-northeast-2
+    local_dir: dist
+    skip_cleanup: true
+    on:
+      branch: master
 after_deploy: 
   - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $CF_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
