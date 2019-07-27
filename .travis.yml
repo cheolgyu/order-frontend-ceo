@@ -11,6 +11,7 @@ cache:
 branches:
   only:
     - master
+    - develop
 install:
   - npm i -g travis-ci-cloudfront-invalidation
   - cp .env.production .env
@@ -24,11 +25,28 @@ deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
+    bucket: ceo.togo82.com
+    region: ap-northeast-2
+    local_dir: dist
+    skip_cleanup: true
+    env:
+     - VAR_CF_ID: $CF_ID_develop
+    on:
+      branch: master
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
     bucket: ceo.cheolgyu.com
     region: ap-northeast-2
     local_dir: dist
     skip_cleanup: true
+    env:
+     - VAR_CF_ID: $CF_ID
     on:
-      branch: master
+      branch: develop
+    
 after_deploy: 
-  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $CF_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+    - if [ $TRAVIS_BRANCH == 'develop' ];
+      then echo 11; travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $CF_ID_develop -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST;
+      else  echo 22; travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $CF_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST;
+      fi
