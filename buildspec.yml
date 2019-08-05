@@ -9,11 +9,11 @@ phases:
       - npm install
   build:
     commands:
-      - ls -al 
       - npm run generate
   post_build:
     commands:
-      - echo 
+      - echo ${S3_BUCKET} 
+      - echo $S3_BUCKET
       - aws s3 sync ./dist s3://${S3_BUCKET} 
       - aws cloudfront create-invalidation --distribution-id "${DISTRIBUTION_ID}" --paths '/*'
 cache:
