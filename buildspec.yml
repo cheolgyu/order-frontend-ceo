@@ -7,6 +7,7 @@ phases:
     commands:
       - cp .env.production .env
       - npm install
+      - npm list
   build:
     commands:
       - npm run generate
