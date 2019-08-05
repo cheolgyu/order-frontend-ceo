@@ -5,10 +5,10 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
+      - cp .env.production .env
       - npm install
   build:
     commands:
-      - cp .env.production .env
       - ls -al 
       - npm run generate
   post_build:
