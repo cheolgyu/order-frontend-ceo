@@ -7,6 +7,7 @@ phases:
     commands:
       - cp .env.production .env
       - npm install
+      - npm install dotenv
   build:
     commands:
       - ls -al 
