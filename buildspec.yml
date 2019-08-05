@@ -18,7 +18,7 @@ phases:
       - npm run generate
   post_build:
     commands:
-      - aws s3 sync ./dist $S3_BUCKET 
+      - aws s3 sync ./dist ${S3_BUCKET} 
       - aws cloudfront create-invalidation --distribution-id "${DISTRIBUTION_ID}" --paths '/*'
 cache:
   paths:
