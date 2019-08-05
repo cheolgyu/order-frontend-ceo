@@ -8,6 +8,7 @@ phases:
       - npm install
   build:
     commands:
+      - cp .env.production .env
       - npm run generate
   post_build:
     commands:
