@@ -8,11 +8,10 @@ env:
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      nodejs: 8
     commands:
       - cp .env.production .env
       - npm install
-      - npm install dotenv
   build:
     commands:
       - ls -al 
