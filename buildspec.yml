@@ -9,6 +9,7 @@ phases:
   build:
     commands:
       - cp .env.production .env
+      - ls -al 
       - npm run generate
   post_build:
     commands:
