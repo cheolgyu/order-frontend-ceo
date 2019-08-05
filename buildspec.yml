@@ -1,10 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    DISTRIBUTION_ID: "E1Q9POMWC8XY61"
-    S3_BUCKET: "ceo.togo82.com"
-
 phases:
   install:
     runtime-versions:
