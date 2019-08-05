@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  variables:
+    DISTRIBUTION_ID: "E1Q9POMWC8XY61"
+    S3_BUCKET: "ceo.togo82.com"
+
 phases:
   install:
     runtime-versions:
@@ -14,6 +19,7 @@ phases:
       - npm run generate
   post_build:
     commands:
+      - aws s3 sync ./build $S3_BUCKET 
       - aws cloudfront create-invalidation --distribution-id "${DISTRIBUTION_ID}" --paths '/*'
 cache:
   paths:
