@@ -9,9 +9,6 @@ phases:
       - npm install -g 
   build:
     commands:
-      - npm --version
-      - nodejs --version
-      
       - npm run generate
       - ls -al
   post_build:
