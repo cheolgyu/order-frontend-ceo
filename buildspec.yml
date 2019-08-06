@@ -6,7 +6,7 @@ phases:
       nodejs: 10
     commands:
       - cp .env.production .env
-      - npm install -g
+      - npm install
       - pwd
       - ls -al
   build:
