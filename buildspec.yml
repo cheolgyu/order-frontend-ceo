@@ -18,4 +18,4 @@ phases:
       - aws cloudfront create-invalidation --distribution-id "${DISTRIBUTION_ID}" --paths '/*'
 cache:
   paths:
-    - 'node_modules'
+     - 'node_modules/**/*'
