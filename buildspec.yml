@@ -6,11 +6,10 @@ phases:
       nodejs: 10
     commands:
       - cp .env.production .env
-      - npm install -g 
+      - npm install
   build:
     commands:
       - npm run generate
-      - ls -al
   post_build:
     commands:
       - aws s3 sync ./dist s3://${S3_BUCKET} 
