@@ -1,6 +1,12 @@
 version: 0.2
  
 phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      # 내 ecr base 사용.
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
   install:
     runtime-versions:
       nodejs: 10
