@@ -30,12 +30,18 @@ export const actions = {
         if (res.status === 200) {
           commit("SET_USER", res.data.data.user);
           commit("shop/SET_SHOP", res.data.data.shop, { root: true });
-          dispatch("product/get_list", null, { root: true });
-          dispatch("option_group/get_list", null, { root: true });
 
-          return dispatch("option/get_list", null, { root: true });
+          if (res.data.data.shop != null) {
+            dispatch("product/get_list", null, { root: true });
+            dispatch("option_group/get_list", null, { root: true });
+
+            return dispatch("option/get_list", null, { root: true });
+          } else {
+            localStorage.setItem("redirect", '/ceo/profile');
+          }
+
         }
-        return res.status;
+        return res;
       });
   }
 };

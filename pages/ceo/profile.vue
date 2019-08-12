@@ -6,9 +6,9 @@
       </template>
       <v-card>
         <v-card-text>
-          <v-text-field v-bind="prod.id" :value="user.account_id"/>
-          <v-text-field v-bind="prod.name" :value="user.name"/>
-          <v-text-field v-bind="prod.email" :value="user.email"/>
+          <v-text-field v-bind="prod.id" :value="user.account_id" />
+          <v-text-field v-bind="prod.name" :value="user.name" />
+          <v-text-field v-bind="prod.email" :value="user.email" />
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
@@ -17,8 +17,8 @@
         <div>가게</div>
       </template>
       <v-card>
-        <v-card-text>
-          <v-text-field v-bind="prod.shop" :value="shop.name"/>
+        <v-card-text v-if="shop != null">
+          <v-text-field v-bind="prod.shop" :value="shop.name" />
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
@@ -42,7 +42,7 @@
           <v-card>
             <v-card-text>
               <v-form>
-                <v-text-field v-bind="prod.email" v-model="form_email.kind_value"/>
+                <v-text-field v-bind="prod.email" v-model="form_email.kind_value" />
                 <v-btn
                   :disabled="submitStatus === 'PENDING'"
                   @click="valid_email"
@@ -58,9 +58,9 @@
           </template>
           <v-card>
             <v-card-text>
-              <v-text-field v-bind="prod.id" :value="user.account_id"/>
-              <v-text-field v-bind="prod.name" :value="user.name"/>
-              <v-text-field v-bind="prod.email" :value="user.email"/>
+              <v-text-field v-bind="prod.id" :value="user.account_id" />
+              <v-text-field v-bind="prod.name" :value="user.name" />
+              <v-text-field v-bind="prod.email" :value="user.email" />
             </v-card-text>
           </v-card>
         </v-expansion-panel-content>
@@ -73,9 +73,9 @@
           </template>
           <v-card>
             <v-card-text>
-              <v-text-field v-bind="prod.id" :value="user.account_id"/>
-              <v-text-field v-bind="prod.name" :value="user.name"/>
-              <v-text-field v-bind="prod.email" :value="user.email"/>
+              <v-text-field v-bind="prod.id" :value="user.account_id" />
+              <v-text-field v-bind="prod.name" :value="user.name" />
+              <v-text-field v-bind="prod.email" :value="user.email" />
             </v-card-text>
           </v-card>
         </v-expansion-panel-content>
