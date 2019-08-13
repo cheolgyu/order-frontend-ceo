@@ -1,6 +1,7 @@
 {
   "btn": {
     "submit": "완료",
+    "update": "수정",
     "clear": "다시작성",
     "back": "뒤로가기",
     "auth": "인증"

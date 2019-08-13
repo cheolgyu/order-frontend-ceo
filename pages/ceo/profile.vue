@@ -18,7 +18,24 @@
       </template>
       <v-card>
         <v-card-text v-if="shop != null">
-          <v-text-field v-bind="prod.shop" :value="shop.name" />
+          <v-form>
+            <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
+            <v-btn
+              :disabled="submitStatus.shop === 'PENDING'"
+              @click="click_shop"
+              v-text="btn_update"
+            />
+          </v-form>
+        </v-card-text>
+        <v-card-text v-if="shop == null">
+          <v-form>
+            <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
+            <v-btn
+              :disabled="submitStatus.shop === 'PENDING'"
+              @click="click_shop"
+              v-text="btn_submit"
+            />
+          </v-form>
         </v-card-text>
       </v-card>
     </v-expansion-panel-content>
@@ -44,7 +61,7 @@
               <v-form>
                 <v-text-field v-bind="prod.email" v-model="form_email.kind_value" />
                 <v-btn
-                  :disabled="submitStatus === 'PENDING'"
+                  :disabled="submitStatus.email === 'PENDING'"
                   @click="valid_email"
                   v-text="btn_auth"
                 />
@@ -89,14 +106,22 @@ import { mapState } from "vuex";
 
 export default {
   data: scope => ({
-    submitStatus: null,
+    submitStatus: {
+      email: false,
+      shop: false
+    },
     show_pwd: false,
+    btn_update: scope.$t("btn.update"),
     btn_auth: scope.$t("btn.auth"),
+    btn_submit: scope.$t("btn.submit"),
     show_password_comfirm: false,
     form: {
       login: { id: null, password: null },
       password_comfirm: null,
       email: null,
+      name: null
+    },
+    form_shop: {
       name: null
     },
     form_email: {
@@ -132,6 +157,7 @@ export default {
     })
   },
   mounted: function() {
+    this.form_shop.name = this.shop == null ? null : this.shop.name;
     this.form_email.user_id = this.user.id;
     this.form_email.kind_value = this.user.email;
   },
@@ -149,6 +175,18 @@ export default {
             alert("다시 시도하세요.");
           }
         });
+    },
+    click_shop() {
+      this.$store.dispatch("shop/add", this.$data.form_shop).then(res => {
+        console.log(res);
+        if (res == 200) {
+          alert("등록됬습니다.");
+        } else if (res === 400) {
+          alert(res.data);
+        } else {
+          alert("다시 시도하세요.");
+        }
+      });
     }
   }
 };

@@ -32,6 +32,26 @@ export const actions = {
     } else {
       console.log("shop action.get shop is null ");
     }
+  },
+  async add({ commit, rootState }, params) {
+    var d = {
+      type: "add",
+      method: "put",
+      url: "/ceo/" + rootState.user.auth.user.id + "/shops"
+    };
+    if (rootState.shop.shop != null) {
+      d.type = "update";
+      d.method = "post"
+    }
+
+    return await this.$axios({ method: d.method, url: d.url, data: params })
+      .then(res => {
+        if (res.status === 200) {
+          commit("SET_SHOP", res.data);
+          return res.status
+        }
+      });
+
   }
 };
 
