@@ -5,7 +5,7 @@ export default {
         dark: true,
         themes: {
             dark: {
-                primary: colors.red,
+                primary: colors.blue,
                 test: colors.blue
             }
         }
