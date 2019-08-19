@@ -1,50 +1,31 @@
 <template>
-  <div>
-    <h1>Super secret page {{ shop }}</h1>
-    <p>If you try to access this URL not connected, you will see the error page telling your that you are not connected.</p>
-    <NuxtLink to="/">Back to the home page</NuxtLink>
-    <v-btn @click="conn">conn</v-btn>
-  </div>
+  <v-list>
+    <v-list-item-group color="primary">
+      <v-list-item v-for="(item, i) in order.list" :key="i">
+        <v-list-item-content>
+          <v-list-item-title v-html="item"></v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
 </template>
 
 <script>
 import { mapState } from "vuex";
 
 export default {
-  data: scope => ({
-    ws_conn: null,
-    wsUri: "ws://127.0.0.1:3000/ws/"
-  }),
+  data: scope => ({}),
   fetch({ store, params }) {
-    console.log("=====================shop.vue fetch===================== ")
+    console.log("=====================shop.vue fetch===================== ");
     return store.dispatch("shop/chk_shop").then(res => {
       console.log(res);
     });
   },
   computed: {
     ...mapState({
-      shop: state => state.shop.shop,
-      user: state => state.user.user
+      order: state => state.order
     })
   },
-  methods: {
-    conn() {
-      // The `fetch` method is used to fill the store before rendering the page
-      console.log("Connecting...");
-      this.ws_conn = new WebSocket(this.wsUri);
-      this.ws_conn.onopen = function() {
-        console.log("Connected.");
-      };
-      this.ws_conn.onmessage = function(e) {
-        console.log(e);
-        console.log("Received: " + e.data);
-      };
-      this.conn.onclose = function() {
-        console.log("Disconnected.");
-        this.ws_conn = null;
-        // update_ui()
-      };
-    }
-  }
+  methods: {}
 };
 </script>

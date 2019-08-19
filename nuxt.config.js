@@ -1,4 +1,4 @@
-import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
+//import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
 import dotenv from "dotenv";
 import pkg from "./package";
 dotenv.config();
@@ -42,7 +42,6 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    "@/plugins/vuetify",
     "@/plugins/i18n.js",
     "@/plugins/vuelidate.js",
     "@/plugins/axios.js",
@@ -59,14 +58,21 @@ export default {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/vuetify",
     "@nuxtjs/axios",
     "@nuxtjs/pwa"
   ],
+  // Doc: https://github.com/nuxt-community/vuetify-module
+  vuetify: {
+    customVariables: ["~/assets/variables.scss"],
+    optionsPath: "./vuetify.options.js"
+  },
 
   /*
    ** Build configuration
    */
   build: {
+    /*
     transpile: ["vuetify/lib"],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {
@@ -74,6 +80,7 @@ export default {
         import: ["~assets/style/variables.styl"]
       }
     },
+*/
     /*
      ** You can extend webpack config here
      */

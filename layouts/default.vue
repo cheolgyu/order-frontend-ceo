@@ -20,6 +20,10 @@
 
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-badge>
+        <template v-slot:badge>{{order.cnt}}</template>
+        <v-icon>{{order.icon.state}}</v-icon>
+      </v-badge>
     </v-toolbar>
     <v-content>
       <v-container>
@@ -30,12 +34,16 @@
     <v-footer :fixed="fixed" app>
       <span>&copy; 2019</span>
     </v-footer>
+    <ws />
   </v-app>
 </template>
 
 <script>
+import ws from "~/components/ws.vue";
+import { mapState, mapGetters } from "vuex";
 export default {
   middleware: "auth",
+  components: { ws },
   data() {
     return {
       clipped: true,
@@ -78,6 +86,10 @@ export default {
       title: "사장님"
     };
   },
-  computed: {}
+  computed: {
+    ...mapState({
+      order: state => state.order
+    })
+  }
 };
 </script>
