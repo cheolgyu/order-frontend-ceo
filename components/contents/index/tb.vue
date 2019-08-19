@@ -13,35 +13,36 @@
             v-if="type === CONSTANTS.PRODUCT"
             :headers="headers"
             :items="products"
-            item-key="name"
-            hide-actions
+            hide-default-footer
           >
-            <template v-slot:items="props">
-              <tr>
-                <td class="px-1" style="width: 0.1%">
-                  <v-btn style="cursor: move" icon class="handle">
-                    <v-icon>drag_handle</v-icon>
-                  </v-btn>
-                </td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.price }}</td>
-                <td>
-                  <ul>
-                    <li
-                      v-for="option_group in props.item.option_group_list"
-                      :key="option_group.id"
-                    >{{ option_group.name }}</li>
-                  </ul>
-                </td>
-                <td>
-                  <v-btn dark icon :to="{ path: ''+btn.to.update+''+props.item.id+'' }">
-                    <v-icon small class="mr-2">edit</v-icon>
-                  </v-btn>
-                  <v-btn dark icon @click="remove(props.item)">
-                    <v-icon small class="mr-2">delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
+            <template v-slot:body="{items}">
+              <tbody>
+                <tr v-for="item in items" :key="item.name">
+                  <td class="px-1" style="width: 0.1%">
+                    <v-btn style="cursor: move" icon class="handle">
+                      <v-icon>drag_handle</v-icon>
+                    </v-btn>
+                  </td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>
+                    <ul>
+                      <li
+                        v-for="option_group in item.option_group_list"
+                        :key="option_group.id"
+                      >{{ option_group.name }}</li>
+                    </ul>
+                  </td>
+                  <td>
+                    <v-btn dark icon :to="{ path: ''+btn.to.update+''+item.id+'' }">
+                      <v-icon small class="mr-2">edit</v-icon>
+                    </v-btn>
+                    <v-btn dark icon @click="remove(item)">
+                      <v-icon small class="mr-2">delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
             </template>
           </v-data-table>
           <v-data-table
@@ -49,38 +50,40 @@
             :headers="headers"
             :items="opt_group"
             item-key="name"
-            hide-actions
+            hide-default-footer
           >
-            <template v-slot:items="props">
-              <tr>
-                <td class="px-1" style="width: 0.1%">
-                  <v-btn style="cursor: move" icon class="handle">
-                    <v-icon>drag_handle</v-icon>
-                  </v-btn>
-                </td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.options }}</td>
-                <td>
-                  <ul>
-                    <li v-for="opt in props.item.option_list" :key="opt.id">
-                      <template v-if="props.item.default == opt.id">
-                        <strong color="info">
-                          <ins>{{ opt.name }}</ins>
-                        </strong>
-                      </template>
-                      <template v-else>{{ opt.name }}</template>
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <v-btn dark icon :to="{ path: ''+btn.to.update+props.item.id }">
-                    <v-icon small class="mr-2">edit</v-icon>
-                  </v-btn>
-                  <v-btn dark icon @click="remove(props.item)">
-                    <v-icon small class="mr-2">delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
+            <template v-slot:body="{items}">
+              <tbody>
+                <tr v-for="item in items" :key="item.name">
+                  <td class="px-1" style="width: 0.1%">
+                    <v-btn style="cursor: move" icon class="handle">
+                      <v-icon>drag_handle</v-icon>
+                    </v-btn>
+                  </td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.options }}</td>
+                  <td>
+                    <ul>
+                      <li v-for="opt in item.option_list" :key="opt.id">
+                        <template v-if="item.default == opt.id">
+                          <strong color="info">
+                            <ins>{{ opt.name }}</ins>
+                          </strong>
+                        </template>
+                        <template v-else>{{ opt.name }}</template>
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <v-btn dark icon :to="{ path: ''+btn.to.update+item.id }">
+                      <v-icon small class="mr-2">edit</v-icon>
+                    </v-btn>
+                    <v-btn dark icon @click="remove(item)">
+                      <v-icon small class="mr-2">delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
             </template>
           </v-data-table>
           <v-data-table
@@ -88,22 +91,24 @@
             :headers="headers"
             :items="opt"
             item-key="name"
-            hide-actions
+            hide-default-footer
           >
-            <template v-slot:items="props">
-              <tr>
-                <td class="px-1" style="width: 0.1%"></td>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.price }}</td>
-                <td>
-                  <v-btn dark icon :to="{ path: btn.to.update+props.item.id }">
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                  <v-btn dark icon @click="remove(props.item)">
-                    <v-icon>delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
+            <template v-slot:body="{items}">
+              <tbody>
+                <tr v-for="item in items" :key="item.name">
+                  <td class="px-1" style="width: 0.1%"></td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>
+                    <v-btn dark icon :to="{ path: btn.to.update+item.id }">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    <v-btn dark icon @click="remove(item)">
+                      <v-icon>delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
             </template>
           </v-data-table>
         </v-card-text>

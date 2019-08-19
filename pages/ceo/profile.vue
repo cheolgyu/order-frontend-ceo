@@ -1,104 +1,106 @@
 <template>
-  <v-expansion-panel popout>
-    <v-expansion-panel-content>
-      <template v-slot:header>
-        <div>사용자</div>
-      </template>
-      <v-card>
-        <v-card-text>
-          <v-text-field v-bind="prod.id" :value="user.account_id" />
-          <v-text-field v-bind="prod.name" :value="user.name" />
-          <v-text-field v-bind="prod.email" :value="user.email" />
-        </v-card-text>
-      </v-card>
-    </v-expansion-panel-content>
-    <v-expansion-panel-content>
-      <template v-slot:header>
-        <div>가게</div>
-      </template>
-      <v-card>
-        <v-card-text v-if="shop != null">
-          <v-form>
-            <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
-            <v-btn
-              :disabled="submitStatus.shop === 'PENDING'"
-              @click="click_shop"
-              v-text="btn_update"
-            />
-          </v-form>
-        </v-card-text>
-        <v-card-text v-if="shop == null">
-          <v-form>
-            <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
-            <v-btn
-              :disabled="submitStatus.shop === 'PENDING'"
-              @click="click_shop"
-              v-text="btn_submit"
-            />
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-expansion-panel-content>
-    <v-expansion-panel-content>
-      <template v-slot:header>
-        <div>인증</div>
-      </template>
-      <v-expansion-panel popout>
-        <v-expansion-panel-content>
-          <template v-slot:actions>
-            <template v-if="user.valid_email">
-              <v-icon color="teal">done</v-icon>
+  <v-expansion-panels>
+    <v-expansion-panel popout>
+      <v-expansion-panel-content>
+        <template v-slot:header>
+          <div>사용자</div>
+        </template>
+        <v-card>
+          <v-card-text>
+            <v-text-field v-bind="prod.id" :value="user.account_id" />
+            <v-text-field v-bind="prod.name" :value="user.name" />
+            <v-text-field v-bind="prod.email" :value="user.email" />
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <template v-slot:header>
+          <div>가게</div>
+        </template>
+        <v-card>
+          <v-card-text v-if="shop != null">
+            <v-form>
+              <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
+              <v-btn
+                :disabled="submitStatus.shop === 'PENDING'"
+                @click="click_shop"
+                v-text="btn_update"
+              />
+            </v-form>
+          </v-card-text>
+          <v-card-text v-if="shop == null">
+            <v-form>
+              <v-text-field v-model="form_shop.name" v-bind="prod.shop" />
+              <v-btn
+                :disabled="submitStatus.shop === 'PENDING'"
+                @click="click_shop"
+                v-text="btn_submit"
+              />
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <template v-slot:header>
+          <div>인증</div>
+        </template>
+        <v-expansion-panel popout>
+          <v-expansion-panel-content>
+            <template v-slot:actions>
+              <template v-if="user.valid_email">
+                <v-icon color="teal">done</v-icon>
+              </template>
+              <template v-else>
+                <v-icon color="error">error</v-icon>
+              </template>
             </template>
-            <template v-else>
+            <template v-slot:header>
+              <div>이메일 인증</div>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-form>
+                  <v-text-field v-bind="prod.email" v-model="form_email.kind_value" />
+                  <v-btn
+                    :disabled="submitStatus.email === 'PENDING'"
+                    @click="valid_email"
+                    v-text="btn_auth"
+                  />
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-expansion-panel-content>
+          <v-expansion-panel-content>
+            <template v-slot:header>
+              <div>핸드폰 인증</div>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-text-field v-bind="prod.id" :value="user.account_id" />
+                <v-text-field v-bind="prod.name" :value="user.name" />
+                <v-text-field v-bind="prod.email" :value="user.email" />
+              </v-card-text>
+            </v-card>
+          </v-expansion-panel-content>
+          <v-expansion-panel-content>
+            <template v-slot:actions>
               <v-icon color="error">error</v-icon>
             </template>
-          </template>
-          <template v-slot:header>
-            <div>이메일 인증</div>
-          </template>
-          <v-card>
-            <v-card-text>
-              <v-form>
-                <v-text-field v-bind="prod.email" v-model="form_email.kind_value" />
-                <v-btn
-                  :disabled="submitStatus.email === 'PENDING'"
-                  @click="valid_email"
-                  v-text="btn_auth"
-                />
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-        <v-expansion-panel-content>
-          <template v-slot:header>
-            <div>핸드폰 인증</div>
-          </template>
-          <v-card>
-            <v-card-text>
-              <v-text-field v-bind="prod.id" :value="user.account_id" />
-              <v-text-field v-bind="prod.name" :value="user.name" />
-              <v-text-field v-bind="prod.email" :value="user.email" />
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-        <v-expansion-panel-content>
-          <template v-slot:actions>
-            <v-icon color="error">error</v-icon>
-          </template>
-          <template v-slot:header>
-            <div>계좌 인증</div>
-          </template>
-          <v-card>
-            <v-card-text>
-              <v-text-field v-bind="prod.id" :value="user.account_id" />
-              <v-text-field v-bind="prod.name" :value="user.name" />
-              <v-text-field v-bind="prod.email" :value="user.email" />
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+            <template v-slot:header>
+              <div>계좌 인증</div>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-text-field v-bind="prod.id" :value="user.account_id" />
+                <v-text-field v-bind="prod.name" :value="user.name" />
+                <v-text-field v-bind="prod.email" :value="user.email" />
+              </v-card-text>
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <script>

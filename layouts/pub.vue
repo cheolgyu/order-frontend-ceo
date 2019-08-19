@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-toolbar fixed app>
+    <v-app-bar app>
       <v-toolbar-title to="/" v-text="title" />
       <v-spacer />
       <v-btn to="/login" dark icon>
@@ -14,12 +14,12 @@
         </template>
 
         <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i" :to="item.to">
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile>
+          <v-list-item v-for="(item, i) in items" :key="i" :to="item.to">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />
@@ -30,28 +30,28 @@
 
 <script>
 export default {
-  middleware: 'pub',
+  middleware: "pub",
   data() {
     return {
       items: [
         {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
+          icon: "apps",
+          title: "Welcome",
+          to: "/"
         },
         {
-          icon: 'bubble_chart',
-          title: '회원가입',
-          to: '/join'
+          icon: "bubble_chart",
+          title: "회원가입",
+          to: "/join"
         },
         {
-          icon: 'bubble_chart',
-          title: '로그인',
-          to: '/login'
+          icon: "bubble_chart",
+          title: "로그인",
+          to: "/login"
         }
       ],
-      title: '사장님'
-    }
+      title: "사장님"
+    };
   }
-}
+};
 </script>

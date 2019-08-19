@@ -37,11 +37,6 @@ export default {
           text: "",
           value: "options",
           sortable: false
-        },
-        {
-          text: "",
-          value: "options",
-          sortable: false
         }
       ]
     };

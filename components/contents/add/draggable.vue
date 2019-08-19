@@ -29,11 +29,11 @@
                 >
                   <template v-for="(element, index) in tmp_list">
                     <v-chip
-                      outline
+                      outlined
                       color="white"
                       :key="'d_'+index+'_'+element.name"
                       close
-                      @input="remove(element)"
+                      @click:close="remove(element)"
                     >
                       <strong>
                         <v-radio :label="element.name" color="info" :value="element.id"></v-radio>
@@ -58,20 +58,19 @@
               :group="{ name: 'shared', pull: 'clone' }"
               :clone="clone"
             >
-              <v-list-tile avatar v-for="item in origin_list" :key="item.id">
-                <v-list-tile-avatar>
+              <v-list-item v-for="item in origin_list" :key="item.id">
+                <v-list-item-avatar>
                   <v-icon class="handle">drag_handle</v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                  <v-list-tile-sub-title>{{ item.created_at }}</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
                   <v-btn icon ripple>
                     <v-icon color="grey lighten-1">info</v-icon>
                   </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-card-text>
         </v-card>
