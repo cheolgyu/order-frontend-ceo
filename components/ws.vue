@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     conn() {
+      var _self = this;
       // The `fetch` method is used to fill the store before rendering the page
       console.log("Connecting...");
       this.ws_conn = new WebSocket(this.wsUri);
@@ -27,18 +28,23 @@ export default {
       //
       this.ws_conn.onopen = function() {
         console.log("Connected.");
+        _self.join();
       };
       this.ws_conn.onmessage = function(e) {
-        console.log(e);
-        console.log(typeof e.data);
-        console.log("Received: " + e.data);
-        this.$store.dispatch("order/set_order", e.data, { root: true });
+        console.log("Received: " + this, e.data);
+        _self.onmessage(e.data);
       };
       this.conn.onclose = function() {
         console.log("Disconnected.");
         this.ws_conn = null;
         // update_ui()
       };
+    },
+    onmessage(msg) {
+      this.$store.dispatch("order/set_order", msg, { root: true });
+    },
+    join(msg) {
+      this.$store.dispatch("ws/join", null, { root: true });
     }
   }
 };

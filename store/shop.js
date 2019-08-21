@@ -13,7 +13,7 @@ export const actions = {
       }
     });
   },
-  async get({ commit, rootState }, params) {
+  async get({ commit, rootState, dispatch }, params) {
     if (rootState.shop.shop != null) {
       return await this.$axios
         .get(
@@ -26,6 +26,7 @@ export const actions = {
         .then(res => {
           if (res.status === 200) {
             commit("SET_SHOP", res.data);
+
             return res.state
           }
         });

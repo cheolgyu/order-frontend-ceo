@@ -1,12 +1,31 @@
 <template>
   <v-list>
-    <v-list-item-group color="primary">
-      <v-list-item v-for="(item, i) in order.list" :key="i">
+    <v-list-group color="primary" v-for="(list, i) in order.list" :key="i" no-action>
+      <template v-slot:activator>
         <v-list-item-content>
-          <v-list-item-title v-html="item"></v-list-item-title>
+          <v-list-item-title>
+            <v-btn color="info" dark large>수락</v-btn>
+            <v-btn color="error" dark large>거부</v-btn>
+            <v-btn color="success" dark large>수령</v-btn>
+            <v-chip v-for="(item , j) in list" :key="'o_'+i+'_'+j">
+              {{item.name}}
+              <v-icon right>star</v-icon>
+            </v-chip>
+          </v-list-item-title>
+        </v-list-item-content>
+      </template>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>
+            <v-chip v-for="(item , j) in list" :key="'o_'+i+'_'+j">
+              {{item.name}}
+              <v-icon right>star</v-icon>
+            </v-chip>
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-    </v-list-item-group>
+    </v-list-group>
   </v-list>
 </template>
 

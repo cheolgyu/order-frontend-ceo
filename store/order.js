@@ -13,7 +13,8 @@ export const actions = {
         commit("SET_CNT", params);
     },
     set_order({ commit, rootState }, params) {
-        commit("SET_ORDER", params);
+        console.log(params);
+        commit("SET_ORDER", JSON.parse(params));
         commit("SET_CNT");
     },
 
