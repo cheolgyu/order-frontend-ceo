@@ -6,9 +6,8 @@ export const actions = {
     set({ commit, rootState }, params) {
         commit("SET_CONN", params);
     },
-    buy({ commit, rootState }) {
-        var list = rootState.cart.list;
-        commit("BUY", list);
+    send({ commit, rootState }, params) {
+        commit("SEND", params);
     },
     join({ commit, rootState }) {
         console.log(rootState.shop.shop.id)
@@ -22,7 +21,7 @@ export const mutations = {
     SET_CONN(state, params) {
         state.ws_conn = params;
     },
-    BUY(state, params) {
+    SEND(state, params) {
         state.ws_conn.send(params);
     },
     JOIN(state, params) {

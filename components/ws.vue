@@ -6,7 +6,7 @@ import { mapState } from "vuex";
 export default {
   data: scope => ({
     ws_conn: null,
-    wsUri: "ws://127.0.0.1:3001/ws/"
+    wsUri: (window.location.protocol=='https:'&&'wss://'||'ws://')+"127.0.0.1:3001/ws/"
   }),
   created() {
     console.log("ws.vue created");
@@ -41,7 +41,10 @@ export default {
       };
     },
     onmessage(msg) {
-      this.$store.dispatch("order/set_order", msg, { root: true });
+      console.log(" ============ onmessage ===============");
+      console.log(" ============ onmessage ===============");
+      console.log(" ============ onmessage ===============");
+      this.$store.dispatch("order/get_list", msg, { root: true });
     },
     join(msg) {
       this.$store.dispatch("ws/join", null, { root: true });
