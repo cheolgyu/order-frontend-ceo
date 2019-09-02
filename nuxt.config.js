@@ -45,7 +45,11 @@ export default {
     "@/plugins/i18n.js",
     "@/plugins/vuelidate.js",
     "@/plugins/axios.js",
-    "@/plugins/vuedraggable.js"
+    "@/plugins/vuedraggable.js",
+    {
+      src: '~/plugins/firebase.js',
+      ssr: false
+    }
   ],
 
   axios: {

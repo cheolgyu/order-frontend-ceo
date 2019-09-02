@@ -36,15 +36,17 @@
       <span>&copy; 2019</span>
     </v-footer>
     <ws />
+    <fb />
   </v-app>
 </template>
 
 <script>
 import ws from "~/components/ws.vue";
+import fb from "~/components/fb.vue";
 import { mapState, mapGetters } from "vuex";
 export default {
   middleware: "auth",
-  components: { ws },
+  components: { ws, fb },
   data() {
     return {
       clipped: true,

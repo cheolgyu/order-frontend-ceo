@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt --spa",
-    "build": "nuxt --spa build",
+    "build": "nuxt build",
     "start": "nuxt --spa start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
@@ -24,7 +24,8 @@
     "sortablejs": "^1.10.0-rc3",
     "vue-i18n": "^8.12.0",
     "vuedraggable": "^2.23.0",
-    "vuelidate": "^0.7.4"
+    "vuelidate": "^0.7.4",
+    "firebase": "^6.4.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",

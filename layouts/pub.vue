@@ -29,7 +29,10 @@
 </template>
 
 <script>
+import fb from "~/components/fb.vue";
+
 export default {
+  components: { fb },
   middleware: "pub",
   data() {
     return {
