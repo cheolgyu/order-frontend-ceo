@@ -30,8 +30,17 @@ export default {
       this.$store
         .dispatch("sw/save_token", this.$fb_sw_token, { root: true })
         .then(res => {
+          this.$store.dispatch("sw/check", null, { root: true }).then(res => {
+            console.log(res);
+          });
+        });
+      /* 
+      this.$store
+        .dispatch("sw/save_token", this.$fb_sw_token, { root: true })
+        .then(res => {
           this.$store.dispatch("sw/reg_token", null, { root: true });
         });
+        */
     }
   }
 };

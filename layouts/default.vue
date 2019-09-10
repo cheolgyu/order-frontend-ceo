@@ -60,6 +60,11 @@ export default {
         },
         {
           icon: "bubble_chart",
+          title: "주문",
+          to: "/ceo/order"
+        },
+        {
+          icon: "bubble_chart",
           title: "상점",
           to: "/ceo/shop"
         },
