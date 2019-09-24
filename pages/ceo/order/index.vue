@@ -5,9 +5,9 @@
         <v-list-item-content>
           <v-list-item-title>
             <v-btn color="info" dark large>{{_order.id}}</v-btn>
-            <v-btn color="info" @click.stop="fn_order(_order,'y')" dark large>승인</v-btn>
-            <v-btn color="error" @click.stop="fn_order(_order,'n')" dark large>거부</v-btn>
-            <v-btn color="success" @click.stop="fn_order(_order,'z')" dark large>제조완료</v-btn>
+            <v-btn color="info" @click.stop="fn_order(_order,1)" dark large>승인</v-btn>
+            <v-btn color="error" @click.stop="fn_order(_order,0)" dark large>거부</v-btn>
+            <v-btn color="success" @click.stop="fn_order(_order,2)" dark large>제조완료</v-btn>
             <v-chip v-for="(item , j) in _order.products" :key="'o_'+i+'_'+j">
               {{item.name}}
               <v-icon right>star</v-icon>
