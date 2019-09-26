@@ -7,6 +7,7 @@ export default {
   mode: "spa",
   env: {
     // API_URL: process.env.VUE_APP_API_URL
+    VUE_APP_WS_URL: process.env.VUE_APP_WS_URL
   },
   /*
    ** Headers of the page

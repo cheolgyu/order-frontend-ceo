@@ -6,7 +6,7 @@ import { mapState } from "vuex";
 export default {
   data: scope => ({
     ws_conn: null,
-    wsUri: (window.location.protocol=='https:'&&'wss://'||'ws://')+"127.0.0.1:3001/ws/"
+    wsUri: process.env.VUE_APP_WS_URL
   }),
   created() {
     console.log("ws.vue created");
