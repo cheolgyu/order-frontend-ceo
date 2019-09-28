@@ -27,6 +27,7 @@ export default {
   mounted() {},
   methods: {
     sendTokenToServer() {
+      console.log("run sendTokenToServer this.$fb_sw_token: ",this.$fb_sw_token);
       this.$store
         .dispatch("sw/save_token", this.$fb_sw_token, { root: true })
         .then(res => {
