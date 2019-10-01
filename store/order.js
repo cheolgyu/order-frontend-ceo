@@ -5,7 +5,8 @@ export const state = () => ({
         f: "notifications_none",
         state: "notifications_none"
     },
-    list: []
+    list: [],
+    now: []
 });
 
 export const actions = {
@@ -16,6 +17,10 @@ export const actions = {
         console.log("set_order=", params);
         commit("SET_ORDER", params);
         commit("SET_CNT");
+    },
+    set_now({ commit, rootState }, params) {
+        console.log("set_now=", params);
+        commit("SET_NOW", params);
     },
     get_list({ commit, rootState, dispatch }, params) {
         console.log("set_state=", params);
@@ -50,8 +55,27 @@ export const actions = {
             .then(res => {
                 if (res.status == 200) {
                     dispatch("ws/send", params, { root: true });
+                    dispatch("order/now", params, { root: true });
 
                 } else {
+                }
+            });
+    },
+    now({ commit, rootState, dispatch }, params) {
+        this.$axios
+            .get(
+                "/ceo/" +
+                rootState.user.auth.user.id +
+                "/shops/" +
+                rootState.shop.shop.id +
+                "/order/now"
+            )
+            .then(res => {
+                if (res.status == 200) {
+                    console.log("now  ", res.data.data.item)
+                    let r = res.data.data.item;
+                    dispatch("order/set_now", r, { root: true });
+
                 }
             });
     },
@@ -66,6 +90,10 @@ export const mutations = {
     SET_ORDER(state, params) {
         //state.list.push(params);
         state.list = params;
+    },
+    SET_NOW(state, params) {
+        //state.list.push(params);
+        state.now = params;
     },
 
 

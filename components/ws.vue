@@ -41,10 +41,7 @@ export default {
       };
     },
     onmessage(msg) {
-      console.log(" ============ onmessage ===============");
-      console.log(" ============ onmessage ===============");
-      console.log(" ============ onmessage ===============");
-      this.$store.dispatch("order/get_list", msg, { root: true });
+      this.$store.dispatch("order/now", msg, { root: true });
     },
     join(msg) {
       this.$store.dispatch("ws/join", null, { root: true });
