@@ -2,7 +2,7 @@
   <v-card class="mx-auto" max-width="500" tile>
     <v-list shaped nav>
       <v-subheader>주문 목록</v-subheader>
-      <v-list-group color="primary" v-for="item,i in order.now" :key="i">
+      <v-list-group color="primary" v-for="item,i in order.list" :key="i">
         <template v-slot:activator>
           <v-list-item-action>
             <v-checkbox></v-checkbox>

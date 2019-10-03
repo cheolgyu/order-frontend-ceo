@@ -77,6 +77,10 @@ export default {
           icon: "bubble_chart",
           title: "주문3",
           to: "/ceo/order/view3"
+        },{
+          icon: "bubble_chart",
+          title: "전체",
+          to: "/ceo/order/list"
         },
         {
           icon: "bubble_chart",

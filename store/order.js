@@ -23,16 +23,13 @@ export const actions = {
     commit("SET_CNT", params)
   },
   set_order({ commit, rootState }, params) {
-    console.log("set_order=", params)
     commit("SET_ORDER", params)
     commit("SET_CNT")
   },
   set_now({ commit, rootState }, params) {
-    console.log("set_now=", params)
     commit("SET_NOW", params)
   },
   get_list({ commit, rootState, dispatch }, params) {
-    console.log("set_state=", params)
     this.$axios
       .get(
         "/ceo/" +
@@ -43,7 +40,6 @@ export const actions = {
       )
       .then(res => {
         if (res.status == 200) {
-          console.log("get_list  ", res.data.data.item)
           let r = res.data.data.item
           dispatch("order/set_order", r, { root: true })
         }
@@ -81,7 +77,8 @@ export const actions = {
         if (res.status == 200) {
           console.log("now  ", res.data.data.item)
           let r = res.data.data.item
-          dispatch("order/set_now", r, { root: true })
+          dispatch("order/set_now", r, { root: true });
+
         }
       })
   }
