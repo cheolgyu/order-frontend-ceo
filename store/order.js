@@ -8,16 +8,7 @@ export const state = () => ({
   list: [],
   now: []
 })
-function groupBy(objectArray, property) {
-  return objectArray.reduce(function (acc, obj) {
-    var key = obj[property]
-    if (!acc[key]) {
-      acc[key] = []
-    }
-    acc[key].push(obj)
-    return acc
-  }, {})
-}
+
 export const actions = {
   set_cnt({ commit, rootState }, params) {
     commit("SET_CNT", params)
@@ -94,11 +85,6 @@ export const mutations = {
   },
   SET_NOW(state, params) {
     //state.list.push(params);
-    console.log(params)
-    params.forEach(function (element) {
-      element.products = groupBy(element.products, "id")
-    });
-    console.log("params.products:", typeof params.products, params.products)
     state.now = params
   }
 }
