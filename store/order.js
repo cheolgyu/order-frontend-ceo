@@ -66,7 +66,6 @@ export const actions = {
       )
       .then(res => {
         if (res.status == 200) {
-          console.log("now  ", res.data.data.item)
           let r = res.data.data.item
           dispatch("order/set_now", r, { root: true });
 
