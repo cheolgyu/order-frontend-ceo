@@ -20,6 +20,8 @@ export default {
         id: null,
         name: null,
         price: 0,
+        p_price: 0,
+        optg_price: 0,
         opt_group: []
       }
     };

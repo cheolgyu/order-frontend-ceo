@@ -4,7 +4,7 @@
       <v-flex xs6 grow color="grey">
         <v-form>
           <v-toolbar>
-            <v-toolbar-title>{{title.left}}</v-toolbar-title>
+            <v-toolbar-title>{{title.left}}{{edit_form.name}}</v-toolbar-title>
           </v-toolbar>
           <v-card dark>
             <v-card-title>
@@ -12,8 +12,22 @@
               <v-text-field
                 number
                 v-if="type === CONSTANTS.PRODUCT"
+                v-model="edit_form.p_price"
+                label="상품의 기본가격"
+              ></v-text-field>
+              <v-text-field
+                number
+                v-if="type === CONSTANTS.PRODUCT"
+                v-model="edit_form.optg_price"
+                disabled
+                label="+옵션그룹 기본가격"
+              ></v-text-field>
+              <v-text-field
+                number
+                v-if="type === CONSTANTS.PRODUCT"
                 v-model="edit_form.price"
-                label="가격"
+                disabled
+                label="=소비자 기본가격"
               ></v-text-field>
             </v-card-title>
           </v-card>
@@ -36,7 +50,11 @@
                       @click:close="remove(element)"
                     >
                       <strong>
-                        <v-radio :label="element.name" color="info" :value="element.id"></v-radio>
+                        <v-radio
+                          :label="element.name+'('+element.option_list.find(el=> el.id == element.default).price+'원)'"
+                          color="info"
+                          :value="element.id"
+                        ></v-radio>
                       </strong>
                     </v-chip>
                   </template>
@@ -130,6 +148,10 @@ export default {
       params: null
     };
   },
+  watch: {
+    "edit_form.p_price": "set_price",
+    "edit_form.optg_price": "set_price"
+  },
   computed: {
     ...mapState({
       auth: state => state.user.auth,
@@ -145,9 +167,12 @@ export default {
   },
   methods: {
     init() {
+      console.log("===========================================init urn");
       switch (this.action) {
         case CONSTANTS.ADD:
           this.edit_form = this.form;
+          this.edit_form.optg_price = 0;
+          this.edit_form.p_price = 0;
           switch (this.type) {
             case CONSTANTS.PRODUCT:
               this.origin_list = this.opt_group;
@@ -178,6 +203,8 @@ export default {
               this.edit_form.id = tmp2.id;
               this.edit_form.name = tmp2.name;
               this.edit_form.default = tmp2.default;
+              this.edit_form.optg_price = 0;
+              this.edit_form.p_price = 0;
               console.log(tmp2);
               console.log(this.edit_form);
               this.tmp_list = tmp2.option_list;
@@ -207,12 +234,16 @@ export default {
     },
     clone: function(el) {
       let has = false;
+      console.log("clone==", el);
       this.tmp_list.find(function(element) {
         if (el.id == element.id) {
           has = true;
         }
       });
       if (has == false) {
+        this.edit_form.optg_price =
+          Number(this.edit_form.optg_price) +
+          Number(this.get_opt_default_price(el));
         return el;
       }
     },
@@ -237,6 +268,14 @@ export default {
         default:
           break;
       }
+    },
+    get_opt_default_price(optg) {
+      return optg.option_list.find(opt => opt.id == optg.default).price;
+    },
+    set_price() {
+      console.log("watch ==> run set_price");
+      this.edit_form.price =
+        Number(this.edit_form.p_price) + Number(this.edit_form.optg_price);
     }
   }
 };
