@@ -66,9 +66,25 @@
                   <v-list-item-title>{{ item.name }}</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn icon ripple>
-                    <v-icon color="grey lighten-1">info</v-icon>
-                  </v-btn>
+                  <v-tooltip
+                    bottom
+                    :open-on-click="true"
+                    :open-on-hover="true"
+                    :offset-overflow="true"
+                    :allow-overflow="true"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon v-on="on">
+                        <v-icon color="grey lighten-1">info</v-icon>
+                      </v-btn>
+                    </template>
+
+                    <p
+                      v-for="opt in item.option_list"
+                      :key="opt.id"
+                      v-bind:class="item.default== opt.id? 'info--text font-weight-bold' : ''"
+                    >{{ opt.name}}( {{ opt.price}} 원 )</p>
+                  </v-tooltip>
                 </v-list-item-action>
               </v-list-item>
             </draggable>
@@ -225,3 +241,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.is_defualt {
+  color: red;
+}
+</style>
