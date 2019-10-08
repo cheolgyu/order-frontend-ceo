@@ -3,11 +3,11 @@ import Vue from 'vue'
 
 Notification.requestPermission().then(permission => {
     if (permission === "granted") {
-        console.log("Notification permission granted.");
+
         // TODO(developer): Retrieve an Instance ID token for use with FCM.
         // ...
     } else {
-        console.log("Unable to get permission to notify.");
+
     }
 });
 
@@ -38,18 +38,18 @@ let fb_registration = null;
 navigator.serviceWorker.register('/firebase-messaging-sw.js')
     .then((registration) => {
         fb_registration = registration;
-        console.log('messaging::::::::::::::::::::. ', messaging);
+
         messaging.useServiceWorker(registration);
         return messaging.getToken();
     })
     .then((token) => {
         Vue.prototype.$fb_sw_token = token;
-        console.log('token::::::::::::::::::::. ', token);
+
     });
 
 
 messaging.onMessage((payload) => {
-    console.log('Message received. ', payload);
+
 
     // Customize notification here
     var notificationTitle = payload.notification.title;

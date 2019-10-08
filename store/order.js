@@ -37,7 +37,7 @@ export const actions = {
       })
   },
   state({ commit, rootState, dispatch }, params) {
-    console.log("set_state=", params)
+    
     this.$axios
       .put(
         "/ceo/" +

@@ -70,10 +70,7 @@ export default {
     show: false
   }),
   fetch({ store, params }) {
-    console.log("=====================shop.vue fetch===================== ");
-    return store.dispatch("shop/chk_shop").then(res => {
-      console.log(res);
-    });
+    return store.dispatch("shop/chk_shop").then(res => {});
   },
   computed: {
     ...mapState({
@@ -90,7 +87,6 @@ export default {
         txt: this.shop,
         req_session_id: this.shop
       };
-      console.log(" fnitem ", s, params);
       this.$store.dispatch("order/state", params, {
         root: true
       });

@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     submit() {
-      // console.log('submit!', this.$data.form, this.$store)
+      // 
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
@@ -176,7 +176,7 @@ export default {
           this.submitStatus = 'OK'
         }, 500)
       }
-      console.log(this.submitStatus)
+      
     },
     clear() {
       this.$v.$reset()

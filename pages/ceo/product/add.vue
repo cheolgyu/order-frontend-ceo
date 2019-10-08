@@ -2,7 +2,7 @@
   <draggable :type="type" :title="title" :action="action" />
 </template>
 <script>
-import draggable from "~/components/contents/add/draggable.vue";
+import draggable from "~/components/contents/add/draggable/index.vue";
 import CONSTANTS from "~/components/constants.vue";
 
 export default {

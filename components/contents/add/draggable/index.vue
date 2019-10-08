@@ -38,25 +38,29 @@
               <v-radio-group column>
                 <draggable
                   style="min-height:200px"
-                  v-model="tmp_list"
+                  v-model="edit_list"
                   :group="{ name: 'shared', pull: 'clone' }"
                 >
-                  <template v-for="(optg, index) in tmp_list">
-                    <v-chip
-                      outlined
-                      color="white"
-                      :key="'d_'+index+'_'+optg.og_nm"
-                      close
-                      @click:close="remove(optg)"
-                    >
-                      <strong>
-                        <v-radio
-                          :label="optg.og_nm+'('+get_opt_default_price(optg)+'원)'"
-                          color="info"
-                          :value="optg.og_id"
-                        ></v-radio>
-                      </strong>
-                    </v-chip>
+                  <template v-if="type === CONSTANTS.PRODUCT">
+                    <template v-for="edit in edit_list">
+                      <editItemP
+                        :item="edit"
+                        v-bind:key="edit.og_id"
+                        :label="get_label(edit)"
+                        :event="event"
+                      />
+                    </template>
+                  </template>
+
+                  <template v-else-if="type === CONSTANTS.OPTION_GROUP">
+                    <template v-for="(edit) in edit_list">
+                      <editItemOg
+                        :item="edit"
+                        v-bind:key="edit.o_id"
+                        :label="get_label(edit)"
+                        :event="event"
+                      />
+                    </template>
                   </template>
                 </draggable>
               </v-radio-group>
@@ -72,39 +76,26 @@
         <v-card>
           <v-card-text>
             <draggable
-              v-model="origin_list"
+              v-model="share_list"
               :group="{ name: 'shared', pull: 'clone' }"
               :clone="clone"
             >
-              <v-list-item v-for="item in origin_list" :key="item.og_id">
-                <v-list-item-avatar>
-                  <v-icon class="handle">drag_handle</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.og_nm }}</v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-tooltip
-                    bottom
-                    :open-on-click="true"
-                    :open-on-hover="true"
-                    :offset-overflow="true"
-                    :allow-overflow="true"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-btn icon v-on="on">
-                        <v-icon color="grey lighten-1">info</v-icon>
-                      </v-btn>
-                    </template>
+              <template v-if="type === CONSTANTS.PRODUCT">
+                <template v-for="item in share_list">
+                  <shareItemP
+                    :item="item"
+                    v-bind:key="item.og_id"
+                    :label="get_label(item)"
+                    :event="event"
+                  />
+                </template>
+              </template>
 
-                    <p
-                      v-for="opt in item.o"
-                      :key="opt.o_id"
-                      v-bind:class="item.og_default== opt.o_id? 'info--text font-weight-bold' : ''"
-                    >{{ opt.og_nm}}( {{ opt.o_price}} 원 )</p>
-                  </v-tooltip>
-                </v-list-item-action>
-              </v-list-item>
+              <template v-else-if="type === CONSTANTS.OPTION_GROUP">
+                <template v-for="item in share_list">
+                  <shareItemOg :item="item" v-bind:key="item.o_id" :label="get_label(item)" />
+                </template>
+              </template>
             </draggable>
           </v-card-text>
         </v-card>
@@ -116,6 +107,10 @@
 import draggable from "vuedraggable";
 import { mapState } from "vuex";
 import CONSTANTS from "~/components/constants.vue";
+import editItemP from "~/components/contents/add/draggable/edit/item/p.vue";
+import editItemOg from "~/components/contents/add/draggable/edit/item/og.vue";
+import shareItemP from "~/components/contents/add/draggable/share/item/p.vue";
+import shareItemOg from "~/components/contents/add/draggable/share/item/og.vue";
 
 const props = {
   title: {
@@ -133,7 +128,7 @@ const props = {
 };
 export default {
   props,
-  components: { draggable },
+  components: { draggable, editItemP, editItemOg, shareItemP, shareItemOg },
   data() {
     return {
       CONSTANTS: CONSTANTS,
@@ -155,10 +150,14 @@ export default {
           options: []
         }
       },
-      origin_list: [],
-      tmp_list: [],
+      share_list: [],
+      edit_list: [],
       dispatch_action: null,
-      params: null
+      params: null,
+      event: {
+        remove: this.remove,
+        get_label: this.get_label
+      }
     };
   },
   watch: {
@@ -187,11 +186,11 @@ export default {
           this.edit_form[this.type].p_price = 0;
           switch (this.type) {
             case CONSTANTS.PRODUCT:
-              this.origin_list = this.opt_group;
+              this.share_list = this.opt_group;
               this.dispatch_action = "product/add";
               break;
             case CONSTANTS.OPTION_GROUP:
-              this.origin_list = this.opt;
+              this.share_list = this.opt;
               this.dispatch_action = "option_group/add";
               break;
           }
@@ -200,7 +199,7 @@ export default {
         case CONSTANTS.UPDATE:
           switch (this.type) {
             case CONSTANTS.PRODUCT:
-              this.origin_list = this.opt_group;
+              this.share_list = this.opt_group;
               this.dispatch_action = "product/update";
               let tmp = this.init_find(this.products);
               this.edit_form[this.type].id = tmp.p_id;
@@ -208,19 +207,19 @@ export default {
               this.edit_form[this.type].price = tmp.price;
               this.edit_form[this.type].p_price = tmp.p_price;
               this.edit_form[this.type].optg_price = tmp.optg_price;
-              this.tmp_list = tmp.og;
+              this.edit_list = tmp.og;
 
               break;
             case CONSTANTS.OPTION_GROUP:
-              this.origin_list = this.opt;
+              this.share_list = this.opt;
               this.dispatch_action = "option_group/update";
               let tmp2 = this.init_find(this.opt_group);
-              this.edit_form[this.type].id = tmp2.id;
-              this.edit_form[this.type].name = tmp2.name;
-              this.edit_form[this.type].default = tmp2.default;
-              this.edit_form[this.type].p_price = tmp2.p_price;
-              this.edit_form[this.type].optg_price = tmp2.optg_price;
-              this.tmp_list = tmp2.option_list;
+              this.edit_form[this.type].id = tmp2.og_id;
+              this.edit_form[this.type].name = tmp2.og_nm;
+              this.edit_form[this.type].default = tmp2.og_default;
+              this.edit_form[this.type].p_price = 0;
+              this.edit_form[this.type].optg_price = 0;
+              this.edit_list = tmp2.o;
               break;
           }
           break;
@@ -231,7 +230,7 @@ export default {
         if (el.hasOwnProperty("p_id")) {
           return el.p_id == window.$nuxt._route.params.id;
         } else {
-          return el.id == window.$nuxt._route.params.id;
+          return el.og_id == window.$nuxt._route.params.id;
         }
       });
     },
@@ -246,15 +245,14 @@ export default {
     },
     clone: function(el) {
       let has = false;
-      console.log("clone", this.tmp_list, el);
       if (this.type == "product") {
-        this.tmp_list.find(function(element) {
+        this.edit_list.find(function(element) {
           if (el.og_id == element.og_id) {
             has = true;
           }
         });
       } else {
-        this.tmp_list.find(function(element) {
+        this.edit_list.find(function(element) {
           if (el.og_id == element.og_id) {
             has = true;
           }
@@ -264,17 +262,17 @@ export default {
       if (has == false) {
         this.edit_form[this.type].optg_price =
           Number(this.edit_form[this.type].optg_price) +
-          Number(this.get_opt_default_price(el));
+          Number(this.get_price(el));
         return el;
       }
     },
     remove(item) {
-      this.tmp_list.splice(this.tmp_list.indexOf(item), 1);
+      this.edit_list.splice(this.edit_list.indexOf(item), 1);
     },
     submit_before() {
       let arr = [];
-      for (var i = 0; i < this.tmp_list.length; i++) {
-        arr.push(this.tmp_list[i].id);
+      for (var i = 0; i < this.edit_list.length; i++) {
+        arr.push(this.edit_list[i].id);
       }
 
       switch (this.type) {
@@ -290,20 +288,26 @@ export default {
           break;
       }
     },
-    get_opt_default_price(optg) {
-      console.log("get_opt_default_price", optg);
-      if (optg.hasOwnProperty("o")) {
-        let aa = optg.o.find(el => el.o_id == optg.og_default);
-        console.log(aa);
-        return optg.o.find(el => el.o_id == optg.og_default).o_price;
+    get_price(item) {
+      if (item.hasOwnProperty("og_id")) {
+        return item.o.find(el => el.o_id == item.og_default).o_price;
       } else {
-        return optg.option_list.find(el => el.id == optg.default).price;
+        return item.o_price;
       }
     },
     set_price() {
       this.edit_form[this.type].price =
         Number(this.edit_form[this.type].p_price) +
         Number(this.edit_form[this.type].optg_price);
+    },
+    get_label(item) {
+      let text = "";
+      if (item.hasOwnProperty("og_id")) {
+        text = item.og_nm + "(" + this.get_price(item) + "원)";
+      } else {
+        text = item.o_nm + "(" + this.get_price(item) + "원)";
+      }
+      return text;
     }
   }
 };

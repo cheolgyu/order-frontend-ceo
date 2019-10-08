@@ -71,11 +71,11 @@ export const actions = {
       )
       .then(res => {
         if (res.status == 200) {
-          console.log("옵션리스트 조회");
+
           commit("SET_LIST", res.data.data.items);
           return res;
         } else {
-          console.log(res);
+
         }
       });
   }

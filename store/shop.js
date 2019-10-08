@@ -31,7 +31,7 @@ export const actions = {
           }
         });
     } else {
-      console.log("shop action.get shop is null ");
+      
     }
   },
   async add({ commit, rootState }, params) {

@@ -17,24 +17,24 @@
           >
             <template v-slot:body="{items}">
               <tbody>
-                <tr v-for="item in items" :key="item.name">
+                <tr v-for="item in items" :key="item.p_id">
                   <td class="px-1" style="width: 0.1%">
                     <v-btn style="cursor: move" icon class="handle">
                       <v-icon>drag_handle</v-icon>
                     </v-btn>
                   </td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.price }}</td>
+                  <td>{{ item.p_nm }}</td>
+                  <td>{{ item.p_price }}</td>
                   <td>
                     <ul>
                       <li
-                        v-for="option_group in item.option_group_list"
-                        :key="option_group.id"
-                      >{{ option_group.name }}</li>
+                        v-for="option_group in item.og"
+                        :key="option_group.og_id"
+                      >{{ option_group.og_nm }}</li>
                     </ul>
                   </td>
                   <td>
-                    <v-btn dark icon :to="{ path: ''+btn.to.update+''+item.id+'' }">
+                    <v-btn dark icon :to="{ path: ''+btn.to.update+''+item.p_id+'' }">
                       <v-icon small class="mr-2">edit</v-icon>
                     </v-btn>
                     <v-btn dark icon @click="remove(item)">
@@ -49,33 +49,33 @@
             v-else-if="type === CONSTANTS.OPTION_GROUP"
             :headers="headers"
             :items="opt_group"
-            item-key="name"
+            item-key="og_id"
             hide-default-footer
           >
             <template v-slot:body="{items}">
               <tbody>
-                <tr v-for="item in items" :key="item.name">
+                <tr v-for="item in items" :key="item.og_id">
                   <td class="px-1" style="width: 0.1%">
                     <v-btn style="cursor: move" icon class="handle">
                       <v-icon>drag_handle</v-icon>
                     </v-btn>
                   </td>
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.og_nm }}</td>
                   <td>{{ item.options }}</td>
                   <td>
                     <ul>
-                      <li v-for="opt in item.option_list" :key="opt.id">
-                        <template v-if="item.default == opt.id">
+                      <li v-for="opt in item.o" :key="opt.o_id">
+                        <template v-if="item.og_default == opt.o_id">
                           <strong color="info">
-                            <ins>{{ opt.name }}</ins>
+                            <ins>{{ opt.o_nm }}</ins>
                           </strong>
                         </template>
-                        <template v-else>{{ opt.name }}</template>
+                        <template v-else>{{ opt.o_nm }}</template>
                       </li>
                     </ul>
                   </td>
                   <td>
-                    <v-btn dark icon :to="{ path: ''+btn.to.update+item.id }">
+                    <v-btn dark icon :to="{ path: ''+btn.to.update+item.og_id }">
                       <v-icon small class="mr-2">edit</v-icon>
                     </v-btn>
                     <v-btn dark icon @click="remove(item)">
@@ -95,12 +95,12 @@
           >
             <template v-slot:body="{items}">
               <tbody>
-                <tr v-for="item in items" :key="item.name">
+                <tr v-for="item in items" :key="item.o_nm">
                   <td class="px-1" style="width: 0.1%"></td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.price }}</td>
+                  <td>{{ item.o_nm }}</td>
+                  <td>{{ item.o_price }}</td>
                   <td>
-                    <v-btn dark icon :to="{ path: btn.to.update+item.id }">
+                    <v-btn dark icon :to="{ path: btn.to.update+item.o_id }">
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn dark icon @click="remove(item)">

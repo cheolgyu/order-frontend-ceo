@@ -65,7 +65,7 @@ export const actions = {
           dispatch("get_list", params);
           return res.data;
         } else {
-          console.log(res);
+
         }
       });
 
@@ -76,10 +76,10 @@ export const actions = {
 
     let { data } = await this.$axios.get(url, params);
     if (data.status === 200) {
-      console.log("SET_LIST-----status-------------------", data);
+
       commit("SET_LIST", data.data.shop_info.s_info.p);
     } else {
-      console.log("SET_LIST-----else-------------------");
+
     }
   },
   async get({ commit, rootState }, params) {
@@ -107,7 +107,7 @@ export const actions = {
 
 export const mutations = {
   SET_LIST(state, params) {
-    console.log("SET_LIST-----SET_LIST-------------------", params);
+
     state.list = params;
   },
   PUSH(state, params) {

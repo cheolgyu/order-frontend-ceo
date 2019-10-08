@@ -24,17 +24,10 @@ export default {
   methods: {
     conn() {
       // The `fetch` method is used to fill the store before rendering the page
-      console.log("Connecting...");
       this.ws_conn = new WebSocket(this.wsUri);
-      this.ws_conn.onopen = function() {
-        console.log("Connected.");
-      };
-      this.ws_conn.onmessage = function(e) {
-        console.log(e);
-        console.log("Received: " + e.data);
-      };
+      this.ws_conn.onopen = function() {};
+      this.ws_conn.onmessage = function(e) {};
       this.conn.onclose = function() {
-        console.log("Disconnected.");
         this.ws_conn = null;
         // update_ui()
       };

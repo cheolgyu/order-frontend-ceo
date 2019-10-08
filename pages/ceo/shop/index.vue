@@ -36,9 +36,9 @@ import { mapState } from "vuex";
 export default {
   data: scope => ({}),
   fetch({ store, params }) {
-    console.log("=====================shop.vue fetch===================== ");
+    
     return store.dispatch("shop/chk_shop").then(res => {
-      console.log(res);
+     
     });
   },
   computed: {
@@ -56,7 +56,7 @@ export default {
         txt: this.shop,
         req_session_id: this.shop
       };
-      console.log(" fn_order ", s, params);
+      
       this.$store.dispatch("order/state", params, { root: true });
     }
   }

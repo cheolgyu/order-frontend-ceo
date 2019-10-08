@@ -3,34 +3,15 @@
 <script>
 export default {
   created() {
-    console.log(
-      "============================================================="
-    );
-    console.log("fb.vue created()", this.$fb_sw_token, this);
-    console.log(
-      "============================================================="
-    );
     let messaging = this.$fb_sw_token;
 
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        console.log("Notification permission granted.");
-        // TODO(developer): Retrieve an Instance ID token for use with FCM.
-        // ...
-      } else {
-        console.log("Unable to get permission to notify.");
-      }
-    });
+    Notification.requestPermission().then(permission => {});
 
     this.sendTokenToServer();
   },
   mounted() {},
   methods: {
     sendTokenToServer() {
-      console.log(
-        "run sendTokenToServer this.$fb_sw_token: ",
-        this.$fb_sw_token
-      );
       this.$store.dispatch("sw/save_token", this.$fb_sw_token, { root: true });
     }
   }

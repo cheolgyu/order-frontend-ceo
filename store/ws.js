@@ -10,7 +10,7 @@ export const actions = {
         commit("SEND", params);
     },
     join({ commit, rootState }) {
-        console.log(rootState.shop.shop.id)
+        
         commit("JOIN", rootState.shop.shop.id);
     },
 
@@ -25,7 +25,7 @@ export const mutations = {
         state.ws_conn.send(params);
     },
     JOIN(state, params) {
-        console.log("join room " + params);
+        
         state.ws_conn.send('/join ' + params);
     },
 

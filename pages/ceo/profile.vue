@@ -180,7 +180,7 @@ export default {
     },
     click_shop() {
       this.$store.dispatch("shop/add", this.$data.form_shop).then(res => {
-        console.log(res);
+       
         if (res == 200) {
           alert("등록됬습니다.");
         } else if (res === 400) {
