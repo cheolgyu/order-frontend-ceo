@@ -30,7 +30,7 @@ export const actions = {
         }
       });
 
-  },async delete({ commit, rootState, dispatch }, params) {
+  }, async delete({ commit, rootState, dispatch }, params) {
     return await this.$axios
       .delete(
         "/ceo/" +
@@ -71,23 +71,16 @@ export const actions = {
 
   },
   async get_list({ commit, rootState }, params) {
-    return await this.$axios
-      .get(
-        "/ceo/" +
-        rootState.user.auth.user.id +
-        "/shops/" +
-        rootState.shop.shop.id +
-        "/products",
-        params
-      )
-      .then(res => {
-        if (res.status == 200) {
-          commit("SET_LIST", res.data.data.items);
-          return res;
-        } else {
-          console.log(res);
-        }
-      });
+    let url = "/ceo/" + rootState.user.auth.user.id +
+      "/shops/" + rootState.shop.shop.id + "/products";
+
+    let { data } = await this.$axios.get(url, params);
+    if (data.status === 200) {
+      console.log("SET_LIST-----status-------------------", data);
+      commit("SET_LIST", data.data.shop_info.s_info.p);
+    } else {
+      console.log("SET_LIST-----else-------------------");
+    }
   },
   async get({ commit, rootState }, params) {
     if (rootState.shop.shop != null) {
@@ -114,6 +107,7 @@ export const actions = {
 
 export const mutations = {
   SET_LIST(state, params) {
+    console.log("SET_LIST-----SET_LIST-------------------", params);
     state.list = params;
   },
   PUSH(state, params) {

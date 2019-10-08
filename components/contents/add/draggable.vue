@@ -4,28 +4,28 @@
       <v-flex xs6 grow color="grey">
         <v-form>
           <v-toolbar>
-            <v-toolbar-title>{{title.left}}{{edit_form.name}}</v-toolbar-title>
+            <v-toolbar-title>{{title.left}}{{edit_form[type].name}}</v-toolbar-title>
           </v-toolbar>
           <v-card dark>
             <v-card-title>
-              <v-text-field v-model="edit_form.name" label="이름"></v-text-field>
+              <v-text-field v-model="edit_form[type].name" label="이름"></v-text-field>
               <v-text-field
                 number
                 v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form.p_price"
+                v-model="edit_form[type].p_price"
                 label="상품의 기본가격"
               ></v-text-field>
               <v-text-field
                 number
                 v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form.optg_price"
+                v-model="edit_form[type].optg_price"
                 disabled
                 label="+옵션그룹 기본가격"
               ></v-text-field>
               <v-text-field
                 number
                 v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form.price"
+                v-model="edit_form[type].price"
                 disabled
                 label="=소비자 기본가격"
               ></v-text-field>
@@ -35,25 +35,25 @@
           <v-card dark>
             <v-card-title>{{title.left_down}}</v-card-title>
             <v-card-text dark>
-              <v-radio-group column v-model="edit_form.default">
+              <v-radio-group column>
                 <draggable
                   style="min-height:200px"
                   v-model="tmp_list"
                   :group="{ name: 'shared', pull: 'clone' }"
                 >
-                  <template v-for="(element, index) in tmp_list">
+                  <template v-for="(optg, index) in tmp_list">
                     <v-chip
                       outlined
                       color="white"
-                      :key="'d_'+index+'_'+element.name"
+                      :key="'d_'+index+'_'+optg.og_nm"
                       close
-                      @click:close="remove(element)"
+                      @click:close="remove(optg)"
                     >
                       <strong>
                         <v-radio
-                          :label="element.name+'('+element.option_list.find(el=> el.id == element.default).price+'원)'"
+                          :label="optg.og_nm+'('+get_opt_default_price(optg)+'원)'"
                           color="info"
-                          :value="element.id"
+                          :value="optg.og_id"
                         ></v-radio>
                       </strong>
                     </v-chip>
@@ -122,10 +122,6 @@ const props = {
     type: Object,
     default: () => ({})
   },
-  form: {
-    type: Object,
-    default: () => ({})
-  },
   type: {
     required: true,
     type: String
@@ -141,7 +137,24 @@ export default {
   data() {
     return {
       CONSTANTS: CONSTANTS,
-      edit_form: props.form,
+      edit_form: {
+        product: {
+          id: null,
+          name: null,
+          price: 0,
+          p_price: 0,
+          optg_price: 0,
+          opt_group: []
+        },
+        option_group: {
+          name: null,
+          price: 0,
+          p_price: 0,
+          optg_price: 0,
+          default: null,
+          options: []
+        }
+      },
       origin_list: [],
       tmp_list: [],
       dispatch_action: null,
@@ -149,8 +162,8 @@ export default {
     };
   },
   watch: {
-    "edit_form.p_price": "set_price",
-    "edit_form.optg_price": "set_price"
+    "edit_form.product.p_price": "set_price",
+    "edit_form.product.optg_price": "set_price"
   },
   computed: {
     ...mapState({
@@ -167,12 +180,11 @@ export default {
   },
   methods: {
     init() {
-      console.log("===========================================init urn");
       switch (this.action) {
         case CONSTANTS.ADD:
-          this.edit_form = this.form;
-          this.edit_form.optg_price = 0;
-          this.edit_form.p_price = 0;
+          this.edit_form[this.type] = this.form;
+          this.edit_form[this.type].optg_price = 0;
+          this.edit_form[this.type].p_price = 0;
           switch (this.type) {
             case CONSTANTS.PRODUCT:
               this.origin_list = this.opt_group;
@@ -191,22 +203,23 @@ export default {
               this.origin_list = this.opt_group;
               this.dispatch_action = "product/update";
               let tmp = this.init_find(this.products);
-              this.edit_form.id = tmp.id;
-              this.edit_form.name = tmp.name;
-              this.edit_form.price = tmp.price;
-              this.tmp_list = tmp.option_group_list;
+              this.edit_form[this.type].id = tmp.p_id;
+              this.edit_form[this.type].name = tmp.p_nm;
+              this.edit_form[this.type].price = tmp.price;
+              this.edit_form[this.type].p_price = tmp.p_price;
+              this.edit_form[this.type].optg_price = tmp.optg_price;
+              this.tmp_list = tmp.og;
+              console.log(this.tmp_list);
               break;
             case CONSTANTS.OPTION_GROUP:
               this.origin_list = this.opt;
               this.dispatch_action = "option_group/update";
               let tmp2 = this.init_find(this.opt_group);
-              this.edit_form.id = tmp2.id;
-              this.edit_form.name = tmp2.name;
-              this.edit_form.default = tmp2.default;
-              this.edit_form.optg_price = 0;
-              this.edit_form.p_price = 0;
-              console.log(tmp2);
-              console.log(this.edit_form);
+              this.edit_form[this.type].id = tmp2.id;
+              this.edit_form[this.type].name = tmp2.name;
+              this.edit_form[this.type].default = tmp2.default;
+              this.edit_form[this.type].p_price = tmp2.p_price;
+              this.edit_form[this.type].optg_price = tmp2.optg_price;
               this.tmp_list = tmp2.option_list;
               break;
           }
@@ -215,34 +228,42 @@ export default {
     },
     init_find(items) {
       return items.find(function(el) {
-        if (el.id == window.$nuxt._route.params.id)
-          //  return JSON.parse(JSON.stringify(el));
-          // return Object.assign({}, el);
-          return { ...el };
+        if (el.hasOwnProperty("p_id")) {
+          return el.p_id == window.$nuxt._route.params.id;
+        } else {
+          return el.id == window.$nuxt._route.params.id;
+        }
       });
     },
     submit() {
       this.submit_before();
 
       return this.$store
-        .dispatch(this.dispatch_action, this.edit_form, { root: true })
-        .then(res => {
-          console.log(res);
-          if (res.status == 201) {
-          }
-        });
+        .dispatch(this.dispatch_action, this.edit_form[this.type], {
+          root: true
+        })
+        .then(res => {});
     },
     clone: function(el) {
       let has = false;
-      console.log("clone==", el);
-      this.tmp_list.find(function(element) {
-        if (el.id == element.id) {
-          has = true;
-        }
-      });
+      console.log("clone", this.tmp_list, el);
+      if (this.type == "product") {
+        this.tmp_list.find(function(element) {
+          if (el.id == element.o_id) {
+            has = true;
+          }
+        });
+      } else {
+        this.tmp_list.find(function(element) {
+          if (el.id == element.id) {
+            has = true;
+          }
+        });
+      }
+
       if (has == false) {
-        this.edit_form.optg_price =
-          Number(this.edit_form.optg_price) +
+        this.edit_form[this.type].optg_price =
+          Number(this.edit_form[this.type].optg_price) +
           Number(this.get_opt_default_price(el));
         return el;
       }
@@ -258,10 +279,10 @@ export default {
 
       switch (this.type) {
         case CONSTANTS.PRODUCT:
-          this.edit_form.opt_group = arr;
+          this.edit_form[this.type].opt_group = arr;
           break;
         case CONSTANTS.OPTION_GROUP:
-          this.edit_form.options = arr;
+          this.edit_form[this.type].options = arr;
           break;
         case CONSTANTS.OPTION:
           break;
@@ -270,12 +291,19 @@ export default {
       }
     },
     get_opt_default_price(optg) {
-      return optg.option_list.find(opt => opt.id == optg.default).price;
+      console.log("get_opt_default_price", optg);
+      if (optg.hasOwnProperty("o")) {
+        let aa = optg.o.find(el => el.o_id == optg.og_default);
+        console.log(aa);
+        return optg.o.find(el => el.o_id == optg.og_default).o_price;
+      } else {
+        return optg.option_list.find(el => el.id == optg.default).price;
+      }
     },
     set_price() {
-      console.log("watch ==> run set_price");
-      this.edit_form.price =
-        Number(this.edit_form.p_price) + Number(this.edit_form.optg_price);
+      this.edit_form[this.type].price =
+        Number(this.edit_form[this.type].p_price) +
+        Number(this.edit_form[this.type].optg_price);
     }
   }
 };
