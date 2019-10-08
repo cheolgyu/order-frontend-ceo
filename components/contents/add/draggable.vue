@@ -76,12 +76,12 @@
               :group="{ name: 'shared', pull: 'clone' }"
               :clone="clone"
             >
-              <v-list-item v-for="item in origin_list" :key="item.id">
+              <v-list-item v-for="item in origin_list" :key="item.og_id">
                 <v-list-item-avatar>
                   <v-icon class="handle">drag_handle</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  <v-list-item-title>{{ item.og_nm }}</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-tooltip
@@ -98,10 +98,10 @@
                     </template>
 
                     <p
-                      v-for="opt in item.option_list"
-                      :key="opt.id"
-                      v-bind:class="item.default== opt.id? 'info--text font-weight-bold' : ''"
-                    >{{ opt.name}}( {{ opt.price}} 원 )</p>
+                      v-for="opt in item.o"
+                      :key="opt.o_id"
+                      v-bind:class="item.og_default== opt.o_id? 'info--text font-weight-bold' : ''"
+                    >{{ opt.og_nm}}( {{ opt.o_price}} 원 )</p>
                   </v-tooltip>
                 </v-list-item-action>
               </v-list-item>
@@ -209,7 +209,7 @@ export default {
               this.edit_form[this.type].p_price = tmp.p_price;
               this.edit_form[this.type].optg_price = tmp.optg_price;
               this.tmp_list = tmp.og;
-              console.log(this.tmp_list);
+
               break;
             case CONSTANTS.OPTION_GROUP:
               this.origin_list = this.opt;
@@ -249,13 +249,13 @@ export default {
       console.log("clone", this.tmp_list, el);
       if (this.type == "product") {
         this.tmp_list.find(function(element) {
-          if (el.id == element.o_id) {
+          if (el.og_id == element.og_id) {
             has = true;
           }
         });
       } else {
         this.tmp_list.find(function(element) {
-          if (el.id == element.id) {
+          if (el.og_id == element.og_id) {
             has = true;
           }
         });
