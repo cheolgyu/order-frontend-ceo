@@ -152,7 +152,9 @@ export default {
       if (newValue) {
         return;
       } else {
-        this.update_price();
+        if (this.type === CONSTANTS.PRODUCT) {
+          this.update_price();
+        }
       }
     }
   },
