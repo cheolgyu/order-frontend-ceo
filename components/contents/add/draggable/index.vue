@@ -9,33 +9,18 @@
           <v-card dark>
             <v-card-title>
               <v-text-field v-model="edit_form[type].name" label="이름"></v-text-field>
-              <v-text-field
-                number
-                v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form[type].p_price"
-                label="상품의 기본가격"
-              ></v-text-field>
-              <v-text-field
-                number
-                v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form[type].optg_price"
-                disabled
-                label="+옵션그룹 기본가격"
-              ></v-text-field>
-              <v-text-field
-                number
-                v-if="type === CONSTANTS.PRODUCT"
-                v-model="edit_form[type].price"
-                disabled
-                label="=소비자 기본가격"
-              ></v-text-field>
+              <template v-if="type === CONSTANTS.PRODUCT">
+                <v-text-field number v-model="edit_form[type].p_price" label="상품의 기본가격"></v-text-field>
+                <v-text-field number v-model="edit_form[type].og_price" disabled label="+옵션그룹 기본가격"></v-text-field>
+                <v-text-field number v-model="edit_form[type].price" disabled label="=소비자 기본가격"></v-text-field>
+              </template>
             </v-card-title>
           </v-card>
 
           <v-card dark>
             <v-card-title>{{title.left_down}}</v-card-title>
             <v-card-text dark>
-              <v-radio-group column>
+              <v-radio-group column v-model="edit_form[type].default">
                 <draggable
                   style="min-height:200px"
                   v-model="edit_list"
@@ -78,6 +63,8 @@
             <draggable
               v-model="share_list"
               :group="{ name: 'shared', pull: 'clone' }"
+              @start="isDragging=true"
+              @end="isDragging=false"
               :clone="clone"
             >
               <template v-if="type === CONSTANTS.PRODUCT">
@@ -138,14 +125,11 @@ export default {
           name: null,
           price: 0,
           p_price: 0,
-          optg_price: 0,
+          og_price: 0,
           opt_group: []
         },
         option_group: {
           name: null,
-          price: 0,
-          p_price: 0,
-          optg_price: 0,
           default: null,
           options: []
         }
@@ -157,21 +141,29 @@ export default {
       event: {
         remove: this.remove,
         get_label: this.get_label
-      }
+      },
+      isDragging: false
     };
   },
   watch: {
     "edit_form.product.p_price": "set_price",
-    "edit_form.product.optg_price": "set_price"
+    "edit_form.product.og_price": "set_price",
+    isDragging(newValue) {
+      if (newValue) {
+        return;
+      } else {
+        this.update_price();
+      }
+    }
   },
   computed: {
     ...mapState({
       auth: state => state.user.auth,
       user: state => state.user.user,
       shop: state => state.shop.shop,
-      opt: state => state.option.list,
-      opt_group: state => state.option_group.list,
-      products: state => state.product.list
+      opt: state => JSON.parse(JSON.stringify(state.option.list)),
+      opt_group: state => JSON.parse(JSON.stringify(state.option_group.list)),
+      products: state => JSON.parse(JSON.stringify(state.product.list))
     })
   },
   mounted() {
@@ -181,11 +173,11 @@ export default {
     init() {
       switch (this.action) {
         case CONSTANTS.ADD:
-          this.edit_form[this.type] = this.form;
-          this.edit_form[this.type].optg_price = 0;
-          this.edit_form[this.type].p_price = 0;
           switch (this.type) {
             case CONSTANTS.PRODUCT:
+              this.edit_form[this.type].og_price = 0;
+              this.edit_form[this.type].p_price = 0;
+
               this.share_list = this.opt_group;
               this.dispatch_action = "product/add";
               break;
@@ -206,7 +198,7 @@ export default {
               this.edit_form[this.type].name = tmp.p_nm;
               this.edit_form[this.type].price = tmp.price;
               this.edit_form[this.type].p_price = tmp.p_price;
-              this.edit_form[this.type].optg_price = tmp.optg_price;
+              this.edit_form[this.type].og_price = tmp.og_price;
               this.edit_list = tmp.og;
 
               break;
@@ -217,8 +209,6 @@ export default {
               this.edit_form[this.type].id = tmp2.og_id;
               this.edit_form[this.type].name = tmp2.og_nm;
               this.edit_form[this.type].default = tmp2.og_default;
-              this.edit_form[this.type].p_price = 0;
-              this.edit_form[this.type].optg_price = 0;
               this.edit_list = tmp2.o;
               break;
           }
@@ -226,13 +216,27 @@ export default {
       }
     },
     init_find(items) {
-      return items.find(function(el) {
+      let res = items.find(function(el) {
+        let val = false;
         if (el.hasOwnProperty("p_id")) {
-          return el.p_id == window.$nuxt._route.params.id;
+          if (el.p_id == window.$nuxt._route.params.id) {
+            val = true;
+          } else {
+            val = false;
+          }
         } else {
-          return el.og_id == window.$nuxt._route.params.id;
+          if (el.og_id == window.$nuxt._route.params.id) {
+            val = true;
+          } else {
+            val = false;
+          }
+        }
+        if (val == true) {
+          return { ...el };
         }
       });
+      this.edit_list.splice(this.edit_list.indexOf(this.edit_list[0]), 1);
+      return res;
     },
     submit() {
       this.submit_before();
@@ -251,35 +255,41 @@ export default {
             has = true;
           }
         });
+
+        if (has == false) {
+          return el;
+        }
       } else {
-        this.edit_list.find(function(element) {
-          if (el.og_id == element.og_id) {
+        let res = this.edit_list.find(function(element) {
+          if (el.o_id == element.o_id) {
             has = true;
           }
         });
-      }
 
-      if (has == false) {
-        this.edit_form[this.type].optg_price =
-          Number(this.edit_form[this.type].optg_price) +
-          Number(this.get_price(el));
-        return el;
+        if (has == false) {
+          return el;
+        }
       }
     },
     remove(item) {
       this.edit_list.splice(this.edit_list.indexOf(item), 1);
+      if (this.type === CONSTANTS.PRODUCT) {
+        this.update_price();
+      }
     },
     submit_before() {
       let arr = [];
-      for (var i = 0; i < this.edit_list.length; i++) {
-        arr.push(this.edit_list[i].id);
-      }
-
       switch (this.type) {
         case CONSTANTS.PRODUCT:
+          for (var i = 0; i < this.edit_list.length; i++) {
+            arr.push(this.edit_list[i].og_id);
+          }
           this.edit_form[this.type].opt_group = arr;
           break;
         case CONSTANTS.OPTION_GROUP:
+          for (var i = 0; i < this.edit_list.length; i++) {
+            arr.push(this.edit_list[i].o_id);
+          }
           this.edit_form[this.type].options = arr;
           break;
         case CONSTANTS.OPTION:
@@ -296,9 +306,32 @@ export default {
       }
     },
     set_price() {
+      this.edit_form[this.type].p_price = Number(
+        this.edit_form[this.type].p_price
+      );
+      this.edit_form[this.type].og_price = Number(
+        this.edit_form[this.type].og_price
+      );
+      this.edit_form[this.type].price = Number(this.edit_form[this.type].price);
       this.edit_form[this.type].price =
         Number(this.edit_form[this.type].p_price) +
-        Number(this.edit_form[this.type].optg_price);
+        Number(this.edit_form[this.type].og_price);
+    },
+    update_price() {
+      var og_price = 0;
+      for (var i = 0; i < this.edit_list.length; i++) {
+        var tmp_o_price = 0;
+        if (!this.edit_list[i].hasOwnProperty("og_price")) {
+          var od = this.edit_list[i].o.find(
+            el => el.o_id == this.edit_list[i].og_default
+          );
+          tmp_o_price = od.o_price;
+        } else {
+          tmp_o_price = this.edit_list[i].og_price;
+        }
+        og_price = og_price + tmp_o_price;
+      }
+      this.edit_form[this.type].og_price = og_price;
     },
     get_label(item) {
       let text = "";
