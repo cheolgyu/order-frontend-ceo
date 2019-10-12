@@ -10,14 +10,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item,i) in order.list" v-bind:key="i">
-          <td v-text="item.id"></td>
-          <td
-            v-text="item.state"
-          >COMMENT ON COLUMN "order"."state" IS '-2: 미응답거절, -1: 거절, 1: 대기, 2: 수락, 3: 수령 ';</td>
-          <td v-text="item.price"></td>
+        <tr v-for="(order_obj,i) in order.list" v-bind:key="i">
+          <td v-text="order_obj.id"></td>
+          <td v-text="to_string.order_state(order_obj.state)"></td>
+          <td v-text="order_obj.price"></td>
 
-          <td v-text="item.products"></td>
+          <td>
+            <ul>
+              <template v-for="p_group, key_p_id in order_obj.products">
+                <template v-for="p_obj,p_order_i in p_group">
+                  <li>{{p_obj.p_nm}}x{{p_group.length}} = {{p_obj.total_p_price}}</li>
+                </template>
+              </template>
+            </ul>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -30,10 +36,13 @@
 </style>
 <script>
 import { mapState } from "vuex";
+import to_string from "~/components/to_string.vue";
 
 export default {
+  components: { to_string },
   data: scope => ({
-    show: false
+    show: false,
+    to_string: to_string
   }),
   fetch({ store, params }) {
     return store.dispatch("order/get_list").then(res => {});
