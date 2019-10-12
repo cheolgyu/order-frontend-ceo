@@ -1,14 +1,11 @@
 <template>
   <v-card class="mx-auto" max-width="500" tile>
-    <v-list shaped nav>
+    <v-list shaped>
       <v-subheader>주문 목록</v-subheader>
-      <v-list-group color="primary" v-for="order_obj,i in order.now" :key="i">
+      <v-list-group color="primary" v-for="order_obj,i in order.now" :key="i" append-icon>
         <template v-slot:activator>
-          <v-list-item-action>
-            <v-checkbox></v-checkbox>
-          </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>주문번호:{{order_obj.p_id}}</v-list-item-title>
+            <v-list-item-title>{{order_obj.id}}번</v-list-item-title>
           </v-list-item-content>
           <v-list-item-icon>
             <template v-if="order_obj.state == 1">
@@ -22,21 +19,20 @@
         </template>
 
         <v-list-item v-for="(p_arr, j) in order_obj.products" :key="i+j">
-          <v-list rounded tag="i">
-            <v-list-group sub-group>
+          <v-list rounded dense>
+            <v-list-group color="info" append-icon>
               <template v-slot:activator>
                 <v-list-item-content>
-                  <v-list-item-title width="100%">{{ p_arr[0].p_nm }} X {{ p_arr.length }}</v-list-item-title>
+                  <v-list-item-title>{{ p_arr[0].p_nm }} X {{ p_arr.length }}</v-list-item-title>
                 </v-list-item-content>
               </template>
 
               <v-list-item v-for="p_obj,k in p_arr" :key="i+j+k">
-                <v-list-item-action>
-                  <v-checkbox></v-checkbox>
-                </v-list-item-action>
                 <v-list-item-content>
                   <v-chip-group column>
                     <v-chip
+                      :ripple="false"
+                      outlined
                       v-for="optg,n in p_obj.og"
                       :key="i+j+k+n"
                       :color="
@@ -44,7 +40,7 @@
                              ? ''
                              : 'deep-purple accent-4'
                          "
-                      v-text="optg.select_opt_name"
+                      v-text="optg.select_opt_name+''"
                     ></v-chip>
                   </v-chip-group>
                   <v-divider></v-divider>
