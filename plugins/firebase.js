@@ -49,15 +49,14 @@ navigator.serviceWorker.register('/firebase-messaging-sw.js')
 
 
 messaging.onMessage((payload) => {
+    console.log("onMessage:", payload);
+    //https://developers.google.com/web/fundamentals/push-notifications/common-notification-patterns#merging_notifications
+    var notificationTitle = payload.data.title;
+    var obj = JSON.parse(payload.data.my_options);
+    var notificationOptions = obj;
+    console.log("onMessage:", payload, notificationOptions);
 
-
-    // Customize notification here
-    var notificationTitle = payload.notification.title;
-    var notificationOptions = payload.notification;
-
-
-    fb_registration.showNotification(notificationTitle,
-        notificationOptions);
+    fb_registration.showNotification(notificationTitle, notificationOptions);
 
 });
 
