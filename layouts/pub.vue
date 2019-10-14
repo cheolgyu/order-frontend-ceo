@@ -3,6 +3,7 @@
     <v-app-bar app>
       <v-toolbar-title to="/" v-text="title" />
       <v-spacer />
+      <install-prompt />
       <v-btn to="/login" dark icon>
         <v-icon>person</v-icon>
       </v-btn>
@@ -30,9 +31,10 @@
 
 <script>
 import fb from "~/components/fb.vue";
+import InstallPrompt from "~/components/InstallPrompt.vue";
 
 export default {
-  components: { fb },
+  components: { fb, InstallPrompt },
   middleware: "pub",
   data() {
     return {

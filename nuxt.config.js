@@ -4,6 +4,16 @@ import pkg from "./package";
 dotenv.config();
 
 export default {
+  manifest: {
+    background_color: "purple",
+    description: "Shows random fox pictures. Hey, at least it isn't cats.",
+    display: "fullscreen",
+
+    name: process.env.npm_package_name,
+    short_name: process.env.npm_package_name,
+    start_url: "/index",
+  },
+
   mode: "spa",
   env: {
     // API_URL: process.env.VUE_APP_API_URL

@@ -15,12 +15,14 @@
 
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
+
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
 
       <v-toolbar-title v-text="title" />
       <v-spacer />
+
       <v-badge>
         <template v-slot:badge>{{order.cnt}}</template>
         <v-icon>{{order.icon.state}}</v-icon>
@@ -77,7 +79,8 @@ export default {
           icon: "bubble_chart",
           title: "주문3",
           to: "/ceo/order/view3"
-        },{
+        },
+        {
           icon: "bubble_chart",
           title: "전체",
           to: "/ceo/order/list"
