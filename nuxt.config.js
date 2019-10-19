@@ -1,7 +1,7 @@
 //import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
-import dotenv from "dotenv";
+const envPath = `./.env.${process.env.NODE_ENV || 'local'}`
+require('dotenv').config({ path: envPath })
 import pkg from "./package";
-dotenv.config();
 
 export default {
   manifest: {
@@ -75,8 +75,12 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/vuetify",
     "@nuxtjs/axios",
-    "@nuxtjs/pwa"
+    "@nuxtjs/pwa",
+    '@nuxtjs/dotenv'
   ],
+  dotenv: {
+    filename: envPath
+  },
   // Doc: https://github.com/nuxt-community/vuetify-module
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
