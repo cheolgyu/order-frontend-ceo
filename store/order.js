@@ -37,7 +37,7 @@ export const actions = {
       })
   },
   state({ commit, rootState, dispatch }, params) {
-    
+
     this.$axios
       .put(
         "/ceo/" +
@@ -62,7 +62,7 @@ export const actions = {
         rootState.user.auth.user.id +
         "/shops/" +
         rootState.shop.shop.id +
-        "/order/now"
+        "/order_now"
       )
       .then(res => {
         if (res.status == 200) {

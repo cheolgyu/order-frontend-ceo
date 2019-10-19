@@ -7,12 +7,13 @@
           <v-list-item-content>
             <v-list-item-title>{{order_obj.id}}번</v-list-item-title>
           </v-list-item-content>
+
           <v-list-item-icon>
             <template v-if="order_obj.state == 1">
               <v-btn rounded color="info" @click.stop="fnitem(order_obj, 1)">승인</v-btn>
               <v-btn rounded color="error" @click.stop="fnitem(order_obj, 0)">거부</v-btn>
             </template>
-            <template v-else-if="(item.state = 2)">
+            <template v-else-if="order_obj.state == 2">
               <v-btn rounded color="success" @click.stop="fnitem(order_obj, 2)">제조완료</v-btn>
             </template>
           </v-list-item-icon>
