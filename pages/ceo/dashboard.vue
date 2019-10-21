@@ -16,6 +16,9 @@
             <template v-else-if="order_obj.state == 2">
               <v-btn rounded color="success" @click.stop="fnitem(order_obj, 2)">제조완료</v-btn>
             </template>
+             <template v-else-if="order_obj.state == 3">
+              <v-btn rounded color="success" @click.stop="fnitem(order_obj, 2)">제조완료</v-btn>
+            </template>
           </v-list-item-icon>
         </template>
 
