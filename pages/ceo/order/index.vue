@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <tr v-for="(order_obj,i) in order.list" v-bind:key="i">
-          <td v-text="order_obj.id"></td>
+          <td v-text="order_obj.shop_order_id"></td>
           <td v-text="to_string.order_state(order_obj.state)"></td>
           <td v-text="order_obj.price"></td>
 

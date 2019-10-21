@@ -5,7 +5,7 @@
       <v-list-group color="primary" v-for="order_obj,i in order.now" :key="i" append-icon>
         <template v-slot:activator>
           <v-list-item-content>
-            <v-list-item-title>{{order_obj.id}}번</v-list-item-title>
+            <v-list-item-title>{{order_obj.shop_order_id}}번</v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-icon>
