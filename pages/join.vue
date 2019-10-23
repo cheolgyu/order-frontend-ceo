@@ -103,7 +103,7 @@ export default {
   data: scope => ({
     submitStatus: null,
     show_pwd: false,
-    btn_sumit: scope.$t("btn.submit"),
+    btn_sumit: scope.$t("str.submit"),
     show_password_comfirm: false,
     form: {
       login: { id: null, password: null },
@@ -114,25 +114,25 @@ export default {
     prod: {
       id: {
         name: "id",
-        label: scope.$t("form.login.id.label"),
+        label: scope.$t("str.id"),
         autocomplete: "id"
       },
       password: {
         name: "password",
-        label: scope.$t("form.login.password.label"),
+        label: scope.$t("str.password"),
         autocomplete: "new-password"
       },
       password_comfirm: {
         name: "password_comfirm",
-        label: scope.$t("password_confirm.label"),
+        label: scope.$t("str.password_confirm"),
         autocomplete: "password_confirm"
       },
       email: {
-        label: scope.$t("email.label"),
+        label: scope.$t("str.email"),
         autocomplete: "email"
       },
       name: {
-        label: scope.$t("name.label"),
+        label: scope.$t("str.name"),
         autocomplete: "name"
       }
     }
@@ -141,14 +141,10 @@ export default {
     idErrors() {
       const errors = [];
       if (!this.$v.form.login.id.$dirty) return errors;
-      !this.$v.form.login.id.required &&
-        errors.push(this.$t("form.login.id.error.required"));
-      !this.$v.form.login.id.minLength &&
-        errors.push(this.$t("form.login.id.error.minLength"));
-      !this.$v.form.login.id.maxLength &&
-        errors.push(this.$t("form.login.id.error.maxLength"));
-      !this.$v.form.login.id.alphaNum &&
-        errors.push(this.$t("form.login.id.error.alpha_num"));
+      !this.$v.form.login.id.required && errors.push(this.$t("str.required"));
+      !this.$v.form.login.id.minLength && errors.push(this.$t("str.minLength"));
+      !this.$v.form.login.id.maxLength && errors.push(this.$t("str.maxLength"));
+      !this.$v.form.login.id.alphaNum && errors.push(this.$t("str.alpha_num"));
 
       return errors;
     },
@@ -156,17 +152,15 @@ export default {
       const errors = [];
       if (!this.$v.form.login.password.$dirty) return errors;
       !this.$v.form.login.password.maxLength &&
-        errors.push(this.$t("form.login.password.error.maxLength"));
+        errors.push(this.$t("str.maxLength"));
       !this.$v.form.login.password.minLength &&
-        errors.push(this.$t("form.login.password.error.minLength"));
+        errors.push(this.$t("str.minLength"));
       !this.$v.form.login.password.required &&
-        errors.push(this.$t("form.login.password.error.required"));
-      !this.$v.form.login.password.alpha &&
-        errors.push(this.$t("form.login.password.error.alpha"));
-      !this.$v.form.login.password.number &&
-        errors.push(this.$t("form.login.password.error.number"));
+        errors.push(this.$t("str.required"));
+      !this.$v.form.login.password.alpha && errors.push(this.$t("str.alpha"));
+      !this.$v.form.login.password.number && errors.push(this.$t("str.number"));
       !this.$v.form.login.password.specialCharacters &&
-        errors.push(this.$t("form.login.password.error.specialCharacters"));
+        errors.push(this.$t("str.specialCharacters"));
       return errors;
     },
     password_comfirmErrors() {

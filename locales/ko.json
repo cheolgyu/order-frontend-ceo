@@ -1,4 +1,23 @@
 {
+  "str": {
+    "id": "아이디",
+    "password": "비밀번호",
+    "password_confirm": "비밀번호 확인",
+    "email": "이메일",
+    "name": "이름",
+    "submit": "완료",
+    "update": "수정",
+    "clear": "다시작성",
+    "back": "뒤로가기",
+    "auth": "인증",
+    "required": "필수입니다.",
+    "minLength": "최소",
+    "maxLength": "최대",
+    "alpha_num": "영어,숫자",
+    "alpha": "영어",
+    "number": "숫자",
+    "specialCharacters": "특수문자"
+  },
   "resp": {
     "signup": {
       "ok": "회원가입 됬습니다.\n 로그인을 해주세요.",
@@ -14,91 +33,5 @@
         }
       }
     }
-  },
-  "btn": {
-    "submit": "완료",
-    "update": "수정",
-    "clear": "다시작성",
-    "back": "뒤로가기",
-    "auth": "인증"
-  },
-  "links": {
-    "home": "홈",
-    "about": "About",
-    "version": "한국어 버전"
-  },
-  "email": {
-    "label": "이메일",
-    "placeholder": "이메일을 입력해주세요.",
-    "error": {
-      "valid": "이메일을 입력해주세요",
-      "required": "이메일은 필수 입력입니다."
-    }
-  },
-  "user": {
-    "title": "사용자",
-    "introduction": "사용자 페이지",
-    "reg": {
-      "title": "사용자 등록",
-      "introduction": "사용자 등록페이지 입니다.^^"
-    }
-  },
-  "form": {
-    "login": {
-      "id": {
-        "label": "아이디",
-        "placeholder": "아이디를 입력해주세요.",
-        "hint": "영어 소/대문자나 숫자",
-        "error": {
-          "valid": "아이디 형식이 아닙니다.",
-          "required": "아이디는 필수 입력입니다.",
-          "maxLength": "최대 30자리 입니다.",
-          "minLength": "최소 6자리 입니다.",
-          "alpha": "영문자를 포함해 주세요.",
-          "alpha_num": "영문자와 숫자만 가능합니다.",
-          "number": "숫자를 포함해 주세요.",
-          "specialCharacters": "!@#$%^&* 중 하나를 포함해 주세요."
-        }
-      },
-      "password": {
-        "label": "비밀번호",
-        "placeholder": "비밀번호를 입력해주세요.",
-        "hint": "6~30자리 숫자,특수문자,포함해주세요.",
-        "error": {
-          "valid": "비밀번호 형식이 아닙니다.",
-          "required": "비밀번호는 필수 입력입니다.",
-          "maxLength": "최대 30자리 입니다.",
-          "minLength": "최소 6자리 입니다.",
-          "alpha": "영문자를 포함해 주세요.",
-          "number": "숫자를 포함해 주세요.",
-          "specialCharacters": "!@#$%^&* 중 하나를 포함해 주세요."
-        }
-      }
-    },
-    "password_confirm": {
-      "label": "비밀번호 확인",
-      "placeholder": "비밀번호 확인을 입력해주세요.",
-      "hint": "6~30자리 숫자,특수문자,포함해주세요.",
-      "error": {
-        "valid": "비밀번호가 일치하지 않습니다.",
-        "required": "비밀번호 확인은 필수 입력입니다."
-      }
-    },
-    "name": {
-      "label": "이름",
-      "placeholder": "이름을 입력해주세요.",
-      "error": {
-        "valid": "이름을 입력해주세요",
-        "required": "이름은 필수 입력입니다."
-      }
-    }
-  },
-  "home": {
-    "title": "Welcome",
-    "introduction": "This is an introduction in English."
-  },
-  "about": {
-    "title": "About",
-    "introduction": "This page is made to give you more informations."
   }
 }
