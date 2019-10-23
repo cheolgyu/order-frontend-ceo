@@ -50,14 +50,17 @@
   </v-layout>
 </template>
 
+
 <script>
+const regex_id = helpers.regex("alpha", /^[A-Za-z]+[A-Za-z0-9+]*$/);
 import {
   required,
   maxLength,
   email,
   minLength,
   sameAs,
-  alphaNum
+  alphaNum,
+  helpers
 } from "vuelidate/lib/validators";
 
 export default {
@@ -67,13 +70,13 @@ export default {
       login: {
         id: {
           required,
-          minLength: minLength(6),
-          maxLength: maxLength(30),
-          alphaNum
+          minLength: minLength(5),
+          maxLength: maxLength(19),
+          regex_id
         },
         password: {
           required,
-          minLength: minLength(6),
+          minLength: minLength(8),
           maxLength: maxLength(30),
           alpha: password => {
             return /[a-zA-Z]/.test(password);
@@ -103,7 +106,7 @@ export default {
   data: scope => ({
     submitStatus: null,
     show_pwd: false,
-    btn_sumit: scope.$t("str.submit"),
+    btn_sumit: scope.$t("word.submit"),
     show_password_comfirm: false,
     form: {
       login: { id: null, password: null },
@@ -114,25 +117,25 @@ export default {
     prod: {
       id: {
         name: "id",
-        label: scope.$t("str.id"),
+        label: scope.$t("word.id"),
         autocomplete: "id"
       },
       password: {
         name: "password",
-        label: scope.$t("str.password"),
+        label: scope.$t("word.password"),
         autocomplete: "new-password"
       },
       password_comfirm: {
         name: "password_comfirm",
-        label: scope.$t("str.password_confirm"),
+        label: scope.$t("word.password_confirm"),
         autocomplete: "password_confirm"
       },
       email: {
-        label: scope.$t("str.email"),
+        label: scope.$t("word.email"),
         autocomplete: "email"
       },
       name: {
-        label: scope.$t("str.name"),
+        label: scope.$t("word.name"),
         autocomplete: "name"
       }
     }
@@ -141,50 +144,51 @@ export default {
     idErrors() {
       const errors = [];
       if (!this.$v.form.login.id.$dirty) return errors;
-      !this.$v.form.login.id.required && errors.push(this.$t("str.required"));
-      !this.$v.form.login.id.minLength && errors.push(this.$t("str.minLength"));
-      !this.$v.form.login.id.maxLength && errors.push(this.$t("str.maxLength"));
-      !this.$v.form.login.id.alphaNum && errors.push(this.$t("str.alpha_num"));
+      !this.$v.form.login.id.required && errors.push(this.$t("valid.required"));
+      !this.$v.form.login.id.minLength &&
+        errors.push(this.$t("valid.minLength", { in: "5" }));
+      !this.$v.form.login.id.maxLength &&
+        errors.push(this.$t("valid.maxLength", { in: "19" }));
+      !this.$v.form.login.id.regex_id && errors.push(this.$t("valid.regex_id"));
 
       return errors;
     },
     passwordErrors() {
       const errors = [];
       if (!this.$v.form.login.password.$dirty) return errors;
-      !this.$v.form.login.password.maxLength &&
-        errors.push(this.$t("str.maxLength"));
       !this.$v.form.login.password.minLength &&
-        errors.push(this.$t("str.minLength"));
+        errors.push(this.$t("valid.minLength", { in: "8" }));
+      !this.$v.form.login.password.maxLength &&
+        errors.push(this.$t("valid.maxLength", { in: "30" }));
       !this.$v.form.login.password.required &&
-        errors.push(this.$t("str.required"));
-      !this.$v.form.login.password.alpha && errors.push(this.$t("str.alpha"));
-      !this.$v.form.login.password.number && errors.push(this.$t("str.number"));
+        errors.push(this.$t("valid.required"));
+      !this.$v.form.login.password.alpha && errors.push(this.$t("valid.alpha"));
+      !this.$v.form.login.password.number &&
+        errors.push(this.$t("valid.number"));
       !this.$v.form.login.password.specialCharacters &&
-        errors.push(this.$t("str.specialCharacters"));
+        errors.push(this.$t("valid.specialCharacters"));
       return errors;
     },
     password_comfirmErrors() {
       const errors = [];
       if (!this.$v.form.password_comfirm.$dirty) return errors;
       !this.$v.form.password_comfirm.sameAsPassword &&
-        errors.push(this.$t("form.password_confirm.error.valid"));
+        errors.push(this.$t("valid.password_confirm"));
       !this.$v.form.password_comfirm.required &&
-        errors.push(this.$t("form.password_confirm.error.required"));
+        errors.push(this.$t("valid.required"));
       return errors;
     },
     emailErrors() {
       const errors = [];
       if (!this.$v.form.email.$dirty) return errors;
-      !this.$v.form.email.email && errors.push(this.$t("email.error.valid"));
-      !this.$v.form.email.required &&
-        errors.push(this.$t("email.error.required"));
+      !this.$v.form.email.email && errors.push(this.$t("valid.email"));
+      !this.$v.form.email.required && errors.push(this.$t("valid.required"));
       return errors;
     },
     nameErrors() {
       const errors = [];
       if (!this.$v.form.name.$dirty) return errors;
-      !this.$v.form.name.required &&
-        errors.push(this.$t("form.name.error.required"));
+      !this.$v.form.name.required && errors.push(this.$t("valid.required"));
       return errors;
     }
   },

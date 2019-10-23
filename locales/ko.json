@@ -1,5 +1,5 @@
 {
-  "str": {
+  "word": {
     "id": "아이디",
     "password": "비밀번호",
     "password_confirm": "비밀번호 확인",
@@ -14,9 +14,18 @@
     "minLength": "최소",
     "maxLength": "최대",
     "alpha_num": "영어,숫자",
-    "alpha": "영어",
-    "number": "숫자",
-    "specialCharacters": "특수문자"
+    "alpha": "영어"
+  },
+  "valid": {
+    "required": "필수 항목입니다.",
+    "minLength": "최소 {in}자리 입니다.",
+    "maxLength": "최대 {in}자리 입니다.",
+    "regex_id": "영문자로 시작해야됩니다.",
+    "specialCharacters": "특수문자가 포함되어야 합니다.",
+    "number": "숫자가 포합되어야 합니다.",
+    "password_confirm": "비밀번호가 일치하지 않습니다.",
+    "email": "이메일 형식이 아닙니다.",
+    "alpha": "영문자가 포함되어야 합니다."
   },
   "resp": {
     "signup": {
