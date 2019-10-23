@@ -44,7 +44,7 @@
           @input="$v.form.name.$touch()"
           @blur="$v.form.name.$touch()"
         />
-        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit" v-text="btn_sumit"/>
+        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit" v-text="btn_sumit" />
       </v-form>
     </v-flex>
   </v-layout>
@@ -114,25 +114,25 @@ export default {
     prod: {
       id: {
         name: "id",
-        label: "아이디",
+        label: scope.$t("form.login.id.label"),
         autocomplete: "id"
       },
       password: {
         name: "password",
-        label: "비밀번호",
+        label: scope.$t("form.login.password.label"),
         autocomplete: "new-password"
       },
       password_comfirm: {
         name: "password_comfirm",
-        label: "비밀번호 확인",
+        label: scope.$t("password_confirm.label"),
         autocomplete: "password_confirm"
       },
       email: {
-        label: "이메일 주소",
+        label: scope.$t("email.label"),
         autocomplete: "email"
       },
       name: {
-        label: "이름",
+        label: scope.$t("name.label"),
         autocomplete: "name"
       }
     }
@@ -200,12 +200,12 @@ export default {
       if (!this.$v.$invalid) {
         this.$store.dispatch("user/join", this.$data.form).then(res => {
           if (res.status == 200) {
-            alert("회원가입 됬습니다.\n 로그인을 해주세요.");
+            alert(this.$t("resp.signup.ok"));
             this.$router.push("/");
           } else if (res.status === 400) {
-            alert(res.data);
+            alert(this.$t(res.data));
           } else {
-            alert("다시 시도하세요.");
+            alert(this.$t("resp.signup.err"));
           }
         });
       }

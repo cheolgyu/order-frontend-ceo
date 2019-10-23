@@ -19,14 +19,6 @@ export default {
     ...mapState({
       auth: state => state.user.auth
     })
-  },
-   
   }
 };
-/**
- * 
-export default {
-  middleware: 'auth'
-}
- */
 </script>
