@@ -203,7 +203,7 @@ export default {
           } else if (res.status === 400) {
             alert(this.$t(res.data));
           } else {
-            alert(this.$t("resp.signup.err"));
+            alert(this.$t("resp.err"));
           }
         });
       }

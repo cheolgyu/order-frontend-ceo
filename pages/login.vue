@@ -1,8 +1,8 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-form>
-        <v-text-field v-model="form.id" v-bind="prod.id"/>
+      <v-form @submit.prevent>
+        <v-text-field v-model="form.id" v-bind="prod.id" />
         <v-text-field
           v-model="form.password"
           v-bind="prod.pwd"
@@ -10,7 +10,11 @@
           :append-icon="show_pwd ? 'visibility' : 'visibility_off'"
           @click:append="show_pwd = !show_pwd"
         />
-        <v-btn :disabled="submitStatus === 'PENDING'" @click="submit">{{ $t('btn.submit') }}</v-btn>
+        <v-btn
+          type="submit"
+          :disabled="submitStatus === 'PENDING'"
+          @click="submit"
+        >{{ $t('word.login') }}</v-btn>
       </v-form>
     </v-flex>
   </v-layout>
@@ -29,11 +33,11 @@ export default {
     prod: {
       id: {
         name: "id",
-        label: "아이디"
+        label: scope.$t("word.id")
       },
       pwd: {
         name: "password",
-        label: "비밀번호"
+        label: scope.$t("word.password")
       }
     },
 
@@ -49,15 +53,14 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("user/login", this.$data.form).then(res => {
-        
         if (res.status == 200) {
           if (localStorage.getItem("redirect") == null) {
-            this.$router.push('/user')
+            this.$router.push("/user");
           } else {
             this.$router.push(localStorage.getItem("redirect"));
           }
         } else {
-          alert("다시 시도하세요.");
+          alert(this.$t("resp.err"));
         }
       });
     }

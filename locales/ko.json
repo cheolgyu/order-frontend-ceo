@@ -1,5 +1,13 @@
 {
   "word": {
+    "title": "사장님",
+    "dashboard": "대시보드",
+    "order": "주문",
+    "shop": "가게",
+    "product": "상품",
+    "option_group": "옵션그룹",
+    "option": "옵션",
+    "profile": "프로필",
     "id": "아이디",
     "password": "비밀번호",
     "password_confirm": "비밀번호 확인",
@@ -14,7 +22,8 @@
     "minLength": "최소",
     "maxLength": "최대",
     "alpha_num": "영어,숫자",
-    "alpha": "영어"
+    "alpha": "영어",
+    "login": "로그인"
   },
   "valid": {
     "required": "필수 항목입니다.",
@@ -28,9 +37,9 @@
     "alpha": "영문자가 포함되어야 합니다."
   },
   "resp": {
+    "err": "오류 났습니다. \n 나중에 다시 시도하세요.",
     "signup": {
       "ok": "회원가입 됬습니다.\n 로그인을 해주세요.",
-      "err": "오류 났습니다. \n 나중에 다시 시도하세요.",
       "check": {
         "id": {
           "len_en": "아이디는 영문자 5자리 이상이여야 합니다."

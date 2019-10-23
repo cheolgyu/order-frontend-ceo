@@ -49,7 +49,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   middleware: "auth",
   components: { ws, fb },
-  data() {
+  data(scope) {
     return {
       clipped: true,
       drawer: true,
@@ -57,43 +57,43 @@ export default {
       items: [
         {
           icon: "bubble_chart",
-          title: "대시보드",
+          title: scope.$t("word.dashboard"),
           to: "/ceo/dashboard"
         },
         {
           icon: "bubble_chart",
-          title: "주문",
+          title: scope.$t("word.order"),
           to: "/ceo/order"
         },
         {
           icon: "bubble_chart",
-          title: "상점",
+          title: scope.$t("word.shop"),
           to: "/ceo/shop"
         },
         {
           icon: "bubble_chart",
-          title: "상품",
+          title: scope.$t("word.product"),
           to: "/ceo/product"
         },
         {
           icon: "bubble_chart",
-          title: "상품옵션그룹",
+          title: scope.$t("word.option_group"),
           to: "/ceo/option_group"
         },
         {
           icon: "bubble_chart",
-          title: "상품옵션",
+          title: scope.$t("word.option"),
           to: "/ceo/option"
         },
         {
           icon: "bubble_chart",
-          title: "프로필",
+          title: scope.$t("word.profile"),
           to: "/ceo/profile"
         }
       ],
       miniVariant: false,
       right: true,
-      title: "사장님"
+      title: scope.$t("word.title")
     };
   },
   computed: {
