@@ -50,11 +50,9 @@ export default {
   middleware: "auth",
   components: { ws, fb },
   created() {
-    console.log("레이아웃", window.$nuxt.$store);
     let store = window.$nuxt.$store;
     store.subscribe((mutation, state) => {
-      console.log(mutation, state);
-      localStorage.setItem("store", JSON.stringify(state));
+      localStorage.setItem("togo82_state", JSON.stringify(state));
     });
   },
   data(scope) {
