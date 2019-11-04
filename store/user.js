@@ -18,6 +18,7 @@ export const actions = {
     return await this.$axios.post(`ceo/auth`, params).then(res => {
       if (res.status === 200) {
         commit("SET_AUTH", res.data);
+
         return dispatch("getme");
       }
       return res.status;
@@ -48,6 +49,7 @@ export const actions = {
 
 export const mutations = {
   SET_AUTH(state, params) {
+    localStorage.setItem("jwt", params.token);
     state.auth = params;
   },
   SET_USER(state, params) {
