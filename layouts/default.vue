@@ -49,6 +49,14 @@ import { mapState, mapGetters } from "vuex";
 export default {
   middleware: "auth",
   components: { ws, fb },
+  created() {
+    console.log("레이아웃", window.$nuxt.$store);
+    let store = window.$nuxt.$store;
+    store.subscribe((mutation, state) => {
+      console.log(mutation, state);
+      localStorage.setItem("store", JSON.stringify(state));
+    });
+  },
   data(scope) {
     return {
       clipped: true,
