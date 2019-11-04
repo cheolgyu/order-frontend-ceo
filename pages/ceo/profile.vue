@@ -13,7 +13,7 @@
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel>
+      <v-expansion-panel id="open">
         <v-expansion-panel-header>가게</v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-card>
@@ -162,8 +162,18 @@ export default {
     this.form_shop.name = this.shop == null ? null : this.shop.name;
     this.form_email.user_id = this.user.id;
     this.form_email.kind_value = this.user.email;
+    if (this.shop == null) {
+      this.step_shop_name();
+    }
   },
   methods: {
+    step_shop_name() {
+      let setshop = document
+        .getElementById("open")
+        .getElementsByClassName("v-expansion-panel-header")[0];
+
+      setshop.click();
+    },
     valid_email() {
       this.$data.form_email.kind = "email";
       this.$store
