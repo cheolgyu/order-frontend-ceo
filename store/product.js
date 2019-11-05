@@ -24,6 +24,7 @@ export const actions = {
       )
       .then(res => {
         if (res.status == 200) {
+          alert("등록되었습니다.");
           dispatch("get_list", params);
           return res.data;
         } else {
@@ -62,6 +63,7 @@ export const actions = {
       )
       .then(res => {
         if (res.status == 200) {
+          alert("수정되었습니다.");
           dispatch("get_list", params);
           return res.data;
         } else {
@@ -107,7 +109,11 @@ export const actions = {
 
 export const mutations = {
   SET_LIST(state, params) {
-
+    for (var i = 0; i < params.length; i++) {
+      if (params[i].og[0].og_id == null) {
+        params[i].og = [];
+      }
+    }
     state.list = params;
   },
   PUSH(state, params) {
