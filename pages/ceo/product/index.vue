@@ -10,6 +10,11 @@ export default {
     tb,
     CONSTANTS
   },
+  fetch({ store, params }) {
+    store.dispatch("product/get_list", null).then(res => {});
+    store.dispatch("option_group/get_list", null).then(res => {});
+    store.dispatch("option/get_list", null).then(res => {});
+  },
   data() {
     return {
       type: CONSTANTS.PRODUCT,

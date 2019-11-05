@@ -17,31 +17,38 @@
           >
             <template v-slot:body="{items}">
               <tbody>
-                <tr v-for="item in items" :key="item.p_id">
-                  <td class="px-1" style="width: 0.1%">
-                    <v-btn style="cursor: move" icon class="handle">
-                      <v-icon>drag_handle</v-icon>
-                    </v-btn>
-                  </td>
-                  <td>{{ item.p_nm }}</td>
-                  <td>{{ item.p_price }}</td>
-                  <td>
-                    <ul>
-                      <li
-                        v-for="option_group in item.og"
-                        :key="option_group.og_id"
-                      >{{ option_group.og_nm }}</li>
-                    </ul>
-                  </td>
-                  <td>
-                    <v-btn dark icon :to="{ path: ''+btn.to.update+''+item.p_id+'' }">
-                      <v-icon small class="mr-2">edit</v-icon>
-                    </v-btn>
-                    <v-btn dark icon @click="remove(item)">
-                      <v-icon small class="mr-2">delete</v-icon>
-                    </v-btn>
-                  </td>
-                </tr>
+                <template v-if="items[0].p_id == null">
+                  <tr>
+                    <td colspan="10">상품을 등록해주세요.</td>
+                  </tr>
+                </template>
+                <template v-else>
+                  <tr v-for="item in items" :key="item.p_id">
+                    <td class="px-1" style="width: 0.1%">
+                      <v-btn style="cursor: move" icon class="handle">
+                        <v-icon>drag_handle</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>{{ item.p_nm }}</td>
+                    <td>{{ item.p_price }}</td>
+                    <td>
+                      <ul>
+                        <li
+                          v-for="option_group in item.og"
+                          :key="option_group.og_id"
+                        >{{ option_group.og_nm }}</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <v-btn dark icon :to="{ path: ''+btn.to.update+''+item.p_id+'' }">
+                        <v-icon small class="mr-2">edit</v-icon>
+                      </v-btn>
+                      <v-btn dark icon @click="remove(item)">
+                        <v-icon small class="mr-2">delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
             </template>
           </v-data-table>
